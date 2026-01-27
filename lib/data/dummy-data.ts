@@ -1,0 +1,417 @@
+// ============================================================================
+// DUMMY DATA FOR ADMIN DASHBOARD
+// ============================================================================
+
+export const dashboardStats = {
+  totalClients: 1247,
+  activeLoans: 342,
+  totalDisbursed: 45670000,
+  pendingApplications: 28,
+  totalRepayments: 12450000,
+  nplCount: 15,
+  investorFunds: 52000000,
+  recoveryRate: 78.5,
+};
+
+export const recentActivity = [
+  {
+    id: "1",
+    type: "loan_approved",
+    title: "Loan Approved",
+    description: "Loan #LN-2024-0342 approved for KES 150,000",
+    timestamp: "2024-01-15T10:30:00Z",
+    user: "John Mwangi",
+  },
+  {
+    id: "2",
+    type: "disbursement",
+    title: "Disbursement Completed",
+    description: "KES 200,000 disbursed to Mary Wanjiku via M-Pesa",
+    timestamp: "2024-01-15T09:45:00Z",
+    user: "System",
+  },
+  {
+    id: "3",
+    type: "repayment",
+    title: "Repayment Received",
+    description: "KES 25,000 received for Loan #LN-2024-0298",
+    timestamp: "2024-01-15T09:15:00Z",
+    user: "Peter Ochieng",
+  },
+  {
+    id: "4",
+    type: "client_registered",
+    title: "New Client Registered",
+    description: "Grace Akinyi completed KYC verification",
+    timestamp: "2024-01-15T08:30:00Z",
+    user: "Grace Akinyi",
+  },
+  {
+    id: "5",
+    type: "npl_flagged",
+    title: "Loan Flagged as NPL",
+    description: "Loan #LN-2023-0156 marked as non-performing",
+    timestamp: "2024-01-14T16:00:00Z",
+    user: "System",
+  },
+];
+
+export const loanStatusDistribution = [
+  { status: "Pending", count: 28, color: "#f59e0b" },
+  { status: "Approved", count: 45, color: "#10b981" },
+  { status: "Disbursed", count: 156, color: "#3b82f6" },
+  { status: "Active", count: 186, color: "#8b5cf6" },
+  { status: "NPL", count: 15, color: "#ef4444" },
+  { status: "Closed", count: 423, color: "#6b7280" },
+];
+
+export const monthlyDisbursements = [
+  { month: "Jul", amount: 3200000 },
+  { month: "Aug", amount: 4100000 },
+  { month: "Sep", amount: 3800000 },
+  { month: "Oct", amount: 4500000 },
+  { month: "Nov", amount: 5200000 },
+  { month: "Dec", amount: 4800000 },
+];
+
+export const monthlyRepayments = [
+  { month: "Jul", amount: 2800000, expected: 3000000 },
+  { month: "Aug", amount: 3200000, expected: 3500000 },
+  { month: "Sep", amount: 3100000, expected: 3200000 },
+  { month: "Oct", amount: 3800000, expected: 4000000 },
+  { month: "Nov", amount: 4200000, expected: 4500000 },
+  { month: "Dec", amount: 4000000, expected: 4200000 },
+];
+
+export const clients = [
+  {
+    id: "CLT001",
+    name: "John Kamau Mwangi",
+    email: "john.mwangi@email.com",
+    phone: "+254 712 345 678",
+    idNumber: "12345678",
+    status: "Active",
+    totalLoans: 3,
+    outstandingBalance: 125000,
+    joinedAt: "2023-06-15",
+  },
+  {
+    id: "CLT002",
+    name: "Mary Wanjiku Njeri",
+    email: "mary.wanjiku@email.com",
+    phone: "+254 723 456 789",
+    idNumber: "23456789",
+    status: "Active",
+    totalLoans: 2,
+    outstandingBalance: 80000,
+    joinedAt: "2023-08-22",
+  },
+  {
+    id: "CLT003",
+    name: "Peter Ochieng Otieno",
+    email: "peter.ochieng@email.com",
+    phone: "+254 734 567 890",
+    idNumber: "34567890",
+    status: "Active",
+    totalLoans: 1,
+    outstandingBalance: 45000,
+    joinedAt: "2023-10-10",
+  },
+  {
+    id: "CLT004",
+    name: "Grace Akinyi Odhiambo",
+    email: "grace.akinyi@email.com",
+    phone: "+254 745 678 901",
+    idNumber: "45678901",
+    status: "Active",
+    totalLoans: 4,
+    outstandingBalance: 200000,
+    joinedAt: "2023-04-05",
+  },
+  {
+    id: "CLT005",
+    name: "Samuel Kipchoge Ruto",
+    email: "samuel.kipchoge@email.com",
+    phone: "+254 756 789 012",
+    idNumber: "56789012",
+    status: "Inactive",
+    totalLoans: 2,
+    outstandingBalance: 0,
+    joinedAt: "2022-12-18",
+  },
+];
+
+export const loans = [
+  {
+    id: "LN-2024-0342",
+    clientName: "John Kamau Mwangi",
+    clientId: "CLT001",
+    amount: 150000,
+    approvedAmount: 150000,
+    interestRate: 20,
+    tenure: 12,
+    status: "Approved",
+    purpose: "Business Expansion",
+    appliedAt: "2024-01-10",
+    qualificationType: "Salary-Based",
+  },
+  {
+    id: "LN-2024-0341",
+    clientName: "Mary Wanjiku Njeri",
+    clientId: "CLT002",
+    amount: 200000,
+    approvedAmount: 200000,
+    interestRate: 20,
+    tenure: 18,
+    status: "Disbursed",
+    purpose: "School Fees",
+    appliedAt: "2024-01-08",
+    qualificationType: "Salary-Based",
+  },
+  {
+    id: "LN-2024-0340",
+    clientName: "Peter Ochieng Otieno",
+    clientId: "CLT003",
+    amount: 75000,
+    approvedAmount: null,
+    interestRate: 20,
+    tenure: 6,
+    status: "Pending",
+    purpose: "Medical Emergency",
+    appliedAt: "2024-01-12",
+    qualificationType: "Statement-Based",
+  },
+  {
+    id: "LN-2024-0339",
+    clientName: "Grace Akinyi Odhiambo",
+    clientId: "CLT004",
+    amount: 300000,
+    approvedAmount: 250000,
+    interestRate: 20,
+    tenure: 24,
+    status: "Active",
+    purpose: "Home Improvement",
+    appliedAt: "2023-12-20",
+    qualificationType: "Salary-Based",
+  },
+  {
+    id: "LN-2023-0156",
+    clientName: "James Mutua Kioko",
+    clientId: "CLT006",
+    amount: 100000,
+    approvedAmount: 100000,
+    interestRate: 20,
+    tenure: 12,
+    status: "NPL",
+    purpose: "Business Capital",
+    appliedAt: "2023-06-15",
+    qualificationType: "Statement-Based",
+  },
+];
+
+export const disbursements = [
+  {
+    id: "DSB001",
+    loanId: "LN-2024-0341",
+    clientName: "Mary Wanjiku Njeri",
+    amount: 200000,
+    method: "M-Pesa",
+    reference: "QKL7890XYZ",
+    disbursedAt: "2024-01-09T14:30:00Z",
+    status: "Completed",
+  },
+  {
+    id: "DSB002",
+    loanId: "LN-2024-0338",
+    clientName: "David Njuguna Karanja",
+    amount: 150000,
+    method: "Bank",
+    reference: "BNK-2024-0089",
+    disbursedAt: "2024-01-08T11:00:00Z",
+    status: "Completed",
+  },
+  {
+    id: "DSB003",
+    loanId: "LN-2024-0337",
+    clientName: "Elizabeth Moraa Nyaboke",
+    amount: 80000,
+    method: "M-Pesa",
+    reference: "QKL4567ABC",
+    disbursedAt: "2024-01-07T09:15:00Z",
+    status: "Completed",
+  },
+];
+
+export const investors = [
+  {
+    id: "INV001",
+    name: "Equity Growth Fund",
+    email: "investments@equitygrowth.co.ke",
+    phone: "+254 20 123 4567",
+    investedAmount: 15000000,
+    activeAllocations: 45,
+    totalReturns: 2250000,
+    joinedAt: "2022-03-15",
+  },
+  {
+    id: "INV002",
+    name: "Nairobi Capital Partners",
+    email: "info@nairobicapital.com",
+    phone: "+254 20 234 5678",
+    investedAmount: 25000000,
+    activeAllocations: 78,
+    totalReturns: 4125000,
+    joinedAt: "2021-11-20",
+  },
+  {
+    id: "INV003",
+    name: "Michael Omondi",
+    email: "michael.omondi@gmail.com",
+    phone: "+254 722 123 456",
+    investedAmount: 5000000,
+    activeAllocations: 15,
+    totalReturns: 750000,
+    joinedAt: "2023-02-10",
+  },
+  {
+    id: "INV004",
+    name: "Sarah Chebet",
+    email: "sarah.chebet@outlook.com",
+    phone: "+254 733 234 567",
+    investedAmount: 7000000,
+    activeAllocations: 22,
+    totalReturns: 1050000,
+    joinedAt: "2023-05-28",
+  },
+];
+
+export const recoveryAgents = [
+  {
+    id: "AGT001",
+    name: "Collins Odhiambo",
+    phone: "+254 700 111 222",
+    email: "collins.odhiambo@dss.co.ke",
+    assignedCases: 8,
+    recoveredAmount: 450000,
+    successRate: 72,
+    isActive: true,
+  },
+  {
+    id: "AGT002",
+    name: "Alice Wambui",
+    phone: "+254 711 333 444",
+    email: "alice.wambui@dss.co.ke",
+    assignedCases: 5,
+    recoveredAmount: 320000,
+    successRate: 85,
+    isActive: true,
+  },
+  {
+    id: "AGT003",
+    name: "Patrick Kimani",
+    phone: "+254 722 555 666",
+    email: "patrick.kimani@dss.co.ke",
+    assignedCases: 10,
+    recoveredAmount: 680000,
+    successRate: 68,
+    isActive: true,
+  },
+];
+
+export const nplLoans = [
+  {
+    id: "NPL001",
+    loanId: "LN-2023-0156",
+    clientName: "James Mutua Kioko",
+    clientPhone: "+254 789 012 345",
+    originalAmount: 100000,
+    outstandingAmount: 85000,
+    daysOverdue: 95,
+    assignedAgent: "Collins Odhiambo",
+    lastAction: "Phone call - no response",
+    lastActionDate: "2024-01-12",
+    flaggedAt: "2023-10-15",
+  },
+  {
+    id: "NPL002",
+    loanId: "LN-2023-0189",
+    clientName: "Faith Nyokabi Wangui",
+    clientPhone: "+254 712 345 678",
+    originalAmount: 50000,
+    outstandingAmount: 42000,
+    daysOverdue: 67,
+    assignedAgent: "Alice Wambui",
+    lastAction: "Home visit scheduled",
+    lastActionDate: "2024-01-14",
+    flaggedAt: "2023-11-10",
+  },
+  {
+    id: "NPL003",
+    loanId: "LN-2023-0201",
+    clientName: "Brian Onyango Ouma",
+    clientPhone: "+254 723 456 789",
+    originalAmount: 120000,
+    outstandingAmount: 98000,
+    daysOverdue: 45,
+    assignedAgent: "Patrick Kimani",
+    lastAction: "Payment plan proposed",
+    lastActionDate: "2024-01-13",
+    flaggedAt: "2023-12-01",
+  },
+];
+
+export const systemSettings = {
+  interestRate: 20,
+  processingFeePercent: 3,
+  legalFee: 200,
+  maxLoanAmount: 1000000,
+  minLoanAmount: 10000,
+  maxTenureMonths: 36,
+  minTenureMonths: 3,
+  salaryMultiplier: 3,
+  statementMultiplier: 2.5,
+  nplThresholdDays: 90,
+  smsReminderDaysBefore: 3,
+};
+
+// Helper function to format currency
+export function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat("en-KE", {
+    style: "currency",
+    currency: "KES",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
+// Helper function to format date
+export function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString("en-KE", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
+
+// Helper function to format datetime
+export function formatDateTime(dateString: string): string {
+  return new Date(dateString).toLocaleString("en-KE", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+// Status badge colors
+export const statusColors: Record<string, string> = {
+  Pending: "bg-amber-100 text-amber-800",
+  Approved: "bg-emerald-100 text-emerald-800",
+  Rejected: "bg-red-100 text-red-800",
+  Disbursed: "bg-blue-100 text-blue-800",
+  Active: "bg-purple-100 text-purple-800",
+  NPL: "bg-red-100 text-red-800",
+  Closed: "bg-gray-100 text-gray-800",
+  Completed: "bg-emerald-100 text-emerald-800",
+};
