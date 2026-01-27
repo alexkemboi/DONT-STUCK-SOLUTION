@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +19,7 @@ import {
   Users,
   Zap,
 } from "lucide-react";
+import { authClient } from "@/lib/authclient";
 
 export default function HomePage() {
   return (
@@ -50,6 +52,16 @@ export default function HomePage() {
             >
               Admin
             </Link>
+
+            <Button
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              onClick={async()=>{
+                await authClient.signOut();
+              }}
+            >
+              Sign Out
+            </Button>
+
           </nav>
           <div className="flex items-center gap-3">
             <Link href="/apply">

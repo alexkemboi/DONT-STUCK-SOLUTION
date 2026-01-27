@@ -1,5 +1,3 @@
-// DSS Loan Management System - Prisma Schema
-// Based on comprehensive use case and schema documentation
 
 generator client {
   provider = "prisma-client-js"
@@ -10,9 +8,668 @@ datasource db {
   provider = "postgresql"
 }
 
-// ============================================================================
-// ENUMS
-// ============================================================================
+model User {
+  id            String            @id @default(cuid())
+  email         String            @unique
+  role          UserRole          @default(Client)
+  phone         String?
+  isActive      Boolean           @default(true) @map("is_active")
+  createdAt     DateTime          @default(now()) @map("created_at")
+  updatedAt     DateTime          @updatedAt @map("updated_at")
+  image         String?
+  emailVerified Boolean?          @default(false) @map("emailVerified")
+  name          String            @map("name")
+  sessions      Session[]
+  accounts      Account[]
+  auditLogs     AuditLog[]
+  client        Client?
+  investor      Investor?
+  approvedLoans LoanApplication[] @relation("ApprovedBy")
+  reviewedLoans LoanApplication[] @relation("ReviewedBy")
+  recoveryAgent RecoveryAgent?
+
+  @@index([role])
+  @@index([isActive])
+  @@index([name])
+  @@map("user")
+}
+
+model Client {
+  id                String             @id @default(cuid())
+  userId            String?            @unique @map("user_id")
+  title             Title
+  surname           String
+  otherNames        String             @map("other_names")
+  dateOfBirth       DateTime           @map("date_of_birth")
+  maritalStatus     MaritalStatus      @map("marital_status")
+  nationality       String
+  dependents        Int                @default(0)
+  idPassportNo      String             @unique @map("id_passport_no")
+  kraPin            String?            @map("kra_pin")
+  phoneWork         String?            @map("phone_work")
+  phoneMobile       String             @map("phone_mobile")
+  phoneAlternative  String?            @map("phone_alternative")
+  emailPersonal     String?            @map("email_personal")
+  emailOfficial     String?            @map("email_official")
+  status            ClientStatus       @default(Active)
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  bankDetails       BankDetail[]
+  addresses         ClientAddress[]
+  user              User?              @relation(fields: [userId], references: [id])
+  documents         Document[]
+  employmentDetails EmploymentDetail[]
+  invoices          Invoice[]
+  loanApplications  LoanApplication[]
+  referees          Referee[]
+
+  @@index([status])
+  @@index([phoneMobile])
+  @@index([surname])
+  @@index([nationality])
+  @@index([createdAt])
+  @@index([kraPin])
+  @@map("clients")
+}
+
+model ClientAddress {
+  id                 String   @id @default(cuid())
+  clientId           String   @map("client_id")
+  postalAddress      String?  @map("postal_address")
+  postalCode         String?  @map("postal_code")
+  townCity           String?  @map("town_city")
+  residentialAddress String?  @map("residential_address")
+  location           String?
+  estate             String?
+  building           String?
+  houseNumber        String?  @map("house_number")
+  landmark           String?
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+  client             Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([townCity])
+  @@map("client_addresses")
+}
+
+model EmploymentDetail {
+  id             String         @id @default(cuid())
+  clientId       String         @map("client_id")
+  employerName   String         @map("employer_name")
+  jobTitle       String         @map("job_title")
+  department     String?
+  dateJoined     DateTime?      @map("date_joined")
+  periodWorked   String?        @map("period_worked")
+  employmentType EmploymentType @map("employment_type")
+  contractExpiry DateTime?      @map("contract_expiry")
+  onNotice       Boolean        @default(false) @map("on_notice")
+  netSalary      Decimal        @map("net_salary") @db.Decimal(15, 2)
+  branchLocation String?        @map("branch_location")
+  roadStreet     String?        @map("road_street")
+  building       String?
+  floorOffice    String?        @map("floor_office")
+  telephone      String?
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+  client         Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([employerName])
+  @@index([employmentType])
+  @@index([netSalary])
+  @@map("employment_details")
+}
+
+model Referee {
+  id              String   @id @default(cuid())
+  clientId        String   @map("client_id")
+  surname         String
+  otherNames      String   @map("other_names")
+  relationship    String
+  idPassportNo    String?  @map("id_passport_no")
+  employerName    String?  @map("employer_name")
+  locationStation String?  @map("location_station")
+  phoneWork       String?  @map("phone_work")
+  phoneMobile     String   @map("phone_mobile")
+  isRelative      Boolean  @default(false) @map("is_relative")
+  createdAt       DateTime @default(now()) @map("created_at")
+  client          Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([phoneMobile])
+  @@index([isRelative])
+  @@map("referees_next_of_kin")
+}
+
+model BankDetail {
+  id            String   @id @default(cuid())
+  clientId      String   @map("client_id")
+  bankName      String   @map("bank_name")
+  branch        String
+  accountName   String   @map("account_name")
+  accountNumber String   @map("account_number")
+  proofDocument String?  @map("proof_document")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  client        Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([bankName])
+  @@index([accountNumber])
+  @@map("bank_details")
+}
+
+model LoanApplication {
+  id                  String                @id @default(cuid())
+  clientId            String                @map("client_id")
+  purpose             String
+  amountRequested     Decimal               @map("amount_requested") @db.Decimal(15, 2)
+  approvedAmount      Decimal?              @map("approved_amount") @db.Decimal(15, 2)
+  qualificationType   QualificationType?    @map("qualification_type")
+  interestRate        Decimal               @default(20) @map("interest_rate") @db.Decimal(5, 2)
+  startDate           DateTime?             @map("start_date")
+  repaymentPeriod     Int                   @map("repayment_period")
+  status              LoanApplicationStatus @default(Pending)
+  appliedAt           DateTime              @default(now()) @map("applied_at")
+  reviewedAt          DateTime?             @map("reviewed_at")
+  reviewedById        String?               @map("reviewed_by_id")
+  approvedAt          DateTime?             @map("approved_at")
+  approvedById        String?               @map("approved_by_id")
+  rejectionReason     String?               @map("rejection_reason")
+  createdAt           DateTime              @default(now()) @map("created_at")
+  updatedAt           DateTime              @updatedAt @map("updated_at")
+  documents           Document[]
+  guarantors          Guarantor[]
+  investorAllocations InvestorAllocation[]
+  invoices            Invoice[]
+  approvedBy          User?                 @relation("ApprovedBy", fields: [approvedById], references: [id])
+  client              Client                @relation(fields: [clientId], references: [id])
+  reviewedBy          User?                 @relation("ReviewedBy", fields: [reviewedById], references: [id])
+  disbursement        LoanDisbursement?
+  financials          LoanFinancial?
+  qualification       LoanQualification?
+  security            LoanSecurity?
+  npl                 NonPerformingLoan?
+  recoveryRecords     RecoveryRecord[]
+  repayments          Repayment[]
+  vehicleSecurity     VehicleSecurity?
+
+  @@index([clientId])
+  @@index([status])
+  @@index([appliedAt])
+  @@index([reviewedById])
+  @@index([approvedById])
+  @@index([qualificationType])
+  @@index([createdAt])
+  @@index([clientId, status])
+  @@map("loan_applications")
+}
+
+model LoanQualification {
+  id                String            @id @default(cuid())
+  loanId            String            @unique @map("loan_id")
+  avgIncome         Decimal           @map("avg_income") @db.Decimal(15, 2)
+  eligibilityAmount Decimal           @map("eligibility_amount") @db.Decimal(15, 2)
+  ruleApplied       QualificationType @map("rule_applied")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  loan              LoanApplication   @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@map("loan_qualifications")
+}
+
+model LoanSecurity {
+  id                String          @id @default(cuid())
+  loanId            String          @unique @map("loan_id")
+  idCopy            Boolean         @default(false) @map("id_copy")
+  passportPhoto     Boolean         @default(false) @map("passport_photo")
+  appointmentLetter Boolean         @default(false) @map("appointment_letter")
+  payslips          Boolean         @default(false)
+  bankStatement     Boolean         @default(false) @map("bank_statement")
+  chequeLeafNo      String?         @map("cheque_leaf_no")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+  loan              LoanApplication @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@map("loan_security")
+}
+
+model VehicleSecurity {
+  id                 String          @id @default(cuid())
+  loanId             String          @unique @map("loan_id")
+  registrationNumber String          @map("registration_number")
+  chassisNumber      String          @map("chassis_number")
+  engineNumber       String          @map("engine_number")
+  yearOfManufacture  Int             @map("year_of_manufacture")
+  make               String
+  model              String
+  bodyColor          String          @map("body_color")
+  createdAt          DateTime        @default(now()) @map("created_at")
+  updatedAt          DateTime        @updatedAt @map("updated_at")
+  loan               LoanApplication @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@map("vehicle_security")
+}
+
+model Guarantor {
+  id                 String          @id @default(cuid())
+  loanId             String          @map("loan_id")
+  fullName           String          @map("full_name")
+  phone              String
+  email              String?
+  idNumber           String?         @map("id_number")
+  relationship       String?
+  confirmationStatus GuarantorStatus @default(Pending) @map("confirmation_status")
+  confirmedAt        DateTime?       @map("confirmed_at")
+  createdAt          DateTime        @default(now()) @map("created_at")
+  loan               LoanApplication @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@index([loanId])
+  @@index([confirmationStatus])
+  @@index([phone])
+  @@map("guarantors")
+}
+
+model LoanDisbursement {
+  id          String             @id @default(cuid())
+  loanId      String             @unique @map("loan_id")
+  amount      Decimal            @db.Decimal(15, 2)
+  method      DisbursementMethod
+  reference   String?
+  disbursedAt DateTime           @map("disbursed_at")
+  createdAt   DateTime           @default(now()) @map("created_at")
+  loan        LoanApplication    @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@map("loan_disbursements")
+}
+
+model LoanFinancial {
+  id             String          @id @default(cuid())
+  loanId         String          @unique @map("loan_id")
+  processingFee  Decimal         @map("processing_fee") @db.Decimal(15, 2)
+  legalFee       Decimal         @default(200) @map("legal_fee") @db.Decimal(15, 2)
+  penaltyFee     Decimal         @default(0) @map("penalty_fee") @db.Decimal(15, 2)
+  interestAmount Decimal         @map("interest_amount") @db.Decimal(15, 2)
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  loan           LoanApplication @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@map("loan_financials")
+}
+
+model Invoice {
+  id            String           @id @default(cuid())
+  invoiceNumber String           @unique @map("invoice_number")
+  clientId      String           @map("client_id")
+  loanId        String           @map("loan_id")
+  invoiceType   InvoiceType      @map("invoice_type")
+  invoiceDate   DateTime         @map("invoice_date")
+  dueDate       DateTime         @map("due_date")
+  totalAmount   Decimal          @map("total_amount") @db.Decimal(15, 2)
+  status        InvoiceStatus    @default(Draft)
+  issuedBy      String?          @map("issued_by")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  items         InvoiceItem[]
+  payments      InvoicePayment[]
+  client        Client           @relation(fields: [clientId], references: [id])
+  loan          LoanApplication  @relation(fields: [loanId], references: [id])
+
+  @@index([clientId])
+  @@index([loanId])
+  @@index([status])
+  @@index([dueDate])
+  @@index([invoiceDate])
+  @@index([invoiceType])
+  @@index([clientId, status])
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id          String     @id @default(cuid())
+  invoiceId   String     @map("invoice_id")
+  chargeType  ChargeType @map("charge_type")
+  description String?
+  amount      Decimal    @db.Decimal(15, 2)
+  glAccount   String?    @map("gl_account")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  invoice     Invoice    @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@index([chargeType])
+  @@map("invoice_items")
+}
+
+model InvoicePayment {
+  id            String        @id @default(cuid())
+  invoiceId     String        @map("invoice_id")
+  transactionId String?       @map("transaction_id")
+  amountPaid    Decimal       @map("amount_paid") @db.Decimal(15, 2)
+  paymentDate   DateTime      @map("payment_date")
+  paymentMethod PaymentMethod @map("payment_method")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  invoice       Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  transaction   Transaction?  @relation(fields: [transactionId], references: [id])
+
+  @@index([invoiceId])
+  @@index([transactionId])
+  @@index([paymentDate])
+  @@index([paymentMethod])
+  @@map("invoice_payments")
+}
+
+model Transaction {
+  id              String            @id @default(cuid())
+  transactionCode String            @unique @map("transaction_code")
+  transactionType TransactionType   @map("transaction_type")
+  referenceType   ReferenceType     @map("reference_type")
+  referenceId     String            @map("reference_id")
+  amount          Decimal           @db.Decimal(15, 2)
+  debitAccount    String            @map("debit_account")
+  creditAccount   String            @map("credit_account")
+  paymentMethod   PaymentMethod?    @map("payment_method")
+  transactionDate DateTime          @map("transaction_date")
+  description     String?
+  status          TransactionStatus @default(Pending)
+  createdBy       String?           @map("created_by")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  invoicePayments InvoicePayment[]
+
+  @@index([transactionType])
+  @@index([referenceType])
+  @@index([referenceId])
+  @@index([status])
+  @@index([transactionDate])
+  @@index([referenceType, referenceId])
+  @@map("transactions")
+}
+
+model Repayment {
+  id            String            @id @default(cuid())
+  loanId        String            @map("loan_id")
+  amount        Decimal           @db.Decimal(15, 2)
+  paymentMethod PaymentMethod     @map("payment_method")
+  paymentDate   DateTime          @map("payment_date")
+  category      RepaymentCategory
+  reference     String?
+  createdAt     DateTime          @default(now()) @map("created_at")
+  loan          LoanApplication   @relation(fields: [loanId], references: [id])
+
+  @@index([loanId])
+  @@index([paymentDate])
+  @@index([paymentMethod])
+  @@index([category])
+  @@map("repayments")
+}
+
+model NonPerformingLoan {
+  id                String          @id @default(cuid())
+  loanId            String          @unique @map("loan_id")
+  capitalizedAmount Decimal         @map("capitalized_amount") @db.Decimal(15, 2)
+  flaggedAt         DateTime        @map("flagged_at")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  loan              LoanApplication @relation(fields: [loanId], references: [id])
+
+  @@index([flaggedAt])
+  @@map("non_performing_loans")
+}
+
+model RecoveryAgent {
+  id        String           @id @default(cuid())
+  userId    String?          @unique @map("user_id")
+  name      String
+  phone     String
+  email     String?
+  isActive  Boolean          @default(true) @map("is_active")
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+  user      User?            @relation(fields: [userId], references: [id])
+  records   RecoveryRecord[]
+
+  @@index([isActive])
+  @@index([name])
+  @@map("recovery_agents")
+}
+
+model RecoveryRecord {
+  id          String          @id @default(cuid())
+  loanId      String          @map("loan_id")
+  agentId     String          @map("agent_id")
+  actionTaken String          @map("action_taken")
+  outcome     String?
+  recordedAt  DateTime        @map("recorded_at")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  agent       RecoveryAgent   @relation(fields: [agentId], references: [id])
+  loan        LoanApplication @relation(fields: [loanId], references: [id])
+
+  @@index([loanId])
+  @@index([agentId])
+  @@index([recordedAt])
+  @@map("recovery_records")
+}
+
+model Investor {
+  id             String               @id @default(cuid())
+  userId         String?              @unique @map("user_id")
+  name           String
+  contact        String
+  email          String?
+  investedAmount Decimal              @default(0) @map("invested_amount") @db.Decimal(15, 2)
+  createdAt      DateTime             @default(now()) @map("created_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
+  allocations    InvestorAllocation[]
+  payouts        InvestorPayout[]
+  user           User?                @relation(fields: [userId], references: [id])
+
+  @@index([name])
+  @@index([investedAmount])
+  @@map("investors")
+}
+
+model InvestorAllocation {
+  id              String          @id @default(cuid())
+  investorId      String          @map("investor_id")
+  loanId          String          @map("loan_id")
+  allocatedAmount Decimal         @map("allocated_amount") @db.Decimal(15, 2)
+  expectedReturn  Decimal?        @map("expected_return") @db.Decimal(15, 2)
+  actualReturn    Decimal         @default(0) @map("actual_return") @db.Decimal(15, 2)
+  allocationDate  DateTime        @map("allocation_date")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  investor        Investor        @relation(fields: [investorId], references: [id])
+  loan            LoanApplication @relation(fields: [loanId], references: [id])
+
+  @@index([investorId])
+  @@index([loanId])
+  @@index([allocationDate])
+  @@index([investorId, loanId])
+  @@map("investor_allocations")
+}
+
+model InvestorPayout {
+  id         String   @id @default(cuid())
+  investorId String   @map("investor_id")
+  amount     Decimal  @db.Decimal(15, 2)
+  payoutDate DateTime @map("payout_date")
+  reference  String?
+  createdAt  DateTime @default(now()) @map("created_at")
+  investor   Investor @relation(fields: [investorId], references: [id])
+
+  @@index([investorId])
+  @@index([payoutDate])
+  @@map("investor_payouts")
+}
+
+model Document {
+  id           String           @id @default(cuid())
+  clientId     String?          @map("client_id")
+  loanId       String?          @map("loan_id")
+  documentType DocumentType     @map("document_type")
+  filePublicId String           @map("file_public_id")
+  fileUniqueId String           @map("file_unique_id")
+  fileName     String           @map("file_name")
+  filePath     String           @map("file_path")
+  fileSize     Int?             @map("file_size")
+  mimeType     String?          @map("mime_type")
+  uploadedAt   DateTime         @default(now()) @map("uploaded_at")
+  client       Client?          @relation(fields: [clientId], references: [id])
+  loan         LoanApplication? @relation(fields: [loanId], references: [id])
+
+  @@index([clientId])
+  @@index([loanId])
+  @@index([documentType])
+  @@index([uploadedAt])
+  @@map("documents")
+}
+
+model Expense {
+  id          String      @id @default(cuid())
+  expenseType ExpenseType @map("expense_type")
+  amount      Decimal     @db.Decimal(15, 2)
+  description String?
+  incurredAt  DateTime    @map("incurred_at")
+  createdAt   DateTime    @default(now()) @map("created_at")
+
+  @@index([expenseType])
+  @@index([incurredAt])
+  @@map("expenses")
+}
+
+model SmsLog {
+  id        String     @id @default(cuid())
+  recipient String
+  message   String
+  purpose   SmsPurpose
+  cost      Decimal?   @db.Decimal(10, 2)
+  sentAt    DateTime   @map("sent_at")
+  status    String?
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  @@index([recipient])
+  @@index([purpose])
+  @@index([sentAt])
+  @@index([status])
+  @@map("sms_logs")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?  @map("user_id")
+  action    String
+  entity    String
+  entityId  String?  @map("entity_id")
+  oldValue  Json?    @map("old_value")
+  newValue  Json?    @map("new_value")
+  ipAddress String?  @map("ip_address")
+  timestamp DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entity])
+  @@index([entityId])
+  @@index([action])
+  @@index([timestamp])
+  @@index([entity, entityId])
+  @@map("audit_logs")
+}
+
+model ChartOfAccount {
+  id              String           @id @default(cuid())
+  accountCode     String           @unique @map("account_code")
+  accountName     String           @map("account_name")
+  accountType     AccountType      @map("account_type")
+  parentAccountId String?          @map("parent_account_id")
+  normalBalance   NormalBalance    @map("normal_balance")
+  isActive        Boolean          @default(true) @map("is_active")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  parentAccount   ChartOfAccount?  @relation("AccountHierarchy", fields: [parentAccountId], references: [id])
+  childAccounts   ChartOfAccount[] @relation("AccountHierarchy")
+
+  @@index([accountType])
+  @@index([parentAccountId])
+  @@index([isActive])
+  @@map("chart_of_accounts")
+}
+
+model TransactionMatrix {
+  id                String          @id @default(cuid())
+  transactionType   TransactionType @map("transaction_type")
+  component         ChargeType
+  debitAccountCode  String          @map("debit_account_code")
+  creditAccountCode String          @map("credit_account_code")
+  isActive          Boolean         @default(true) @map("is_active")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+
+  @@unique([transactionType, component])
+  @@map("transaction_matrix")
+}
+
+model SystemConfig {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  category  String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([category])
+  @@map("system_config")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String   @map("userId")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt    DateTime
+  token        String
+  ipAddress    String?
+  userAgent    String?
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([providerId, accountId])
+  @@map("account")
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
 
 enum Title {
   Mr
@@ -122,12 +779,6 @@ enum TransactionStatus {
   Reversed
 }
 
-enum EntityType {
-  Client
-  Loan
-  Employment
-}
-
 enum DocumentType {
   ID
   Payslip
@@ -173,716 +824,14 @@ enum UserRole {
   Client
 }
 
-// ============================================================================
-// SYSTEM USERS & AUTHENTICATION
-// ============================================================================
-
-model User {
-  id            Int       @id @default(autoincrement())
-  email         String    @unique
-  passwordHash  String    @map("password_hash")
-  role          UserRole
-  fullName      String    @map("full_name")
-  phone         String?
-  isActive      Boolean   @default(true) @map("is_active")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-
-  // Relations
-  client                Client?
-  investor              Investor?
-  recoveryAgent         RecoveryAgent?
-  reviewedLoans         LoanApplication[]    @relation("ReviewedBy")
-  approvedLoans         LoanApplication[]    @relation("ApprovedBy")
-  auditLogs             AuditLog[]
-
-  @@index([role])
-  @@index([isActive])
-  @@index([fullName])
-  @@map("users")
-}
-
-// ============================================================================
-// CLIENT / BORROWER ENTITIES
-// ============================================================================
-
-model Client {
-  id              Int           @id @default(autoincrement())
-  userId          Int?          @unique @map("user_id")
-  title           Title
-  surname         String
-  otherNames      String        @map("other_names")
-  dateOfBirth     DateTime      @map("date_of_birth")
-  maritalStatus   MaritalStatus @map("marital_status")
-  nationality     String
-  dependents      Int           @default(0)
-  idPassportNo    String        @unique @map("id_passport_no")
-  kraPin          String?       @map("kra_pin")
-  phoneWork       String?       @map("phone_work")
-  phoneMobile     String        @map("phone_mobile")
-  phoneAlternative String?      @map("phone_alternative")
-  emailPersonal   String?       @map("email_personal")
-  emailOfficial   String?       @map("email_official")
-  status          ClientStatus  @default(Active)
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-
-  // Relations
-  user            User?         @relation(fields: [userId], references: [id])
-  addresses       ClientAddress[]
-  employmentDetails EmploymentDetail[]
-  referees        Referee[]
-  bankDetails     BankDetail[]
-  loanApplications LoanApplication[]
-  documents       Document[]
-  invoices        Invoice[]
-
-  @@index([status])
-  @@index([phoneMobile])
-  @@index([surname])
-  @@index([nationality])
-  @@index([createdAt])
-  @@index([kraPin])
-  @@map("clients")
-}
-
-model ClientAddress {
-  id                Int      @id @default(autoincrement())
-  clientId          Int      @map("client_id")
-  postalAddress     String?  @map("postal_address")
-  postalCode        String?  @map("postal_code")
-  townCity          String?  @map("town_city")
-  residentialAddress String? @map("residential_address")
-  location          String?
-  estate            String?
-  building          String?
-  houseNumber       String?  @map("house_number")
-  landmark          String?
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-
-  // Relations
-  client            Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  @@index([clientId])
-  @@index([townCity])
-  @@map("client_addresses")
-}
-
-model EmploymentDetail {
-  id              Int            @id @default(autoincrement())
-  clientId        Int            @map("client_id")
-  employerName    String         @map("employer_name")
-  jobTitle        String         @map("job_title")
-  department      String?
-  dateJoined      DateTime?      @map("date_joined")
-  periodWorked    String?        @map("period_worked")
-  employmentType  EmploymentType @map("employment_type")
-  contractExpiry  DateTime?      @map("contract_expiry")
-  onNotice        Boolean        @default(false) @map("on_notice")
-  netSalary       Decimal        @map("net_salary") @db.Decimal(15, 2)
-  branchLocation  String?        @map("branch_location")
-  roadStreet      String?        @map("road_street")
-  building        String?
-  floorOffice     String?        @map("floor_office")
-  telephone       String?
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
-
-  // Relations
-  client          Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  @@index([clientId])
-  @@index([employerName])
-  @@index([employmentType])
-  @@index([netSalary])
-  @@map("employment_details")
-}
-
-model Referee {
-  id              Int      @id @default(autoincrement())
-  clientId        Int      @map("client_id")
-  surname         String
-  otherNames      String   @map("other_names")
-  relationship    String
-  idPassportNo    String?  @map("id_passport_no")
-  employerName    String?  @map("employer_name")
-  locationStation String?  @map("location_station")
-  phoneWork       String?  @map("phone_work")
-  phoneMobile     String   @map("phone_mobile")
-  isRelative      Boolean  @default(false) @map("is_relative")
-  createdAt       DateTime @default(now()) @map("created_at")
-
-  // Relations
-  client          Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  @@index([clientId])
-  @@index([phoneMobile])
-  @@index([isRelative])
-  @@map("referees_next_of_kin")
-}
-
-model BankDetail {
-  id              Int      @id @default(autoincrement())
-  clientId        Int      @map("client_id")
-  bankName        String   @map("bank_name")
-  branch          String
-  accountName     String   @map("account_name")
-  accountNumber   String   @map("account_number")
-  proofDocument   String?  @map("proof_document")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
-
-  // Relations
-  client          Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  @@index([clientId])
-  @@index([bankName])
-  @@index([accountNumber])
-  @@map("bank_details")
-}
-
-// ============================================================================
-// LOAN APPLICATION ENTITIES
-// ============================================================================
-
-model LoanApplication {
-  id                Int                   @id @default(autoincrement())
-  clientId          Int                   @map("client_id")
-  purpose           String
-  amountRequested   Decimal               @map("amount_requested") @db.Decimal(15, 2)
-  approvedAmount    Decimal?              @map("approved_amount") @db.Decimal(15, 2)
-  qualificationType QualificationType?    @map("qualification_type")
-  interestRate      Decimal               @default(20) @map("interest_rate") @db.Decimal(5, 2)
-  startDate         DateTime?             @map("start_date")
-  repaymentPeriod   Int                   @map("repayment_period") // months
-  status            LoanApplicationStatus @default(Pending)
-  appliedAt         DateTime              @default(now()) @map("applied_at")
-  reviewedAt        DateTime?             @map("reviewed_at")
-  reviewedById      Int?                  @map("reviewed_by_id")
-  approvedAt        DateTime?             @map("approved_at")
-  approvedById      Int?                  @map("approved_by_id")
-  rejectionReason   String?               @map("rejection_reason")
-  createdAt         DateTime              @default(now()) @map("created_at")
-  updatedAt         DateTime              @updatedAt @map("updated_at")
-
-  // Relations
-  client            Client                @relation(fields: [clientId], references: [id])
-  reviewedBy        User?                 @relation("ReviewedBy", fields: [reviewedById], references: [id])
-  approvedBy        User?                 @relation("ApprovedBy", fields: [approvedById], references: [id])
-  qualification     LoanQualification?
-  security          LoanSecurity?
-  vehicleSecurity   VehicleSecurity?
-  financials        LoanFinancial?
-  disbursement      LoanDisbursement?
-  guarantors        Guarantor[]
-  repayments        Repayment[]
-  invoices          Invoice[]
-  documents         Document[]            @relation("LoanDocuments")
-  npl               NonPerformingLoan?
-  recoveryRecords   RecoveryRecord[]
-  investorAllocations InvestorAllocation[]
-
-  @@index([clientId])
-  @@index([status])
-  @@index([appliedAt])
-  @@index([reviewedById])
-  @@index([approvedById])
-  @@index([qualificationType])
-  @@index([createdAt])
-  @@index([clientId, status])
-  @@map("loan_applications")
-}
-
-model LoanQualification {
-  id                Int               @id @default(autoincrement())
-  loanId            Int               @unique @map("loan_id")
-  avgIncome         Decimal           @map("avg_income") @db.Decimal(15, 2)
-  eligibilityAmount Decimal           @map("eligibility_amount") @db.Decimal(15, 2)
-  ruleApplied       QualificationType @map("rule_applied")
-  createdAt         DateTime          @default(now()) @map("created_at")
-
-  // Relations
-  loan              LoanApplication   @relation(fields: [loanId], references: [id], onDelete: Cascade)
-
-  @@map("loan_qualifications")
-}
-
-model LoanSecurity {
-  id                Int             @id @default(autoincrement())
-  loanId            Int             @unique @map("loan_id")
-  idCopy            Boolean         @default(false) @map("id_copy")
-  passportPhoto     Boolean         @default(false) @map("passport_photo")
-  appointmentLetter Boolean         @default(false) @map("appointment_letter")
-  payslips          Boolean         @default(false) // 3 payslips
-  bankStatement     Boolean         @default(false) @map("bank_statement") // 3 months
-  chequeLeafNo      String?         @map("cheque_leaf_no")
-  createdAt         DateTime        @default(now()) @map("created_at")
-  updatedAt         DateTime        @updatedAt @map("updated_at")
-
-  // Relations
-  loan              LoanApplication @relation(fields: [loanId], references: [id], onDelete: Cascade)
-
-  @@map("loan_security")
-}
-
-model VehicleSecurity {
-  id                  Int             @id @default(autoincrement())
-  loanId              Int             @unique @map("loan_id")
-  registrationNumber  String          @map("registration_number")
-  chassisNumber       String          @map("chassis_number")
-  engineNumber        String          @map("engine_number")
-  yearOfManufacture   Int             @map("year_of_manufacture")
-  make                String
-  model               String
-  bodyColor           String          @map("body_color")
-  createdAt           DateTime        @default(now()) @map("created_at")
-  updatedAt           DateTime        @updatedAt @map("updated_at")
-
-  // Relations
-  loan                LoanApplication @relation(fields: [loanId], references: [id], onDelete: Cascade)
-
-  @@map("vehicle_security")
-}
-
-model Guarantor {
-  id                 Int             @id @default(autoincrement())
-  loanId             Int             @map("loan_id")
-  fullName           String          @map("full_name")
-  phone              String
-  email              String?
-  idNumber           String?         @map("id_number")
-  relationship       String?
-  confirmationStatus GuarantorStatus @default(Pending) @map("confirmation_status")
-  confirmedAt        DateTime?       @map("confirmed_at")
-  createdAt          DateTime        @default(now()) @map("created_at")
-
-  // Relations
-  loan               LoanApplication @relation(fields: [loanId], references: [id], onDelete: Cascade)
-
-  @@index([loanId])
-  @@index([confirmationStatus])
-  @@index([phone])
-  @@map("guarantors")
-}
-
-model LoanDisbursement {
-  id            Int                @id @default(autoincrement())
-  loanId        Int                @unique @map("loan_id")
-  amount        Decimal            @db.Decimal(15, 2)
-  method        DisbursementMethod
-  reference     String?
-  disbursedAt   DateTime           @map("disbursed_at")
-  createdAt     DateTime           @default(now()) @map("created_at")
-
-  // Relations
-  loan          LoanApplication    @relation(fields: [loanId], references: [id], onDelete: Cascade)
-
-  @@map("loan_disbursements")
-}
-
-model LoanFinancial {
-  id              Int             @id @default(autoincrement())
-  loanId          Int             @unique @map("loan_id")
-  processingFee   Decimal         @map("processing_fee") @db.Decimal(15, 2) // 3%
-  legalFee        Decimal         @default(200) @map("legal_fee") @db.Decimal(15, 2)
-  penaltyFee      Decimal         @default(0) @map("penalty_fee") @db.Decimal(15, 2)
-  interestAmount  Decimal         @map("interest_amount") @db.Decimal(15, 2)
-  createdAt       DateTime        @default(now()) @map("created_at")
-  updatedAt       DateTime        @updatedAt @map("updated_at")
-
-  // Relations
-  loan            LoanApplication @relation(fields: [loanId], references: [id], onDelete: Cascade)
-
-  @@map("loan_financials")
-}
-
-// ============================================================================
-// FINANCIAL ENTITIES (Invoices, Transactions, Repayments)
-// ============================================================================
-
-model Invoice {
-  id              Int           @id @default(autoincrement())
-  invoiceNumber   String        @unique @map("invoice_number")
-  clientId        Int           @map("client_id")
-  loanId          Int           @map("loan_id")
-  invoiceType     InvoiceType   @map("invoice_type")
-  invoiceDate     DateTime      @map("invoice_date")
-  dueDate         DateTime      @map("due_date")
-  totalAmount     Decimal       @map("total_amount") @db.Decimal(15, 2)
-  status          InvoiceStatus @default(Draft)
-  issuedBy        String?       @map("issued_by")
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-
-  // Relations
-  client          Client          @relation(fields: [clientId], references: [id])
-  loan            LoanApplication @relation(fields: [loanId], references: [id])
-  items           InvoiceItem[]
-  payments        InvoicePayment[]
-
-  @@index([clientId])
-  @@index([loanId])
-  @@index([status])
-  @@index([dueDate])
-  @@index([invoiceDate])
-  @@index([invoiceType])
-  @@index([clientId, status])
-  @@map("invoices")
-}
-
-model InvoiceItem {
-  id          Int        @id @default(autoincrement())
-  invoiceId   Int        @map("invoice_id")
-  chargeType  ChargeType @map("charge_type")
-  description String?
-  amount      Decimal    @db.Decimal(15, 2)
-  glAccount   String?    @map("gl_account")
-  createdAt   DateTime   @default(now()) @map("created_at")
-
-  // Relations
-  invoice     Invoice    @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-
-  @@index([invoiceId])
-  @@index([chargeType])
-  @@map("invoice_items")
-}
-
-model InvoicePayment {
-  id            Int           @id @default(autoincrement())
-  invoiceId     Int           @map("invoice_id")
-  transactionId Int?          @map("transaction_id")
-  amountPaid    Decimal       @map("amount_paid") @db.Decimal(15, 2)
-  paymentDate   DateTime      @map("payment_date")
-  paymentMethod PaymentMethod @map("payment_method")
-  createdAt     DateTime      @default(now()) @map("created_at")
-
-  // Relations
-  invoice       Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  transaction   Transaction?  @relation(fields: [transactionId], references: [id])
-
-  @@index([invoiceId])
-  @@index([transactionId])
-  @@index([paymentDate])
-  @@index([paymentMethod])
-  @@map("invoice_payments")
-}
-
-model Transaction {
-  id              Int               @id @default(autoincrement())
-  transactionCode String            @unique @map("transaction_code")
-  transactionType TransactionType   @map("transaction_type")
-  referenceType   ReferenceType     @map("reference_type")
-  referenceId     Int               @map("reference_id")
-  amount          Decimal           @db.Decimal(15, 2)
-  debitAccount    String            @map("debit_account")
-  creditAccount   String            @map("credit_account")
-  paymentMethod   PaymentMethod?    @map("payment_method")
-  transactionDate DateTime          @map("transaction_date")
-  description     String?
-  status          TransactionStatus @default(Pending)
-  createdBy       String?           @map("created_by")
-  createdAt       DateTime          @default(now()) @map("created_at")
-
-  // Relations
-  invoicePayments InvoicePayment[]
-
-  @@index([transactionType])
-  @@index([referenceType])
-  @@index([referenceId])
-  @@index([status])
-  @@index([transactionDate])
-  @@index([referenceType, referenceId])
-  @@map("transactions")
-}
-
-model Repayment {
-  id            Int             @id @default(autoincrement())
-  loanId        Int             @map("loan_id")
-  amount        Decimal         @db.Decimal(15, 2)
-  paymentMethod PaymentMethod   @map("payment_method")
-  paymentDate   DateTime        @map("payment_date")
-  category      RepaymentCategory
-  reference     String?
-  createdAt     DateTime        @default(now()) @map("created_at")
-
-  // Relations
-  loan          LoanApplication @relation(fields: [loanId], references: [id])
-
-  @@index([loanId])
-  @@index([paymentDate])
-  @@index([paymentMethod])
-  @@index([category])
-  @@map("repayments")
-}
-
-// ============================================================================
-// NON-PERFORMING LOANS & RECOVERY
-// ============================================================================
-
-model NonPerformingLoan {
-  id                Int             @id @default(autoincrement())
-  loanId            Int             @unique @map("loan_id")
-  capitalizedAmount Decimal         @map("capitalized_amount") @db.Decimal(15, 2)
-  flaggedAt         DateTime        @map("flagged_at")
-  createdAt         DateTime        @default(now()) @map("created_at")
-
-  // Relations
-  loan              LoanApplication @relation(fields: [loanId], references: [id])
-
-  @@index([flaggedAt])
-  @@map("non_performing_loans")
-}
-
-model RecoveryAgent {
-  id        Int              @id @default(autoincrement())
-  userId    Int?             @unique @map("user_id")
-  name      String
-  phone     String
-  email     String?
-  isActive  Boolean          @default(true) @map("is_active")
-  createdAt DateTime         @default(now()) @map("created_at")
-  updatedAt DateTime         @updatedAt @map("updated_at")
-
-  // Relations
-  user      User?            @relation(fields: [userId], references: [id])
-  records   RecoveryRecord[]
-
-  @@index([isActive])
-  @@index([name])
-  @@map("recovery_agents")
-}
-
-model RecoveryRecord {
-  id          Int             @id @default(autoincrement())
-  loanId      Int             @map("loan_id")
-  agentId     Int             @map("agent_id")
-  actionTaken String          @map("action_taken")
-  outcome     String?
-  recordedAt  DateTime        @map("recorded_at")
-  createdAt   DateTime        @default(now()) @map("created_at")
-
-  // Relations
-  loan        LoanApplication @relation(fields: [loanId], references: [id])
-  agent       RecoveryAgent   @relation(fields: [agentId], references: [id])
-
-  @@index([loanId])
-  @@index([agentId])
-  @@index([recordedAt])
-  @@map("recovery_records")
-}
-
-// ============================================================================
-// INVESTOR ENTITIES
-// ============================================================================
-
-model Investor {
-  id             Int                  @id @default(autoincrement())
-  userId         Int?                 @unique @map("user_id")
-  name           String
-  contact        String
-  email          String?
-  investedAmount Decimal              @default(0) @map("invested_amount") @db.Decimal(15, 2)
-  createdAt      DateTime             @default(now()) @map("created_at")
-  updatedAt      DateTime             @updatedAt @map("updated_at")
-
-  // Relations
-  user           User?                @relation(fields: [userId], references: [id])
-  allocations    InvestorAllocation[]
-  payouts        InvestorPayout[]
-
-  @@index([name])
-  @@index([investedAmount])
-  @@map("investors")
-}
-
-model InvestorAllocation {
-  id             Int             @id @default(autoincrement())
-  investorId     Int             @map("investor_id")
-  loanId         Int             @map("loan_id")
-  allocatedAmount Decimal        @map("allocated_amount") @db.Decimal(15, 2)
-  expectedReturn Decimal?        @map("expected_return") @db.Decimal(15, 2)
-  actualReturn   Decimal         @default(0) @map("actual_return") @db.Decimal(15, 2)
-  allocationDate DateTime        @map("allocation_date")
-  createdAt      DateTime        @default(now()) @map("created_at")
-  updatedAt      DateTime        @updatedAt @map("updated_at")
-
-  // Relations
-  investor       Investor        @relation(fields: [investorId], references: [id])
-  loan           LoanApplication @relation(fields: [loanId], references: [id])
-
-  @@index([investorId])
-  @@index([loanId])
-  @@index([allocationDate])
-  @@index([investorId, loanId])
-  @@map("investor_allocations")
-}
-
-model InvestorPayout {
-  id          Int      @id @default(autoincrement())
-  investorId  Int      @map("investor_id")
-  amount      Decimal  @db.Decimal(15, 2)
-  payoutDate  DateTime @map("payout_date")
-  reference   String?
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  // Relations
-  investor    Investor @relation(fields: [investorId], references: [id])
-
-  @@index([investorId])
-  @@index([payoutDate])
-  @@map("investor_payouts")
-}
-
-// ============================================================================
-// DOCUMENTS & ATTACHMENTS
-// ============================================================================
-
-model Document {
-  id           Int          @id @default(autoincrement())
-  entityType   EntityType   @map("entity_type")
-  entityId     Int          @map("entity_id")
-  clientId     Int?         @map("client_id")
-  loanId       Int?         @map("loan_id")
-  documentType DocumentType @map("document_type")
-
-
-  filePublicId  String      @map("file_public_id")
-  fileUniqueId  String      @map("file_unique_id")
-  fileName     String       @map("file_name")
-  filePath     String       @map("file_path")
-  fileSize     Int?         @map("file_size")
-  mimeType     String?      @map("mime_type")
-  uploadedAt   DateTime     @default(now()) @map("uploaded_at")
-
-  // Relations
-  client       Client?          @relation(fields: [clientId], references: [id])
-  loan         LoanApplication? @relation("LoanDocuments", fields: [loanId], references: [id])
-
-  @@index([entityType, entityId])
-  @@index([clientId])
-  @@index([loanId])
-  @@index([documentType])
-  @@index([uploadedAt])
-  @@map("documents")
-}
-
-// ============================================================================
-// EXPENSES
-// ============================================================================
-
-model Expense {
-  id          Int         @id @default(autoincrement())
-  expenseType ExpenseType @map("expense_type")
-  amount      Decimal     @db.Decimal(15, 2)
-  description String?
-  incurredAt  DateTime    @map("incurred_at")
-  createdAt   DateTime    @default(now()) @map("created_at")
-
-  @@index([expenseType])
-  @@index([incurredAt])
-  @@map("expenses")
-}
-
-// ============================================================================
-// COMMUNICATION (SMS)
-// ============================================================================
-
-model SmsLog {
-  id        Int        @id @default(autoincrement())
-  recipient String
-  message   String
-  purpose   SmsPurpose
-  cost      Decimal?   @db.Decimal(10, 2)
-  sentAt    DateTime   @map("sent_at")
-  status    String?
-  createdAt DateTime   @default(now()) @map("created_at")
-
-  @@index([recipient])
-  @@index([purpose])
-  @@index([sentAt])
-  @@index([status])
-  @@map("sms_logs")
-}
-
-// ============================================================================
-// AUDIT & LOGGING
-// ============================================================================
-
-model AuditLog {
-  id        Int      @id @default(autoincrement())
-  userId    Int?     @map("user_id")
-  action    String
-  entity    String
-  entityId  Int?     @map("entity_id")
-  oldValue  Json?    @map("old_value")
-  newValue  Json?    @map("new_value")
-  ipAddress String?  @map("ip_address")
-  timestamp DateTime @default(now())
-
-  // Relations
-  user      User?    @relation(fields: [userId], references: [id])
-
-  @@index([userId])
-  @@index([entity])
-  @@index([entityId])
-  @@index([action])
-  @@index([timestamp])
-  @@index([entity, entityId])
-  @@map("audit_logs")
-}
-
-// ============================================================================
-// CHART OF ACCOUNTS & TRANSACTION MATRIX
-// ============================================================================
-
-model ChartOfAccount {
-  id              Int           @id @default(autoincrement())
-  accountCode     String        @unique @map("account_code")
-  accountName     String        @map("account_name")
-  accountType     AccountType   @map("account_type")
-  parentAccountId Int?          @map("parent_account_id")
-  normalBalance   NormalBalance @map("normal_balance")
-  isActive        Boolean       @default(true) @map("is_active")
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-
-  // Self-relation for hierarchy
-  parentAccount   ChartOfAccount?  @relation("AccountHierarchy", fields: [parentAccountId], references: [id])
-  childAccounts   ChartOfAccount[] @relation("AccountHierarchy")
-
-  @@index([accountType])
-  @@index([parentAccountId])
-  @@index([isActive])
-  @@map("chart_of_accounts")
-}
-
-model TransactionMatrix {
-  id                Int             @id @default(autoincrement())
-  transactionType   TransactionType @map("transaction_type")
-  component         ChargeType
-  debitAccountCode  String          @map("debit_account_code")
-  creditAccountCode String          @map("credit_account_code")
-  isActive          Boolean         @default(true) @map("is_active")
-  createdAt         DateTime        @default(now()) @map("created_at")
-  updatedAt         DateTime        @updatedAt @map("updated_at")
-
-  @@unique([transactionType, component])
-  @@map("transaction_matrix")
-}
-
-// ============================================================================
-// SYSTEM CONFIGURATION
-// ============================================================================
-
-model SystemConfig {
-  id        Int      @id @default(autoincrement())
-  key       String   @unique
-  value     String
-  category  String?
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@index([category])
-  @@map("system_config")
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }

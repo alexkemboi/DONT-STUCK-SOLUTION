@@ -12,9 +12,9 @@ const globalForPrisma = globalThis as unknown as {
 function createPrismaClient(): PrismaClient {
   const connectionString = process.env.DATABASE_URL!;
 
-  // Create Neon pool for serverless environment
-  const pool = new Pool({ connectionString });
-  const adapter = new PrismaNeon(pool);
+  const adapter = new PrismaNeon({
+    connectionString
+  });
 
   return new PrismaClient({
     adapter,
