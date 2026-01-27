@@ -17,6 +17,7 @@ import {
   setAcceptedTerms,
 } from "@/lib/store/slices/auth-slice";
 import Link from "next/link";
+import { loginAction } from "@/app/actions/auth";
 
 const loginSchema = Yup.object({
   email: Yup.string()
@@ -51,24 +52,15 @@ export function LoginForm() {
     dispatch(loginStart());
     dispatch(setAcceptedTerms(values.acceptTerms));
 
-    // Simulate API call - replace with actual authentication
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const loggeduser= await loginAction({
+      email:values.email,
+      password:values.password,
+    });
+
+
 
     // Demo: Accept any valid format login
-    if (values.email && values.password) {
-      dispatch(
-        loginSuccess({
-          id: "usr_demo_001",
-          email: values.email,
-          name: "Demo User",
-          role: "admin",
-        })
-      );
-      toast.success("Welcome back!", {
-        description: "You have been logged in successfully.",
-      });
-      // In production, redirect to dashboard
-    } else {
+    if (loggeduser) {
       dispatch(loginFailure("Invalid credentials"));
       toast.error("Login failed", {
         description: "Please check your credentials and try again.",

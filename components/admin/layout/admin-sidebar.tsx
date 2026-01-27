@@ -14,13 +14,16 @@ import {
   Building2,
   X,
   LogOut,
+  User,
+  BarChart2,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setMobileSidebarOpen } from "@/lib/store/slices/ui-slice";
 import { logout } from "@/lib/store/slices/auth-slice";
 import { toast } from "sonner";
+import { authClient } from "@/lib/authclient";
 
-const navigation = [
+const adminnavigation = [
   {
     name: "Dashboard",
     href: "/admin",
@@ -55,6 +58,39 @@ const navigation = [
     name: "Settings",
     href: "/admin/settings",
     icon: Settings,
+  },
+];
+
+const clientNavigation = [
+  {
+    href: "/client",
+    icon: LayoutDashboard,
+    label: "Dashboard",
+  },
+  {
+    href: "/client/apply",
+    icon: FileText,
+    label: "Apply for Loan",
+  },
+  {
+    href: "/client/profile",
+    icon: User,
+    label: "Profile",
+  },
+  {
+    href: "/client/disbursements",
+    icon: Banknote,
+    label: "Disbursements",
+  },
+  {
+    href: "/client/reports",
+    icon: BarChart2,
+    label: "Reports",
+  },
+  {
+    href: "/client/settings",
+    icon: Settings,
+    label: "Settings",
   },
 ];
 
@@ -116,6 +152,10 @@ export function AdminSidebar() {
 function SidebarNav({ pathname }: { pathname: string }) {
   const dispatch = useAppDispatch();
 
+  const { data } = authClient.useSession();
+  const sessionData = data?.session;
+
+  // const navigation = sessionData. === "admin" ? adminNavigation : clientNavigation;
   const handleLogout = () => {
     dispatch(logout());
     toast.success("Logged out successfully", {
@@ -128,7 +168,7 @@ function SidebarNav({ pathname }: { pathname: string }) {
   return (
     <nav className="flex flex-1 flex-col px-6 lg:px-0">
       <ul role="list" className="flex flex-1 flex-col gap-y-1">
-        {navigation.map((item) => {
+        {adminnavigation.map((item) => {
           const isActive = pathname === item.href;
           return (
             <li key={item.name}>

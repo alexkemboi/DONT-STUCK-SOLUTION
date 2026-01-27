@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import uiReducer from "./slices/ui-slice";
 import filtersReducer from "./slices/filters-slice";
 import authReducer from "./slices/auth-slice";
+import clientReducer from "./slices/client-slice"; // Import the new client slice
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       ui: uiReducer,
       filters: filtersReducer,
       auth: authReducer,
+      client: clientReducer, // Add the client reducer
     },
     devTools: process.env.NODE_ENV !== "production",
   });
