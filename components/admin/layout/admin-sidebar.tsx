@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -22,82 +22,93 @@ import { setMobileSidebarOpen } from "@/lib/store/slices/ui-slice";
 import { logout } from "@/lib/store/slices/auth-slice";
 import { toast } from "sonner";
 import { authClient } from "@/lib/authclient";
+import { use } from "react";
+import { getCurrentUser } from "@/app/actions/auth";
+import { auth } from "@/lib/auth";
+
+interface UserSchema {
+  id: string;
+  email: string;
+  role: "Admin" | "Client" | "LoanOfficer" | "Investor" | "RecoveryAgent";
+  name: string;
+}
 
 const adminnavigation = [
   {
     name: "Dashboard",
-    href: "/admin",
+    href: "/dss/admin",
     icon: LayoutDashboard,
   },
   {
     name: "Clients",
-    href: "/admin/clients",
+    href: "/dss/admin/clients",
     icon: Users,
   },
   {
     name: "Loan Applications",
-    href: "/admin/loans",
+    href: "/dss/admin/loans",
     icon: FileText,
   },
   {
     name: "Disbursements",
-    href: "/admin/disbursements",
+    href: "/dss/admin/disbursements",
     icon: Banknote,
   },
   {
     name: "Investors",
-    href: "/admin/investors",
+    href: "/dss/admin/investors",
     icon: TrendingUp,
   },
   {
     name: "Recovery & NPL",
-    href: "/admin/recovery",
+    href: "/dss/admin/recovery",
     icon: AlertTriangle,
   },
   {
     name: "Settings",
-    href: "/admin/settings",
+    href: "/dss/admin/settings",
     icon: Settings,
   },
 ];
 
 const clientNavigation = [
   {
-    href: "/client",
+    href: "/dss/client",
     icon: LayoutDashboard,
-    label: "Dashboard",
+    name: "Dashboard",
   },
   {
-    href: "/client/apply",
+    href: "/dss/client/apply",
     icon: FileText,
-    label: "Apply for Loan",
+    name: "Apply for Loan",
   },
   {
-    href: "/client/profile",
+    href: "/dss/client/profile",
     icon: User,
-    label: "Profile",
+    name: "Profile",
   },
   {
-    href: "/client/disbursements",
+    href: "/dss/client/disbursements",
     icon: Banknote,
-    label: "Disbursements",
+    name: "Disbursements",
   },
   {
-    href: "/client/reports",
+    href: "/dss/client/reports",
     icon: BarChart2,
-    label: "Reports",
+    name: "Reports",
   },
   {
-    href: "/client/settings",
+    href: "/dss/client/settings",
     icon: Settings,
-    label: "Settings",
+    name: "Settings",
   },
 ];
 
-export function AdminSidebar() {
+export function AdminSidebar({ user }: { user: UserSchema | null}) {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const mobileOpen = useAppSelector((state) => state.ui.sidebarMobileOpen);
+
 
   return (
     <>
@@ -130,7 +141,7 @@ export function AdminSidebar() {
             <X className="h-6 w-6" />
           </button>
         </div>
-        <SidebarNav pathname={pathname} />
+        <SidebarNav pathname={pathname} role={user?.role} />
       </div>
 
       {/* Desktop sidebar */}
@@ -142,33 +153,37 @@ export function AdminSidebar() {
             </div>
             <span className="text-xl font-bold text-white">DSS Finance</span>
           </div>
-          <SidebarNav pathname={pathname} />
+          <SidebarNav pathname={pathname} role={user?.role} />
         </div>
       </div>
     </>
   );
 }
 
-function SidebarNav({ pathname }: { pathname: string }) {
+function SidebarNav({ pathname, role }: { pathname: string; role: UserSchema["role"] | undefined }) {
   const dispatch = useAppDispatch();
 
-  const { data } = authClient.useSession();
-  const sessionData = data?.session;
+  const router = useRouter();
+
+  const navigation = role === "Admin" ? adminnavigation : clientNavigation;
+
+
+  
 
   // const navigation = sessionData. === "admin" ? adminNavigation : clientNavigation;
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(logout());
     toast.success("Logged out successfully", {
       description: "You have been signed out of your account.",
-    });
-    // In production, redirect to login page
-    window.location.href = "/login";
+    })
+    await authClient.signOut();
+    router.push("/auth/login");
   };
 
   return (
     <nav className="flex flex-1 flex-col px-6 lg:px-0">
       <ul role="list" className="flex flex-1 flex-col gap-y-1">
-        {adminnavigation.map((item) => {
+        {navigation.length > 0 && navigation.map((item) => {
           const isActive = pathname === item.href;
           return (
             <li key={item.name}>

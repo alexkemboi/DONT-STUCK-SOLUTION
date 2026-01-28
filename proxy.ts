@@ -65,17 +65,26 @@ export default async function proxy(req:NextRequest) {
 
     // For all other routes, require authentication
     if (session) {
+        const userRole = await prisma.user.findUnique({
+            where: {
+                id: session.user.id
+            },
+            select: {
+                role: true
+            }
+        });
         if(nextUrl.pathname.startsWith(adminPrefix)){
             // check if user is admin
-            const userRole = await prisma.user.findUnique({
-                where:{
-                    id:session.user.id
-                },
-                select:{
-                    role:true
-                }
-            });
+           
             if( userRole && userRole.role !== "Admin"){
+                return NextResponse.redirect(new URL("/", req.url));
+            }
+        }
+
+        if (nextUrl.pathname.startsWith(clientPrefix)){
+            // check if user is client
+           
+            if( userRole && userRole.role !== "Client"){
                 return NextResponse.redirect(new URL("/", req.url));
             }
         }
