@@ -96,7 +96,11 @@ export async function loginAction(data:LoginInfo){
     });
 
     if(user.user){
-        return redirect("/dss/client");
+        if(user.user.role === UserRole.Client){
+            return redirect("/dss/client");
+        }else if(user.user.role === UserRole.Admin || user.user.role === UserRole.LoanOfficer){
+            return redirect("/dss/admin");
+        }
     }else{
         // throw new Error("Invalid credentials");
         return {
@@ -105,8 +109,6 @@ export async function loginAction(data:LoginInfo){
             status:401
         }
     }
-
-   
 }
 
 
@@ -115,5 +117,18 @@ export async function logoutAction(){
     await auth.api.signOut({
         headers:await headers()
     });
-    redirect("/auth/login");
+    redirect("/login");
+}
+
+
+
+export async function getCurrentUser(){
+    const session = await auth.api.getSession({
+        headers:await headers()
+    });
+
+    if(session && session.user){
+        return session.user;
+    }
+    return null;
 }
