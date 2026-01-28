@@ -20,8 +20,13 @@ import {
   Zap,
 } from "lucide-react";
 import { authClient } from "@/lib/authclient";
+import { router } from "better-auth/api";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
+  const { data: session } = authClient.useSession()
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -53,15 +58,31 @@ export default function HomePage() {
               Admin
             </Link>
 
-            <Button
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              onClick={async()=>{
+            {!session?.user ? (
+              <Button
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                onClick={async () => {
+                  router.push("/login");
+                }}
+              >
+                Sign In
+              </Button>
+
+
+            ) :(
+
+                <Button
+              className = "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              onClick = { async()=> {
                 await authClient.signOut();
               }}
             >
-              Sign Out
-            </Button>
+            Sign Out
+          </Button>
 
+            )}
+
+           
           </nav>
           <div className="flex items-center gap-3">
             <Link href="/apply">

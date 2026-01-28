@@ -58,6 +58,9 @@ export function LoginForm() {
     });
 
 
+    console.log("Logged User:", loggeduser);
+
+
 
     // Demo: Accept any valid format login
     if (loggeduser) {
@@ -221,6 +224,19 @@ export function LoginForm() {
           </Form>
         )}
       </Formik>
+
+      <div>
+        <Button
+          type="submit"
+          className="w-full h-11 border-2 border-emerald-500 hover:bg-emerald-600 bg-white text-emerald-500 hover:text-white transition-all duration-200"
+        >
+          <Link href="/auth/register">
+            <span className="flex items-center justify-center">
+              Create an account
+            </span>
+          </Link>
+        </Button>
+      </div>
 
       {/* Divider */}
       <div className="relative">
