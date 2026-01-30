@@ -77,3 +77,17 @@ export const loanApplicationSchema = Yup.object({
         .min(1, 'Minimum period is 1 month')
         .max(60, 'Maximum period is 60 months'),
 })
+
+export const guarantorSchema = Yup.object({
+    fullName: Yup.string()
+        .required('Full name is required')
+        .min(3, 'Name must be at least 3 characters'),
+    phone: Yup.string()
+        .required('Phone number is required')
+        .matches(/^[0-9+]+$/, 'Invalid phone number'),
+    email: Yup.string()
+        .email('Invalid email format'),
+    idNumber: Yup.string(),
+    relationship: Yup.string()
+        .required('Relationship is required'),
+})

@@ -1,19 +1,29 @@
-import { loans, formatCurrency } from "@/lib/data/dummy-data";
+import { getAllLoansAction } from "@/app/actions/loan";
 import { LoansTable } from "@/components/admin/loans/loans-table";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, Clock, CheckCircle, AlertTriangle } from "lucide-react";
 
-export default function LoansPage() {
+const formatCurrency = (amount: number) =>
+  new Intl.NumberFormat("en-KE", {
+    style: "currency",
+    currency: "KES",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+
+export default async function LoansPage() {
+  const result = await getAllLoansAction();
+  const loans = result.data || [];
+
   const pendingLoans = loans.filter((l) => l.status === "Pending").length;
   const approvedLoans = loans.filter(
     (l) => l.status === "Approved" || l.status === "Disbursed"
   ).length;
   const nplLoans = loans.filter((l) => l.status === "NPL").length;
-  const totalRequested = loans.reduce((sum, l) => sum + l.amount, 0);
+  const totalRequested = loans.reduce((sum, l) => sum + l.amountRequested, 0);
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Loan Applications</h1>
         <p className="text-slate-500">
@@ -21,7 +31,6 @@ export default function LoansPage() {
         </p>
       </div>
 
-      {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="border-slate-200">
           <CardContent className="flex items-center gap-4 p-4">
@@ -72,35 +81,38 @@ export default function LoansPage() {
         </Card>
       </div>
 
-      {/* Summary Card */}
-      <Card className="border-slate-200 bg-gradient-to-r from-slate-800 to-slate-900">
-        <CardContent className="p-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-slate-400">Total Amount Requested</p>
-              <p className="text-2xl font-bold text-white">
-                {formatCurrency(totalRequested)}
-              </p>
+      {loans.length > 0 && (
+        <Card className="border-slate-200 bg-linear-to-r from-slate-800 to-slate-900">
+          <CardContent className="p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm text-slate-400">Total Amount Requested</p>
+                <p className="text-2xl font-bold text-white">
+                  {formatCurrency(totalRequested)}
+                </p>
+              </div>
+              <div className="h-px w-full bg-slate-700 sm:h-12 sm:w-px" />
+              <div>
+                <p className="text-sm text-slate-400">Average Loan Size</p>
+                <p className="text-2xl font-bold text-white">
+                  {formatCurrency(totalRequested / loans.length)}
+                </p>
+              </div>
+              <div className="h-px w-full bg-slate-700 sm:h-12 sm:w-px" />
+              <div>
+                <p className="text-sm text-slate-400">Approval Rate</p>
+                <p className="text-2xl font-bold text-emerald-400">
+                  {loans.length > 0
+                    ? Math.round((approvedLoans / loans.length) * 100)
+                    : 0}
+                  %
+                </p>
+              </div>
             </div>
-            <div className="h-px w-full bg-slate-700 sm:h-12 sm:w-px" />
-            <div>
-              <p className="text-sm text-slate-400">Average Loan Size</p>
-              <p className="text-2xl font-bold text-white">
-                {formatCurrency(totalRequested / loans.length)}
-              </p>
-            </div>
-            <div className="h-px w-full bg-slate-700 sm:h-12 sm:w-px" />
-            <div>
-              <p className="text-sm text-slate-400">Approval Rate</p>
-              <p className="text-2xl font-bold text-emerald-400">
-                {Math.round((approvedLoans / loans.length) * 100)}%
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
 
-      {/* Loans Table */}
       <LoansTable loans={loans} />
     </div>
   );
