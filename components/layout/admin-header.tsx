@@ -14,8 +14,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { use } from "react";
 
-export function AdminHeader() {
+
+interface UserSchema {
+  id: string;
+  email: string;
+  role: "Admin" | "Client" | "LoanOfficer" | "Investor" | "RecoveryAgent";
+  name: string;
+}
+
+export function AdminHeader({ user }: { user: UserSchema | null }) {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
@@ -92,11 +101,11 @@ export function AdminHeader() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center gap-2 px-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-sm font-medium text-white">
-                  JD
+                  {user?.name?.charAt(0).toUpperCase() || "J"}{user?.name?.charAt(0).toUpperCase() || "D"}
                 </div>
                 <div className="hidden md:flex md:flex-col md:items-start md:text-left">
-                  <span className="text-sm font-medium text-slate-900">John Doe</span>
-                  <span className="text-xs text-slate-500">Loan Officer</span>
+                  <span className="text-sm font-medium text-slate-900">{user?.name?.split(" ")[0] || "John"} {user?.name?.split(" ")[1] || "Doe"}</span>
+                  <span className="text-xs text-slate-500">{user?.role}</span>
                 </div>
                 <ChevronDown className="hidden h-4 w-4 text-slate-400 md:block" />
               </Button>
@@ -104,11 +113,11 @@ export function AdminHeader() {
             <DropdownMenuContent align="end" className="w-56">
               <div className="flex items-center gap-3 px-2 py-2">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500 text-sm font-medium text-white">
-                  JD
+                  {user?.name?.charAt(0).toUpperCase() || "J"}{user?.name?.charAt(0).toUpperCase() || "D"}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-900">John Doe</p>
-                  <p className="text-xs text-slate-500">john@dssfinance.com</p>
+                  <p className="text-sm font-medium text-slate-900">{user?.name?.split(" ")[0] || "John"} {user?.name?.split(" ")[1] || "Doe"}</p>
+                  <p className="text-xs text-slate-500">{user?.email || "john@dssfinance.com"}  </p>
                 </div>
               </div>
               <DropdownMenuSeparator />

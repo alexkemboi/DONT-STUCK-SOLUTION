@@ -16,7 +16,7 @@ export default async function AdminLayout({
       <div className="min-h-screen bg-slate-50">
         <AdminSidebar user={user} />
         <div className="lg:pl-72">
-          <AdminHeader />
+          <AdminHeader user={user} />
           <main className="py-6 px-4 sm:px-6 lg:px-8">{children}</main>
         </div>
         <Toaster position="top-right" richColors closeButton />
