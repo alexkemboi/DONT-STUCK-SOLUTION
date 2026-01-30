@@ -119,20 +119,18 @@ export async function loginAction(data:LoginInfo){
             body: {
                 email,
                 password,
-            }
+            },
         });
 
         console.log("login user", user);
 
-        if (user.user) {
-            if (user.user.role === UserRole.Client) {
-                return redirect("/dss/client");
-            } else if (user.user.role === UserRole.Admin || user.user.role === UserRole.LoanOfficer) {
-                return redirect("/dss/admin");
-            }
-        } else {
-            return redirect("/");
+        return {
+            user: user.user,
+            error: null,
+            status: 200
         }
+
+       
     } catch (error) {
         if (error instanceof APIError) {
             console.log(error.message, error.status)

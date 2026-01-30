@@ -1,6 +1,6 @@
 import { StoreProvider } from "@/lib/store/provider";
-import { AdminSidebar } from "@/components/admin/layout/admin-sidebar";
-import { AdminHeader } from "@/components/admin/layout/admin-header";
+import { AdminSidebar } from "@/components/layout/admin-sidebar";
+import { AdminHeader } from "@/components/layout/admin-header";
 import { Toaster } from "sonner";
 import { getCurrentUser } from "../actions/auth";
 
@@ -10,6 +10,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const user = await getCurrentUser();
+  console.log("AdminLayout User:", user);
   return (
     <StoreProvider>
       <div className="min-h-screen bg-slate-50">

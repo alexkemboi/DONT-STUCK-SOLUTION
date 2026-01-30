@@ -16,8 +16,8 @@ const apiAuthPrefix = "/api/auth";
 
 const DEFAULT_LOGIN_REDIRECT = "/login";
 
-const adminPrefix = "/dss/admin";
-const clientPrefix = "/dss/client";
+const adminPrefix = "/admin";
+const clientPrefix = "/client";
 
 
 

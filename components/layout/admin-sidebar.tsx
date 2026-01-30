@@ -22,9 +22,6 @@ import { setMobileSidebarOpen } from "@/lib/store/slices/ui-slice";
 import { logout } from "@/lib/store/slices/auth-slice";
 import { toast } from "sonner";
 import { authClient } from "@/lib/authclient";
-import { use } from "react";
-import { getCurrentUser } from "@/app/actions/auth";
-import { auth } from "@/lib/auth";
 
 interface UserSchema {
   id: string;
@@ -68,6 +65,11 @@ const adminnavigation = [
     name: "Settings",
     href: "/dss/admin/settings",
     icon: Settings,
+  },
+  {
+    name: "Profile",
+    href: "/dss/profile",
+    icon: User,
   },
 ];
 

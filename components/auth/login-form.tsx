@@ -15,9 +15,12 @@ import {
   loginSuccess,
   loginFailure,
   setAcceptedTerms,
+  setLoading,
 } from "@/lib/store/slices/auth-slice";
 import Link from "next/link";
 import { loginAction } from "@/app/actions/auth";
+import { useRouter } from "next/navigation";
+import { UserRole } from "@/lib/generated/prisma/edge";
 
 const loginSchema = Yup.object({
   email: Yup.string()
@@ -42,6 +45,8 @@ export function LoginForm() {
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector((state) => state.auth);
 
+  const router = useRouter()
+
   const initialValues: LoginFormValues = {
     email: "",
     password: "",
@@ -58,16 +63,32 @@ export function LoginForm() {
     });
 
 
-    console.log("Logged User:", loggeduser);
+    
 
 
 
     // Demo: Accept any valid format login
-    if (loggeduser) {
+    if (loggeduser?.user == null) {
       dispatch(loginFailure("Invalid credentials"));
       toast.error("Login failed", {
         description: "Please check your credentials and try again.",
       });
+    }else{
+      dispatch(setLoading(false));
+      toast.success("Login successful", {
+        description: "Welcome back to your dashboard!",
+      });
+
+      if (loggeduser.user) {
+        if (loggeduser.user.role === UserRole.Client) {
+          router.push("/dss/client");
+        } else if (loggeduser.user.role === UserRole.Admin || loggeduser.user.role === UserRole.LoanOfficer) {
+          router.push("/dss/admin");
+        }
+      } else {
+        router.push("/");
+      }
+    
     }
   };
 
