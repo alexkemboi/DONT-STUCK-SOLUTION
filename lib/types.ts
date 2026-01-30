@@ -248,3 +248,216 @@ export interface InvestorStats {
   averageReturn: number;
   portfolioValue: number;
 }
+
+
+
+// Enums
+export type Title = 'Mr' | 'Mrs' | 'Ms' | 'Miss'
+export type MaritalStatus = 'Single' | 'Married' | 'Divorced' | 'Widowed'
+export type ClientStatus = 'Active' | 'Inactive' 
+export type EmploymentType = 'FullTime' | 'PartTime' | 'Contract' 
+export type LoanApplicationStatus = 'Pending' | 'UnderReview' | 'Approved' | 'Rejected' | 'Disbursed'
+export type QualificationType = 'New' | 'Repeat' | 'TopUp'
+
+// Client Profile
+export interface Client {
+  id?: string
+  userId?: string
+  title: Title
+  surname: string
+  otherNames: string
+  dateOfBirth: string
+  maritalStatus: MaritalStatus
+  nationality: string
+  dependents: number
+  idPassportNo: string
+  kraPin?: string
+  phoneWork?: string
+  phoneMobile: string
+  phoneAlternative?: string
+  emailPersonal?: string
+  emailOfficial?: string
+  status?: ClientStatus
+  createdAt?: string
+  updatedAt?: string
+}
+
+// Client Address
+export interface ClientAddress {
+  id?: string
+  clientId?: string
+  postalAddress: string | null
+  postalCode: string | null
+  townCity: string | null
+  residentialAddress: string | null
+  location: string | null
+  estate: string | null
+  building: string | null
+  houseNumber: string  | null
+  landmark: string | null
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+// Employment Details
+export interface EmploymentDetail {
+  id?: string
+  clientId?: string
+  employerName: string
+  jobTitle: string
+  department?: string
+  dateJoined?: string
+  periodWorked?: string
+  employmentType: EmploymentType
+  contractExpiry?: string
+  onNotice: boolean
+  netSalary: number
+  branchLocation?: string
+  roadStreet?: string
+  building?: string
+  floorOffice?: string
+  telephone?: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+// Referee/Next of Kin
+export interface Referee {
+  id?: string
+  clientId?: string
+  surname: string
+  otherNames: string
+  relationship: string
+  idPassportNo: string | null
+  employerName: string | null
+  locationStation: string | null
+  phoneWork: string | null
+  phoneMobile: string
+  isRelative: boolean
+  createdAt?: string
+}
+
+// Bank Details
+export interface BankDetail {
+  id?: string
+  clientId?: string
+  bankName: string
+  branch: string
+  accountName: string
+  accountNumber: string
+  proofDocument?: string
+  proofDocumentUrl?: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+// Loan Application
+export interface LoanApplication {
+  id: string
+  clientId: string
+  purpose: string
+  amountRequested: number
+  approvedAmount?: number
+  qualificationType?: QualificationType
+  interestRate: number
+  startDate?: string
+  repaymentPeriod: number
+  status: LoanStatus
+  appliedAt: string
+  reviewedAt?: string
+  reviewedById?: string
+  approvedAt?: string
+  approvedById?: string
+  rejectionReason?: string
+  createdAt: string
+  updatedAt: string
+}
+
+// Full Profile with Relations
+export interface FullProfile {
+  client: Client | null
+  address: ClientAddress | null
+  employment: EmploymentDetail | null
+  referees: Referee[]
+  bankDetails: BankDetail | null
+}
+
+// Form Values
+export interface PersonalInfoFormValues {
+  id?: string
+  userId?: string
+  title: Title
+  surname: string
+  otherNames: string
+  dateOfBirth: string
+  maritalStatus: MaritalStatus
+  nationality: string
+  dependents: number
+  idPassportNo: string
+  kraPin: string
+  phoneWork: string
+  phoneMobile: string
+  phoneAlternative: string
+  emailPersonal: string
+  emailOfficial: string
+}
+
+export interface AddressFormValues {
+  id?: string
+  clientId?: string
+  postalAddress: string
+  postalCode: string
+  townCity: string
+  residentialAddress: string
+  location: string
+  estate: string
+  building: string
+  houseNumber: string
+  landmark: string
+}
+
+export interface EmploymentFormValues {
+  id?: string
+  clientId?: string
+  employerName: string
+  jobTitle: string
+  department: string
+  dateJoined: string
+  periodWorked: string
+  employmentType: EmploymentType
+  contractExpiry: string
+  onNotice: boolean
+  netSalary: number
+  branchLocation: string
+  roadStreet: string
+  building: string
+  floorOffice: string
+  telephone: string
+}
+
+export interface RefereeFormValues {
+  id?: string
+  surname: string
+  otherNames: string
+  relationship: string
+  idPassportNo: string
+  employerName: string
+  locationStation: string
+  phoneWork: string
+  phoneMobile: string
+  isRelative: boolean
+}
+
+export interface BankDetailFormValues {
+  bankName: string
+  branch: string
+  accountName: string
+  accountNumber: string
+  proofDocumentUrl: string
+}
+
+export interface LoanApplicationFormValues {
+  purpose: string
+  amountRequested: number
+  repaymentPeriod: number
+}

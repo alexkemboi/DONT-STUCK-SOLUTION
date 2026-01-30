@@ -1,9 +1,9 @@
 "use server"
 import { v2 as cloudinary, UploadApiResponse, UploadApiErrorResponse } from "cloudinary";
 
-// ============================================================================
-// TYPES
-// ============================================================================
+// // ============================================================================
+// // TYPES
+// // ============================================================================
 
 export interface UploadResult {
   success: boolean;
@@ -28,9 +28,9 @@ export interface FileInput {
   size: number;
 }
 
-// ============================================================================
-// CONFIGURATION
-// ============================================================================
+// // ============================================================================
+// // CONFIGURATION
+// // ============================================================================
 
 let isConfigured = false;
 
@@ -56,185 +56,167 @@ function ensureConfigured(): void {
   isConfigured = true;
 }
 
-// ============================================================================
-// SERVICE CLASS
-// ============================================================================
+// // ============================================================================
+// // SERVICE CLASS
+// // ============================================================================
 
-export class StorageService {
-  private readonly folder: string;
 
-  constructor(folder: string = "dss-loan-uploads") {
-    ensureConfigured();
-    this.folder = folder;
-  }
+
+
+ensureConfigured();
+let folder = "dss-loan-uploads"
+
 
   /**
    * Upload a file to Cloudinary
    */
-  async uploadFile(
+export async function uploadFile(
     file: FileInput,
-    subfolder?: string
-  ): Promise<UploadResult> {
-    const targetFolder = subfolder ? `${this.folder}/${subfolder}` : this.folder;
+    subfolder?: string,
+    folder:"dss-loan-uploads/kyc" | "dss-loan-uploads/loan-documents" | "dss-loan-uploads/profiles" = "dss-loan-uploads/kyc"
+    ): Promise<UploadResult> {
+    const targetFolder = subfolder ? `${folder}/${subfolder}` : folder;
     const publicId = `${Date.now()}-${file.originalname.split(".")[0]}`;
 
     return new Promise((resolve) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
+        const uploadStream = cloudinary.uploader.upload_stream(
         {
-          folder: targetFolder,
-          resource_type: "auto",
-          public_id: publicId,
+            folder: targetFolder,
+            resource_type: "auto",
+            public_id: publicId,
         },
         (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
-          if (error) {
+            if (error) {
             console.error("Cloudinary upload error:", error);
             resolve({
-              success: false,
-              error: error.message || "Upload failed",
+                success: false,
+                error: error.message || "Upload failed",
             });
             return;
-          }
+            }
 
-          if (!result) {
+            if (!result) {
             resolve({
-              success: false,
-              error: "No result returned from Cloudinary",
+                success: false,
+                error: "No result returned from Cloudinary",
             });
             return;
-          }
+            }
 
-          resolve({
+            resolve({
             success: true,
             data: {
-              publicId: result.public_id,
-              uniqueId: result.asset_id,
-              url: result.url,
-              secureUrl: result.secure_url,
-              fileName: file.originalname,
-              format: result.format,
-              size: result.bytes,
-              width: result.width,
-              height: result.height,
+                publicId: result.public_id,
+                uniqueId: result.asset_id,
+                url: result.url,
+                secureUrl: result.secure_url,
+                fileName: file.originalname,
+                format: result.format,
+                size: result.bytes,
+                width: result.width,
+                height: result.height,
             },
-          });
+            });
         }
-      );
+        );
 
-      uploadStream.end(file.buffer);
+        uploadStream.end(file.buffer);
     });
-  }
+}
 
-  /**
-   * Upload multiple files to Cloudinary
-   */
-  async uploadMultipleFiles(
+/**
+ * Upload multiple files to Cloudinary
+ */
+async function uploadMultipleFiles(
     files: FileInput[],
     subfolder?: string
-  ): Promise<UploadResult[]> {
-    const uploadPromises = files.map((file) => this.uploadFile(file, subfolder));
+    ): Promise<UploadResult[]> {
+    const uploadPromises = files.map((file) => uploadFile(file, subfolder));
     return Promise.all(uploadPromises);
-  }
+}
 
-  /**
-   * Delete a file from Cloudinary by public_id
-   */
-  async deleteFile(publicId: string): Promise<{ success: boolean; error?: string }> {
+/**
+ * Delete a file from Cloudinary by public_id
+ */
+export async function deleteFile(publicId: string): Promise<{ success: boolean; error?: string }> {
     return new Promise((resolve) => {
-      cloudinary.uploader.destroy(publicId, (error, result) => {
+        cloudinary.uploader.destroy(publicId, (error, result) => {
         if (error) {
-          console.error("Cloudinary delete error:", error);
-          resolve({
+            console.error("Cloudinary delete error:", error);
+            resolve({
             success: false,
             error: error.message || "Delete failed",
-          });
-          return;
+            });
+            return;
         }
 
         resolve({
-          success: result?.result === "ok",
-          error: result?.result !== "ok" ? "File not found or already deleted" : undefined,
+            success: result?.result === "ok",
+            error: result?.result !== "ok" ? "File not found or already deleted" : undefined,
         });
-      });
+        });
     });
-  }
+}
 
-  /**
-   * Delete multiple files from Cloudinary
-   */
-  async deleteMultipleFiles(
-    publicIds: string[]
-  ): Promise<{ success: boolean; deleted: string[]; failed: string[] }> {
+/**
+ * Delete multiple files from Cloudinary
+ */
+async function deleteMultipleFiles(
+publicIds: string[]
+): Promise<{ success: boolean; deleted: string[]; failed: string[] }> {
     const deleted: string[] = [];
     const failed: string[] = [];
 
     for (const publicId of publicIds) {
-      const result = await this.deleteFile(publicId);
-      if (result.success) {
+        const result = await deleteFile(publicId);
+        if (result.success) {
         deleted.push(publicId);
-      } else {
+        } else {
         failed.push(publicId);
-      }
     }
-
-    return {
-      success: failed.length === 0,
-      deleted,
-      failed,
-    };
-  }
-
-  /**
-   * Get a signed URL for a private resource
-   */
-  getSignedUrl(publicId: string, expiresInSeconds: number = 3600): string {
-    ensureConfigured();
-    return cloudinary.url(publicId, {
-      sign_url: true,
-      type: "authenticated",
-      expires_at: Math.floor(Date.now() / 1000) + expiresInSeconds,
-    });
-  }
-
-  /**
-   * Generate a transformation URL
-   */
-  getTransformedUrl(
-    publicId: string,
-    options: {
-      width?: number;
-      height?: number;
-      crop?: string;
-      quality?: number | string;
-      format?: string;
-    }
-  ): string {
-    ensureConfigured();
-    return cloudinary.url(publicId, {
-      transformation: [
-        {
-          width: options.width,
-          height: options.height,
-          crop: options.crop || "fill",
-          quality: options.quality || "auto",
-          fetch_format: options.format || "auto",
-        },
-      ],
-    });
-  }
+}
+    return { success: failed.length === 0, deleted, failed };
 }
 
-// ============================================================================
-// SINGLETON INSTANCES FOR DIFFERENT UPLOAD CONTEXTS
-// ============================================================================
+/**
+ * Get a signed URL for a private resource
+ */
+export async function getSignedUrl(publicId: string, expiresInSeconds: number = 3600): Promise<string> {
+    ensureConfigured();
+    return cloudinary.url(publicId, {
+        sign_url: true,
+        type: "authenticated",
+        expires_at: Math.floor(Date.now() / 1000) + expiresInSeconds,
+    }) as string;
+}
 
-export const storageService = new StorageService();
-export const kycStorage = new StorageService("dss-loan-uploads/kyc");
-export const loanDocStorage = new StorageService("dss-loan-uploads/loan-documents");
-export const profileStorage = new StorageService("dss-loan-uploads/profiles");
+/**
+ * Generate a transformation URL
+ */
+export async function getTransformedUrl(
+    publicId: string,
+    options: {
+        width?: number;
+        height?: number;
+        crop?: string;
+        quality?: number | string;
+        format?: string;
+    }
+): Promise<string> {
+    ensureConfigured();
+    return cloudinary.url(publicId, {
+        transformation: [
+        {
+            width: options.width,
+            height: options.height,
+            crop: options.crop || "fill",
+            quality: options.quality || "auto",
+            fetch_format: options.format || "auto",
+        },
+        ],
+    });
+}
 
-// ============================================================================
-// HELPER FUNCTIONS FOR SERVER ACTIONS / API ROUTES
-// ============================================================================
 
 /**
  * Convert a File (from FormData) to FileInput format
@@ -267,7 +249,7 @@ export async function uploadFromFormData(
   }
 
   const fileInput = await fileToInput(file);
-  return storageService.uploadFile(fileInput, subfolder);
+  return uploadFile(fileInput, subfolder);
 }
 
 /**
@@ -288,5 +270,5 @@ export async function uploadMultipleFromFormData(
     files.filter((f) => f instanceof File).map(fileToInput)
   );
 
-  return storageService.uploadMultipleFiles(fileInputs, subfolder);
+  return uploadMultipleFiles(fileInputs, subfolder);
 }

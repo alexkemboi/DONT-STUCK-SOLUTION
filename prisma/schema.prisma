@@ -150,6 +150,7 @@ model BankDetail {
   accountName   String   @map("account_name")
   accountNumber String   @map("account_number")
   proofDocument String?  @map("proof_document")
+  proofDocumentUrl String? @map("proof_document_url")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
   client        Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)

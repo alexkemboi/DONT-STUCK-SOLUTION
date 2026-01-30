@@ -11065,6 +11065,7 @@ export namespace Prisma {
     accountName: string | null
     accountNumber: string | null
     proofDocument: string | null
+    proofDocumentUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11077,6 +11078,7 @@ export namespace Prisma {
     accountName: string | null
     accountNumber: string | null
     proofDocument: string | null
+    proofDocumentUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11089,6 +11091,7 @@ export namespace Prisma {
     accountName: number
     accountNumber: number
     proofDocument: number
+    proofDocumentUrl: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -11103,6 +11106,7 @@ export namespace Prisma {
     accountName?: true
     accountNumber?: true
     proofDocument?: true
+    proofDocumentUrl?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11115,6 +11119,7 @@ export namespace Prisma {
     accountName?: true
     accountNumber?: true
     proofDocument?: true
+    proofDocumentUrl?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11127,6 +11132,7 @@ export namespace Prisma {
     accountName?: true
     accountNumber?: true
     proofDocument?: true
+    proofDocumentUrl?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -11212,6 +11218,7 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument: string | null
+    proofDocumentUrl: string | null
     createdAt: Date
     updatedAt: Date
     _count: BankDetailCountAggregateOutputType | null
@@ -11241,6 +11248,7 @@ export namespace Prisma {
     accountName?: boolean
     accountNumber?: boolean
     proofDocument?: boolean
+    proofDocumentUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -11254,6 +11262,7 @@ export namespace Prisma {
     accountName?: boolean
     accountNumber?: boolean
     proofDocument?: boolean
+    proofDocumentUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -11267,6 +11276,7 @@ export namespace Prisma {
     accountName?: boolean
     accountNumber?: boolean
     proofDocument?: boolean
+    proofDocumentUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -11280,11 +11290,12 @@ export namespace Prisma {
     accountName?: boolean
     accountNumber?: boolean
     proofDocument?: boolean
+    proofDocumentUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BankDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "bankName" | "branch" | "accountName" | "accountNumber" | "proofDocument" | "createdAt" | "updatedAt", ExtArgs["result"]["bankDetail"]>
+  export type BankDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "bankName" | "branch" | "accountName" | "accountNumber" | "proofDocument" | "proofDocumentUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["bankDetail"]>
   export type BankDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }
@@ -11308,6 +11319,7 @@ export namespace Prisma {
       accountName: string
       accountNumber: string
       proofDocument: string | null
+      proofDocumentUrl: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["bankDetail"]>
@@ -11741,6 +11753,7 @@ export namespace Prisma {
     readonly accountName: FieldRef<"BankDetail", 'String'>
     readonly accountNumber: FieldRef<"BankDetail", 'String'>
     readonly proofDocument: FieldRef<"BankDetail", 'String'>
+    readonly proofDocumentUrl: FieldRef<"BankDetail", 'String'>
     readonly createdAt: FieldRef<"BankDetail", 'DateTime'>
     readonly updatedAt: FieldRef<"BankDetail", 'DateTime'>
   }
@@ -45365,6 +45378,7 @@ export namespace Prisma {
     accountName: 'accountName',
     accountNumber: 'accountNumber',
     proofDocument: 'proofDocument',
+    proofDocumentUrl: 'proofDocumentUrl',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -46815,6 +46829,7 @@ export namespace Prisma {
     accountName?: StringFilter<"BankDetail"> | string
     accountNumber?: StringFilter<"BankDetail"> | string
     proofDocument?: StringNullableFilter<"BankDetail"> | string | null
+    proofDocumentUrl?: StringNullableFilter<"BankDetail"> | string | null
     createdAt?: DateTimeFilter<"BankDetail"> | Date | string
     updatedAt?: DateTimeFilter<"BankDetail"> | Date | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
@@ -46828,6 +46843,7 @@ export namespace Prisma {
     accountName?: SortOrder
     accountNumber?: SortOrder
     proofDocument?: SortOrderInput | SortOrder
+    proofDocumentUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     client?: ClientOrderByWithRelationInput
@@ -46844,6 +46860,7 @@ export namespace Prisma {
     accountName?: StringFilter<"BankDetail"> | string
     accountNumber?: StringFilter<"BankDetail"> | string
     proofDocument?: StringNullableFilter<"BankDetail"> | string | null
+    proofDocumentUrl?: StringNullableFilter<"BankDetail"> | string | null
     createdAt?: DateTimeFilter<"BankDetail"> | Date | string
     updatedAt?: DateTimeFilter<"BankDetail"> | Date | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
@@ -46857,6 +46874,7 @@ export namespace Prisma {
     accountName?: SortOrder
     accountNumber?: SortOrder
     proofDocument?: SortOrderInput | SortOrder
+    proofDocumentUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: BankDetailCountOrderByAggregateInput
@@ -46875,6 +46893,7 @@ export namespace Prisma {
     accountName?: StringWithAggregatesFilter<"BankDetail"> | string
     accountNumber?: StringWithAggregatesFilter<"BankDetail"> | string
     proofDocument?: StringNullableWithAggregatesFilter<"BankDetail"> | string | null
+    proofDocumentUrl?: StringNullableWithAggregatesFilter<"BankDetail"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BankDetail"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"BankDetail"> | Date | string
   }
@@ -49787,6 +49806,7 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
+    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     client: ClientCreateNestedOneWithoutBankDetailsInput
@@ -49800,6 +49820,7 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
+    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -49811,6 +49832,7 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutBankDetailsNestedInput
@@ -49824,6 +49846,7 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -49836,6 +49859,7 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
+    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -49847,6 +49871,7 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -49859,6 +49884,7 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52993,6 +53019,7 @@ export namespace Prisma {
     accountName?: SortOrder
     accountNumber?: SortOrder
     proofDocument?: SortOrder
+    proofDocumentUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -53005,6 +53032,7 @@ export namespace Prisma {
     accountName?: SortOrder
     accountNumber?: SortOrder
     proofDocument?: SortOrder
+    proofDocumentUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -53017,6 +53045,7 @@ export namespace Prisma {
     accountName?: SortOrder
     accountNumber?: SortOrder
     proofDocument?: SortOrder
+    proofDocumentUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -58157,6 +58186,7 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
+    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -58168,6 +58198,7 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
+    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -58534,6 +58565,7 @@ export namespace Prisma {
     accountName?: StringFilter<"BankDetail"> | string
     accountNumber?: StringFilter<"BankDetail"> | string
     proofDocument?: StringNullableFilter<"BankDetail"> | string | null
+    proofDocumentUrl?: StringNullableFilter<"BankDetail"> | string | null
     createdAt?: DateTimeFilter<"BankDetail"> | Date | string
     updatedAt?: DateTimeFilter<"BankDetail"> | Date | string
   }
@@ -64013,6 +64045,7 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
+    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -64120,6 +64153,7 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -64131,6 +64165,7 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -64142,6 +64177,7 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

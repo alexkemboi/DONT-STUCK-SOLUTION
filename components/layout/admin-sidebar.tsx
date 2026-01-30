@@ -22,9 +22,6 @@ import { setMobileSidebarOpen } from "@/lib/store/slices/ui-slice";
 import { logout } from "@/lib/store/slices/auth-slice";
 import { toast } from "sonner";
 import { authClient } from "@/lib/authclient";
-import { use } from "react";
-import { getCurrentUser } from "@/app/actions/auth";
-import { auth } from "@/lib/auth";
 
 interface UserSchema {
   id: string;
@@ -69,6 +66,11 @@ const adminnavigation = [
     href: "/dss/admin/settings",
     icon: Settings,
   },
+  {
+    name: "Profile",
+    href: "/dss/profile",
+    icon: User,
+  },
 ];
 
 const clientNavigation = [
@@ -110,6 +112,9 @@ export function AdminSidebar({ user }: { user: UserSchema | null}) {
   const mobileOpen = useAppSelector((state) => state.ui.sidebarMobileOpen);
 
 
+  console.log("User in Sidebar:", user);
+
+
   return (
     <>
       {/* Mobile sidebar backdrop */}
@@ -141,7 +146,7 @@ export function AdminSidebar({ user }: { user: UserSchema | null}) {
             <X className="h-6 w-6" />
           </button>
         </div>
-        <SidebarNav pathname={pathname} role={user?.role} />
+        <SidebarNav pathname={pathname} role={user?.role} user={user} />
       </div>
 
       {/* Desktop sidebar */}
@@ -153,14 +158,14 @@ export function AdminSidebar({ user }: { user: UserSchema | null}) {
             </div>
             <span className="text-xl font-bold text-white">DSS Finance</span>
           </div>
-          <SidebarNav pathname={pathname} role={user?.role} />
+          <SidebarNav pathname={pathname} role={user?.role} user={user} />
         </div>
       </div>
     </>
   );
 }
 
-function SidebarNav({ pathname, role }: { pathname: string; role: UserSchema["role"] | undefined }) {
+function SidebarNav({ pathname, role, user }: { pathname: string; role: UserSchema["role"] | undefined; user: UserSchema | null }) {
   const dispatch = useAppDispatch();
 
   const router = useRouter();
@@ -215,11 +220,11 @@ function SidebarNav({ pathname, role }: { pathname: string; role: UserSchema["ro
       <div className="mt-auto pb-4 space-y-2">
         <div className="flex items-center gap-3 rounded-lg bg-slate-800 px-3 py-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500 text-sm font-medium text-white">
-            JD
+            {user?.name?.charAt(0).toUpperCase() || "J"}{user?.name?.charAt(0).toUpperCase() || "D"}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">John Doe</p>
-            <p className="text-xs text-slate-400 truncate">Loan Officer</p>
+            <p className="text-sm font-medium text-white truncate">{user?.name?.split(" ")[0] || "John"} {user?.name?.split(" ")[1] || "Doe"}</p>
+            <p className="text-xs text-slate-400 truncate">{user?.role}</p>
           </div>
         </div>
         <button
