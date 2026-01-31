@@ -12,24 +12,28 @@ export default async function page() {
   );
 
 
+  
+
+
   if (session?.user) {
+
 
     const role = session.user.role;
 
     if (role === "Admin") {
-      redirect("/dss/admin");
+      return redirect("/dss/admin");
     } else if (role === "Client") {
-      redirect("/dss/client");
+      return redirect("/dss/client");
     } else if (role === "LoanOfficer") {
-      redirect("/dss/loan-officer");
+      return redirect("/dss/loan-officer");
     } else if (role === "Investor") {
-      redirect("/dss/investor");
+      return redirect("/dss/investor");
     } else if (role === "RecoveryAgent") {
-      redirect("/dss/recovery-agent");
+      return redirect("/dss/recovery-agent");
     }
 
   }else{
-      redirect("/login");
+      return redirect("/login");
   }
 
 
