@@ -1,9 +1,9 @@
 import {
   nplLoans,
   recoveryAgents,
-  formatCurrency,
   dashboardStats,
 } from "@/lib/data/dummy-data";
+import { formatCurrency } from "@/lib/utils";
 import { NPLTable } from "@/components/admin/recovery/npl-table";
 import { AgentsList } from "@/components/admin/recovery/agents-list";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

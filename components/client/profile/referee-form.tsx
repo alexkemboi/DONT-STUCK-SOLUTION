@@ -9,8 +9,6 @@ import { FormCheckbox } from '@/components/forms/form-checkbox'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { refereeSchema } from '@/lib/validations'
-import { useAppDispatch, useAppSelector } from '@/lib/store/hooks'
-import { addReferee, updateReferee, removeReferee } from '@/lib/store/slices/profile-slice'
 import type { RefereeFormValues, Referee } from '@/lib/types'
 import { createRefereeAction, deleteRefereeAction, updateRefereeAction } from '@/app/actions/client'
 import { toast } from 'sonner'
@@ -27,64 +25,45 @@ const emptyReferee: RefereeFormValues = {
     isRelative: false,
 }
 
-export function RefereeForm() {
-    const dispatch = useAppDispatch()
-    const { client, referees, isEditing } = useAppSelector((state) => state.profile)
+interface RefereeFormProps {
+    referees?: Referee[];
+    isReadOnly?: boolean;
+    onSuccess?: () => void;
+}
+
+export function RefereeForm({ referees = [], isReadOnly = false, onSuccess }: RefereeFormProps) {
     const [showAddForm, setShowAddForm] = useState(false)
     const [editingId, setEditingId] = useState<string | null>(null)
 
     const handleAddSubmit = async (values: RefereeFormValues) => {
-        //
         const response = await createRefereeAction(values)
-
-
         if(!response.success){
-            // Handle error (you can show a notification or message)
             toast.error(`Failed to add referee: ${response.error}`)
             return
         }
-        const newReferee: Referee = {
-            id:  response?.data?.id || `ref_${Date.now()}`,
-            clientId: response?.data?.clientId || '',
-            ...values,
-            createdAt: response?.data?.createdAt.toISOString() || new Date().toISOString(),
-        }
-        dispatch(addReferee(newReferee))
         setShowAddForm(false)
+        onSuccess?.();
     }
 
-    const handleEditSubmit = async(values: RefereeFormValues, refereeId: string, createdAt: string) => {
+    const handleEditSubmit = async(values: RefereeFormValues, refereeId: string) => {
         const response = await updateRefereeAction(refereeId, values)
         if(!response.success){
-            // Handle error (you can show a notification or message)
             toast.error(`Failed to update referee: ${response.error}`)
             return
         }
-
-        const updatedReferee: Referee = {
-            id: refereeId,
-            clientId: client?.id || '',
-            ...values,
-            createdAt,
-        }
-        dispatch(updateReferee(updatedReferee))
         setEditingId(null)
         toast.success('Referee updated successfully')
+        onSuccess?.();
     }
 
     const handleDelete = async(id: string) => {
-       
-
         const response = await deleteRefereeAction(id)
-
         if(!response.success){
-            // Handle error (you can show a notification or message)
             toast.error(`Failed to delete referee: ${response.error}`)
             return
         }
-        dispatch(removeReferee(id))
         toast.success('Referee deleted successfully')
-
+        onSuccess?.();
     }
 
     const RefereeCard = ({ referee }: { referee: Referee }) => {
@@ -109,7 +88,7 @@ export function RefereeForm() {
                         <Formik
                             initialValues={editValues}
                             validationSchema={refereeSchema}
-                            onSubmit={(values) => handleEditSubmit(values, referee.id as string, referee.createdAt as string)}
+                            onSubmit={(values) => handleEditSubmit(values, referee.id as string)}
                         >
                             {({ isSubmitting }) => (
                                 <Form className="space-y-4">
@@ -165,7 +144,7 @@ export function RefereeForm() {
                                 <p className="text-sm text-muted-foreground">Works at: {referee.employerName}</p>
                             )}
                         </div>
-                        {isEditing && (
+                        {!isReadOnly && (
                             <div className="flex gap-2">
                                 <Button variant="ghost" size="icon" onClick={() => setEditingId(referee.id as string)}>
                                     <Edit2 className="h-4 w-4" />
@@ -205,7 +184,7 @@ export function RefereeForm() {
             {referees.length === 0 && !showAddForm && (
                 <div className="text-center py-8 text-muted-foreground">
                     <p>No referees added yet.</p>
-                    {isEditing && <p className="text-sm mt-1">Click the button below to add a referee.</p>}
+                    {!isReadOnly && <p className="text-sm mt-1">Click the button below to add a referee.</p>}
                 </div>
             )}
 
@@ -259,7 +238,7 @@ export function RefereeForm() {
                 )}
             </AnimatePresence>
 
-            {isEditing && !showAddForm && (
+            {!isReadOnly && !showAddForm && (
                 <Button variant="outline" onClick={() => setShowAddForm(true)} className="w-full">
                     <Plus className="h-4 w-4 mr-2" /> Add Referee
                 </Button>

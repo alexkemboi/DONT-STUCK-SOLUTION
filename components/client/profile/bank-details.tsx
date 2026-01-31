@@ -5,8 +5,6 @@ import { motion } from 'framer-motion'
 import { FormField } from '@/components/forms/form-field'
 import { Button } from '@/components/ui/button'
 import { bankDetailSchema } from '@/lib/validations'
-import { useAppDispatch, useAppSelector } from '@/lib/store/hooks'
-import { setBankDetails, setIsEditing } from '@/lib/store/slices/profile-slice'
 import type { BankDetailFormValues, BankDetail } from '@/lib/types'
 import { ChangeEvent, useState } from 'react'
 import { createBankAction, uploadBankDocumentAction } from '@/app/actions/client'
@@ -14,13 +12,13 @@ import { toast } from 'sonner'
 import { X } from 'lucide-react'
 import { deleteFile, UploadResult } from '@/services/storage.service'
 
-interface BankDetailsFormProps {
+interface BankDetailsProps {
+    bankDetails?: BankDetail;
+    isReadOnly?: boolean;
     onSuccess?: () => void
 }
 
-export function BankDetailsForm({ onSuccess }: BankDetailsFormProps) {
-    const dispatch = useAppDispatch()
-    const { client, bankDetails, isEditing } = useAppSelector((state) => state.profile)
+export function BankDetails({ bankDetails, isReadOnly = false, onSuccess }: BankDetailsProps) {
     const [uploading, setUploading] = useState(false)
     const [proofDocumentUrl, setProofDocumentUrl] = useState<UploadResult | null>(null)
 
@@ -65,38 +63,22 @@ export function BankDetailsForm({ onSuccess }: BankDetailsFormProps) {
             toast.error(response.error || 'Failed to create bank details')
             return;
         }
-
-
-        const updatedBankDetails: BankDetail = {
-            id: response?.data?.id || `bank_${Date.now()}`,
-            clientId: client?.id || '',
-            ...finalValues,
-            createdAt: response?.data?.createdAt.toISOString() || new Date().toISOString(),
-            updatedAt: response?.data?.updatedAt.toISOString() || new Date().toISOString(),
-        }
-        dispatch(setBankDetails(updatedBankDetails))
-        dispatch(setIsEditing(false))
         toast.success('Bank details saved successfully')
         onSuccess?.()
     }
 
-
-
     const handleRemoveDocument = async() => {
         try {
-
             const result = await deleteFile(proofDocumentUrl?.data?.publicId as string)
             if (result.success) {
                 setProofDocumentUrl(null)
             } else {
                 toast.error('Failed to remove document')
             }
-
         }catch(error){
             toast.error('Failed to remove document')
             return;
         }
-        
     }
 
     return (
@@ -113,13 +95,13 @@ export function BankDetailsForm({ onSuccess }: BankDetailsFormProps) {
                 {({ isSubmitting, dirty, setFieldValue }) => (
                     <Form className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <FormField name="bankName" label="Bank Name" placeholder="e.g. Equity Bank" disabled={!isEditing} />
-                            <FormField name="branch" label="Branch" placeholder="e.g. Westlands Branch" disabled={!isEditing} />
+                            <FormField name="bankName" label="Bank Name" placeholder="e.g. Equity Bank" disabled={isReadOnly} />
+                            <FormField name="branch" label="Branch" placeholder="e.g. Westlands Branch" disabled={isReadOnly} />
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <FormField name="accountName" label="Account Name" placeholder="Full account name" disabled={!isEditing} />
-                            <FormField name="accountNumber" label="Account Number" placeholder="Enter account number" disabled={!isEditing} />
+                            <FormField name="accountName" label="Account Name" placeholder="Full account name" disabled={isReadOnly} />
+                            <FormField name="accountNumber" label="Account Number" placeholder="Enter account number" disabled={isReadOnly} />
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -132,7 +114,7 @@ export function BankDetailsForm({ onSuccess }: BankDetailsFormProps) {
                                     name="proofDocument"
                                     type="file"
                                     onChange={handleFileChange}
-                                    disabled={!isEditing || uploading}
+                                    disabled={isReadOnly || uploading}
                                     className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
                                 />
                                 {uploading && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
@@ -141,33 +123,24 @@ export function BankDetailsForm({ onSuccess }: BankDetailsFormProps) {
                                         <a href={proofDocumentUrl?.data?.url || bankDetails?.proofDocumentUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 mt-1">
                                             View uploaded document
                                         </a>
-                                        <button
-                                           onClick={() => handleRemoveDocument()}
-                                            className="text-sm text-red-500 hover:text-red-700">
-                                        
-                                            Remove
-                                        </button>
+                                        {!isReadOnly && (
+                                            <button
+                                               onClick={() => handleRemoveDocument()}
+                                                className="text-sm text-red-500 hover:text-red-700">
+                                                Remove
+                                            </button>
+                                        )}
                                     </div>
-                                  
-
                                 )}
                             </div>
                         </div>
 
-
-                        {isEditing && (
+                        {!isReadOnly && (
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 className="flex justify-end gap-3 pt-4"
                             >
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={() => dispatch(setIsEditing(false))}
-                                >
-                                    Cancel
-                                </Button>
                                 <Button type="submit" disabled={isSubmitting || !dirty || uploading}>
                                     {isSubmitting ? 'Saving...' : 'Save Changes'}
                                 </Button>

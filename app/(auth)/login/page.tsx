@@ -22,7 +22,7 @@ export default function LoginPage() {
             {/* Bento Grid */}
             <div className="flex-1 grid grid-cols-2 gap-4 xl:gap-6">
               {/* Large Card - Stats */}
-              <div className="col-span-2 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 xl:p-8">
+              <div className="col-span-2 rounded-2xl bg-linear-to-br from-emerald-500 to-emerald-600 p-6 xl:p-8">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-emerald-100 text-sm font-medium">
@@ -104,7 +104,7 @@ export default function LoginPage() {
               </div>
 
               {/* Security Badge */}
-              <div className="col-span-2 rounded-2xl bg-gradient-to-r from-slate-800 to-slate-800/50 border border-slate-700 p-4 xl:p-5">
+              <div className="col-span-2 rounded-2xl bg-linear-to-r from-slate-800 to-slate-800/50 border border-slate-700 p-4 xl:p-5">
                 <div className="flex items-center gap-4">
                   <div className="h-12 w-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
                     <Shield className="h-6 w-6 text-emerald-400" />

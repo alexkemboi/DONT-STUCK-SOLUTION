@@ -1,6 +1,7 @@
 "use client";
 
-import { formatCurrency } from "@/lib/data/dummy-data";
+import { formatCurrency } from "@/lib/utils";
+
 
 interface DisbursementData {
   month: string;

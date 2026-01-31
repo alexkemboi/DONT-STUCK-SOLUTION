@@ -12,7 +12,7 @@ import { PersonalInfoForm } from './personal-info-form'
 import { AddressForm } from './address-form'
 import { EmploymentForm } from './employment-form'
 import { RefereeForm } from './referee-form'
-import { BankDetailsForm } from './bank-details'
+import { BankDetails as BankDetailsForm } from './bank-details'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { BankDetail, Client, ClientAddress, EmploymentDetail, Referee } from "@/lib/types"
 

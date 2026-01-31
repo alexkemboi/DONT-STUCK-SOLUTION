@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { formatCurrency } from "@/lib/data/dummy-data";
+import { formatCurrency } from "@/lib/utils";
 import { Phone, Mail, FileText, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
 

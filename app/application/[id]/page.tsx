@@ -15,7 +15,7 @@ export default async function ApplicationPage({
   const { id } = await params;
   const application = await getLoanApplication(id);
 
-  if (!application) {
+  if (!application || ('success' in application && !application.success)) {
     notFound();
   }
 

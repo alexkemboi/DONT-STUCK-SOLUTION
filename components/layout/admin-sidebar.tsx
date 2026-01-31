@@ -7,9 +7,6 @@ import {
   LayoutDashboard,
   Users,
   FileText,
-  Banknote,
-  TrendingUp,
-  AlertTriangle,
   Settings,
   Building2,
   X,
@@ -103,7 +100,7 @@ const clientNavigation = [
   },
   {
     href: "/dss/client/loans",
-    icon: FileText,
+    icon: FolderOpen,
     name: "My Loans",
   },
   {
@@ -111,16 +108,6 @@ const clientNavigation = [
     icon: User,
     name: "Profile",
   },
-  // {
-  //   href: "/dss/client/disbursements",
-  //   icon: Banknote,
-  //   name: "Disbursements",
-  // },
-  // {
-  //   href: "/dss/client/reports",
-  //   icon: BarChart2,
-  //   name: "Reports",
-  // },
   {
     href: "/dss/client/settings",
     icon: Settings,
@@ -132,9 +119,6 @@ export function AdminSidebar({ user }: { user: UserSchema | null}) {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const mobileOpen = useAppSelector((state) => state.ui.sidebarMobileOpen);
-
-
-  console.log("User in Sidebar:", user);
 
 
   return (
