@@ -1,4 +1,5 @@
-import { investors, formatCurrency } from "@/lib/data/dummy-data";
+import { investors } from "@/lib/data/dummy-data";
+import { formatCurrency } from "@/lib/utils";
 import { InvestorsTable } from "@/components/admin/investors/investors-table";
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingUp, Users, Wallet, PiggyBank } from "lucide-react";
@@ -80,7 +81,7 @@ export default function InvestorsPage() {
       </div>
 
       {/* Portfolio Summary */}
-      <Card className="border-slate-200 bg-gradient-to-r from-slate-800 to-slate-900">
+      <Card className="border-slate-200 bg-linear-to-r from-slate-800 to-slate-900">
         <CardContent className="p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { formatDateTime } from "@/lib/utils";
 import {
   CheckCircle,
   Banknote,
@@ -7,7 +8,6 @@ import {
   UserPlus,
   AlertTriangle,
 } from "lucide-react";
-import { formatDateTime } from "@/lib/data/dummy-data";
 
 interface Activity {
   id: string;

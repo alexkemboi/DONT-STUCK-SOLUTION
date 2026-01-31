@@ -1,11 +1,10 @@
 "use client";
 
-import { Menu, Bell, Search, LogOut, User, ChevronDown } from "lucide-react";
+import { Menu, LogOut, User, ChevronDown } from "lucide-react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { setMobileSidebarOpen } from "@/lib/store/slices/ui-slice";
 import { logout } from "@/lib/store/slices/auth-slice";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,8 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
-import { use } from "react";
-
+import { NotificationBell } from "./notification-bell";
+import { AdminSearch } from "./admin-search";
 
 interface UserSchema {
   id: string;
@@ -24,7 +23,23 @@ interface UserSchema {
   name: string;
 }
 
-export function AdminHeader({ user }: { user: UserSchema | null }) {
+interface NotificationItem {
+  id: string;
+  title: string;
+  description: string;
+  timestamp: string;
+  href: string;
+}
+
+interface AdminHeaderProps {
+  user: UserSchema | null;
+  notifications: {
+    count: number;
+    items: NotificationItem[];
+  };
+}
+
+export function AdminHeader({ user, notifications }: AdminHeaderProps) {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
@@ -54,24 +69,17 @@ export function AdminHeader({ user }: { user: UserSchema | null }) {
       <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
         {/* Search */}
         <div className="relative flex flex-1 items-center">
-          <Search className="pointer-events-none absolute left-3 h-4 w-4 text-slate-400" />
-          <Input
-            type="search"
-            placeholder="Search clients, loans, transactions..."
-            className="h-10 w-full max-w-md border-slate-200 bg-slate-50 pl-10 focus:bg-white"
-          />
+          {user?.role === "Admin" ? (
+            <AdminSearch />
+          ) : (
+            <div />
+          )}
         </div>
 
         {/* Right side */}
         <div className="flex items-center gap-x-4 lg:gap-x-6">
           {/* Notifications */}
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-5 w-5 text-slate-500" />
-            <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
-              3
-            </span>
-            <span className="sr-only">View notifications</span>
-          </Button>
+          <NotificationBell notifications={notifications} />
 
           {/* Separator */}
           <div className="hidden h-6 w-px bg-slate-200 lg:block" />

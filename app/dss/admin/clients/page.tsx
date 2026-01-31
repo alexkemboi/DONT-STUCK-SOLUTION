@@ -1,15 +1,45 @@
-import { clients, formatCurrency } from "@/lib/data/dummy-data";
+import { getClients } from "@/app/actions/admin";
 import { ClientsTable } from "@/components/admin/clients/clients-table";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, UserCheck, UserX, Wallet } from "lucide-react";
+import { formatCurrency } from "@/lib/utils";
 
-export default function ClientsPage() {
+export default async function ClientsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{
+    search?: string;
+    status?: "Active" | "Inactive";
+    page?: string;
+    limit?: string;
+  }>;
+}) {
+  const search = (await searchParams)?.search || "";
+  const status = (await searchParams)?.status;
+  const page = Number((await searchParams)?.page) || 1;
+  const limit = Number((await searchParams)?.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const { data, error } = await getClients({
+    search,
+    status,
+    skip,
+    take: limit,
+  });
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  const clients = data?.clients || [];
+  const total = data?.total || 0;
+
   const activeClients = clients.filter((c) => c.status === "Active").length;
   const inactiveClients = clients.filter((c) => c.status === "Inactive").length;
-  const totalOutstanding = clients.reduce(
-    (sum, c) => sum + c.outstandingBalance,
-    0
-  );
+  // const totalOutstanding = clients.reduce(
+  //   (sum, c) => sum + c.outstandingBalance,
+  //   0
+  // );
 
   return (
     <div className="space-y-6">
@@ -30,7 +60,7 @@ export default function ClientsPage() {
             </div>
             <div>
               <p className="text-sm text-slate-500">Total Clients</p>
-              <p className="text-xl font-bold text-slate-900">{clients.length}</p>
+              <p className="text-xl font-bold text-slate-900">{total}</p>
             </div>
           </CardContent>
         </Card>
@@ -67,7 +97,7 @@ export default function ClientsPage() {
             <div>
               <p className="text-sm text-slate-500">Outstanding</p>
               <p className="text-lg font-bold text-slate-900">
-                {formatCurrency(totalOutstanding)}
+                {formatCurrency(0)}
               </p>
             </div>
           </CardContent>

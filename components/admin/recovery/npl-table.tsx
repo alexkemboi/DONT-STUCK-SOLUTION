@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DataTable } from "@/components/admin/shared/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatCurrency, formatDate } from "@/lib/data/dummy-data";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import { Phone, MoreHorizontal, MessageSquare, MapPin } from "lucide-react";
 import {
   DropdownMenu,

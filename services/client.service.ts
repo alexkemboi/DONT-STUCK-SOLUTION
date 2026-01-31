@@ -66,8 +66,22 @@ export async function createClientService(data: CreateClientInput): Promise<Serv
   }
 }
 
-export async function getById(id: number, includeRelations?: boolean): Promise<ServiceResult<ClientWithRelations | null>> {
-  throw new Error("Not implemented");
+export async function getById(id: string, includeRelations?: boolean): Promise<ServiceResult<ClientWithRelations | null>> {
+  try {
+    const client = await prisma.client.findUnique({
+      where: { id },
+      include: {
+        user: true,
+        addresses: includeRelations,
+        employmentDetails: includeRelations,
+        referees: includeRelations,
+        bankDetails: includeRelations,
+      },
+    });
+    return { success: true, data: client };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
 }
 
 export async function getByIdPassport(idPassportNo: string): Promise<ServiceResult<Client | null>> {
@@ -92,11 +106,50 @@ export async function updateClient(id: string, data: UpdateClientInput): Promise
 }
 
 export async function getAll(params?: ClientSearchParams): Promise<ServiceResult<{ clients: Client[]; total: number }>> {
-  throw new Error("Not implemented");
+  try {
+    const { skip = 0, take = 10, search, status } = params || {};
+    const where: Prisma.ClientWhereInput = {};
+
+    if (search) {
+      where.OR = [
+        { surname: { contains: search, mode: 'insensitive' } },
+        { otherNames: { contains: search, mode: 'insensitive' } },
+        { user: { email: { contains: search, mode: 'insensitive' } } },
+      ];
+    }
+
+    if (status) {
+      where.status = status;
+    }
+
+    const [clients, total] = await Promise.all([
+      prisma.client.findMany({
+        where,
+        skip,
+        take,
+        include: {
+          user: true,
+        },
+      }),
+      prisma.client.count({ where }),
+    ]);
+
+    return { success: true, data: { clients, total } };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
 }
 
-export async function deactivate(id: number): Promise<ServiceResult<Client>> {
-  throw new Error("Not implemented");
+export async function deactivate(id: string): Promise<ServiceResult<Client>> {
+  try {
+    const updatedClient = await prisma.client.update({
+      where: { id },
+      data: { status: 'Inactive' },
+    });
+    return { success: true, data: updatedClient };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
 }
 
 // Address operations

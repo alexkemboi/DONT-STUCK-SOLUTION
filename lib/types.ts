@@ -1,3 +1,5 @@
+import { Prisma } from "./generated/prisma";
+
 export type UserRole = "applicant" | "admin" | "investor";
 
 export type LoanStatus =
@@ -262,24 +264,24 @@ export type QualificationType = 'New' | 'Repeat' | 'TopUp'
 // Client Profile
 export interface Client {
   id?: string
-  userId?: string
+  userId?: string | null
   title: Title
   surname: string
   otherNames: string
-  dateOfBirth: string
+  dateOfBirth: string | Date
   maritalStatus: MaritalStatus
   nationality: string
   dependents: number
   idPassportNo: string
-  kraPin?: string
-  phoneWork?: string
+  kraPin?: string | null
+  phoneWork?: string | null
   phoneMobile: string
-  phoneAlternative?: string
-  emailPersonal?: string
-  emailOfficial?: string
+  phoneAlternative?: string | null
+  emailPersonal?: string | null
+  emailOfficial?: string | null
   status?: ClientStatus
-  createdAt?: string
-  updatedAt?: string
+  createdAt?: string | Date
+  updatedAt?: string | Date
 }
 
 // Client Address
@@ -303,23 +305,31 @@ export interface ClientAddress {
 export interface EmploymentDetail {
   id?: string
   clientId?: string
+
   employerName: string
   jobTitle: string
-  department?: string
-  dateJoined?: string
-  periodWorked?: string
+
+  department?: string | null
+  dateJoined?: string | Date | null
+  periodWorked?: string | null
+
   employmentType: EmploymentType
-  contractExpiry?: string
+  contractExpiry?: string | Date | null
+
   onNotice: boolean
-  netSalary: number
-  branchLocation?: string
-  roadStreet?: string
-  building?: string
-  floorOffice?: string
-  telephone?: string
-  createdAt?: string
-  updatedAt?: string
+
+  netSalary: any // (see Decimal note below)
+
+  branchLocation?: string | null
+  roadStreet?: string | null
+  building?: string | null
+  floorOffice?: string | null
+  telephone?: string | null
+
+  createdAt?: string | Date
+  updatedAt?: string | Date
 }
+
 
 // Referee/Next of Kin
 export interface Referee {
@@ -345,8 +355,8 @@ export interface BankDetail {
   branch: string
   accountName: string
   accountNumber: string
-  proofDocument?: string
-  proofDocumentUrl?: string
+  proofDocument?: string 
+  proofDocumentUrl?: string 
   createdAt?: string
   updatedAt?: string
 }
@@ -469,6 +479,37 @@ export interface GuarantorFormValues {
   email: string
   idNumber: string
   relationship: string
+}
+
+export interface Allocation {
+  id: string;
+  loan_application_id: string;
+  allocated_amount: number;
+  expected_return: number;
+  actual_return: number;
+  status: string;
+  created_at: string;
+  loan_type: string;
+  approved_amount: number;
+  interest_rate: number;
+  tenure_months: number;
+  loan_status: string;
+  borrower_name: string;
+}
+
+export interface AvailableLoan {
+  id: string;
+  loan_type: string;
+  approved_amount: number;
+  interest_rate: number;
+  tenure_months: number;
+  purpose: string;
+  borrower_name: string;
+  city: string;
+  state: string;
+  employment_status: string;
+  monthly_income: number;
+  already_funded: number;
 }
 
 // Combined submit data for the multi-step loan application

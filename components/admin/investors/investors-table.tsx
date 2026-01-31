@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DataTable } from "@/components/admin/shared/data-table";
 import { Button } from "@/components/ui/button";
-import { formatCurrency, formatDate } from "@/lib/data/dummy-data";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import { Eye, MoreHorizontal, TrendingUp } from "lucide-react";
 import {
   DropdownMenu,

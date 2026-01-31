@@ -1,4 +1,5 @@
-import { disbursements, formatCurrency } from "@/lib/data/dummy-data";
+import { disbursements } from "@/lib/data/dummy-data";
+import { formatCurrency } from "@/lib/utils";
 import { DisbursementsTable } from "@/components/admin/disbursements/disbursements-table";
 import { Card, CardContent } from "@/components/ui/card";
 import { Banknote, Smartphone, Building2, TrendingUp } from "lucide-react";

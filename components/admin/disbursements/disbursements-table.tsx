@@ -3,7 +3,14 @@
 import { useState } from "react";
 import { DataTable } from "@/components/admin/shared/data-table";
 import { Badge } from "@/components/ui/badge";
-import { formatCurrency, formatDateTime, statusColors } from "@/lib/data/dummy-data";
+import { formatCurrency, formatDateTime } from "@/lib/utils";
+
+const statusColors: Record<string, string> = {
+  Pending: "bg-amber-100 text-amber-800",
+  Completed: "bg-emerald-100 text-emerald-800",
+  Processing: "bg-blue-100 text-blue-800",
+  Failed: "bg-red-100 text-red-800",
+};
 import { Smartphone, Building2 } from "lucide-react";
 
 interface Disbursement {

@@ -1,5 +1,6 @@
 "use server";
 
+import { Allocation, AvailableLoan } from "@/lib/types";
 import { neon } from "@neondatabase/serverless";
 import prisma from "@/lib/prisma";
 
@@ -48,7 +49,7 @@ export async function getInvestorStats(investorId: string) {
   }
 }
 
-export async function getInvestorAllocations(investorId: string) {
+export async function getInvestorAllocations(investorId: string): Promise<Allocation[]> {
   try {
     const allocations = await sql`
       SELECT 
@@ -75,14 +76,14 @@ export async function getInvestorAllocations(investorId: string) {
       ORDER BY la.created_at DESC
     `;
 
-    return allocations;
+    return allocations as unknown as Allocation[];
   } catch (error) {
     console.error("Error fetching allocations:", error);
     return [];
   }
 }
 
-export async function getAvailableLoansForInvestment() {
+export async function getAvailableLoansForInvestment(): Promise<AvailableLoan[]> {
   try {
     const loans = await sql`
       SELECT 
@@ -111,7 +112,7 @@ export async function getAvailableLoansForInvestment() {
       ORDER BY la.created_at DESC
     `;
 
-    return loans;
+    return loans as unknown as AvailableLoan[];
   } catch (error) {
     console.error("Error fetching available loans:", error);
     return [];
