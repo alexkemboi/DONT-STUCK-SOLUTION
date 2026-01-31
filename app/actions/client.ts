@@ -2,13 +2,10 @@
 
 import { auth } from "@/lib/auth";
 import { BankDetail, Client, ClientAddress, EmploymentDetail, Referee } from "@/lib/types";
-import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
 import { createAddress, createBankDetail, createClientService, createEmployment, createReferee, deleteReferee, getAddresses, getBankDetails, getLatestEmployment, getReferees, updateAddress, updateClient, updateEmployment, updateReferee } from "@/services/client.service";
-import { date } from "better-auth";
 import prisma from "@/lib/prisma";
 import { fileToInput, uploadFile } from "@/services/storage.service";
-import { get } from "http";
 
 
 
@@ -77,6 +74,17 @@ export async function updateClientAction(id: string, data: Partial<Client>): Pro
             payload.dateOfBirth = new Date(data.dateOfBirth);
         }
         const updatedClient = await updateClient(id, payload);
+
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "UPDATE",
+                entity: "Client",
+                entityId: id,
+                newValue: payload as object,
+            },
+        }).catch(() => {});
+
         return {
             success: true,
             data: {
@@ -108,6 +116,16 @@ export async function createClientAction(data: Client): Promise<{ success: boole
         }
 
         const newClient = await createClientService(payload);
+
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "CREATE",
+                entity: "Client",
+                entityId: newClient.data?.id,
+                newValue: { surname: data.surname, otherNames: data.otherNames },
+            },
+        }).catch(() => {});
 
         return {
             success: true, data: newClient.data
@@ -173,6 +191,17 @@ export async function updateAddressAction(params: { id: string; data: Partial<Cl
         if (!updatedAddress.success) {
             throw new Error(updatedAddress.error || "Failed to update address");
         }
+
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "UPDATE",
+                entity: "ClientAddress",
+                entityId: params.id,
+                newValue: params.data as object,
+            },
+        }).catch(() => {});
+
         return {
             success: true,
             data: updatedAddress.data
@@ -215,14 +244,24 @@ export async function createClientAddressAction(data:ClientAddress) {
 
             const newAddress = await createAddress(client.client?.id as string, payload);
 
+            await prisma.auditLog.create({
+                data: {
+                    userId: session.user.id as string,
+                    action: "CREATE",
+                    entity: "ClientAddress",
+                    entityId: newAddress.data?.id,
+                    newValue: payload as object,
+                },
+            }).catch(() => {});
+
             return {
-                success: true, 
+                success: true,
                 data: newAddress.data
             };
 
         }   catch(error){
             return { success: false, error: (error as Error).message };
-        } 
+        }
 }
 
 
@@ -289,8 +328,18 @@ export async function createEmploymentDetailAction(data:EmploymentDetail) {
 
         const newEmployment = await createEmployment(client.client?.id as string, payload);
 
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "CREATE",
+                entity: "EmploymentDetail",
+                entityId: newEmployment.data?.id,
+                newValue: { employerName: data.employerName, jobTitle: data.jobTitle, employmentType: data.employmentType },
+            },
+        }).catch(() => {});
+
         return {
-            success: true, 
+            success: true,
             data: newEmployment.data
         };
 
@@ -322,6 +371,17 @@ export async function updateEmploymentDetailAction(id:string, data:Partial<Emplo
         if (!updatedEmployment.success) {
             throw new Error(updatedEmployment.error || "Failed to update employment detail");
         }
+
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "UPDATE",
+                entity: "EmploymentDetail",
+                entityId: id,
+                newValue: payload as object,
+            },
+        }).catch(() => {});
+
         return {
             success: true,
             data: updatedEmployment.data
@@ -392,16 +452,20 @@ export async function createRefereeAction(data:Referee) {
             throw new Error("Client not found");
         }
 
-        let id = data.id as string 
+        const newReferee = await createReferee(client.client?.id as string, data);
 
-        let payload = {
-            ...data
-        }
-        
-        const newReferee = await createReferee(client.client?.id as string, payload);
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "CREATE",
+                entity: "Referee",
+                entityId: newReferee.data?.id,
+                newValue: { surname: data.surname, otherNames: data.otherNames, phoneMobile: data.phoneMobile },
+            },
+        }).catch(() => {});
 
         return {
-            success: true, 
+            success: true,
             data: newReferee.data
         };
 
@@ -438,6 +502,16 @@ export async function updateRefereeAction(refereeId: string, data: Partial<Refer
 
         const newReferee = await updateReferee(refereeId as string, payload);
 
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "UPDATE",
+                entity: "Referee",
+                entityId: refereeId,
+                newValue: payload as object,
+            },
+        }).catch(() => {});
+
         return {
             success: true,
             data: newReferee.data
@@ -472,6 +546,15 @@ export async function deleteRefereeAction(refereeId: string) {
         }
 
         const response = await deleteReferee(refereeId);
+
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "DELETE",
+                entity: "Referee",
+                entityId: refereeId,
+            },
+        }).catch(() => {});
 
         return {
             success: response.success
@@ -546,8 +629,18 @@ export async function createBankAction(data:BankDetail) {
 
         const newBankDetail = await createBankDetail(client.client?.id as string, payload);
 
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "CREATE",
+                entity: "BankDetail",
+                entityId: newBankDetail.data?.id,
+                newValue: { bankName: data.bankName, accountNumber: data.accountNumber },
+            },
+        }).catch(() => {});
+
         return {
-            success: true, 
+            success: true,
             data: newBankDetail.data
         };
 
@@ -578,6 +671,15 @@ export async function uploadBankDocumentAction(formData: FormData): Promise<{ su
         if (!uploadResult.success || !uploadResult.data) {
             throw new Error(uploadResult.error || "File upload failed");
         }
+
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "UPLOAD",
+                entity: "BankDocument",
+                newValue: { fileName: file.name, fileSize: file.size },
+            },
+        }).catch(() => {});
 
         return {
             success: true,

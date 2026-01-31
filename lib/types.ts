@@ -461,3 +461,20 @@ export interface LoanApplicationFormValues {
   amountRequested: number
   repaymentPeriod: number
 }
+
+// Guarantor form values for Apply Loan page (matches Prisma Guarantor model)
+export interface GuarantorFormValues {
+  fullName: string
+  phone: string
+  email: string
+  idNumber: string
+  relationship: string
+}
+
+// Combined submit data for the multi-step loan application
+export interface LoanApplicationSubmitData {
+  purpose: string
+  amountRequested: number
+  repaymentPeriod: number
+  guarantors: GuarantorFormValues[]
+}

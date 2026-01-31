@@ -16,6 +16,8 @@ import {
   LogOut,
   User,
   BarChart2,
+  CreditCard,
+  FolderOpen,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setMobileSidebarOpen } from "@/lib/store/slices/ui-slice";
@@ -46,31 +48,46 @@ const adminnavigation = [
     href: "/dss/admin/loans",
     icon: FileText,
   },
+  // {
+  //   name: "Disbursements",
+  //   href: "/dss/admin/disbursements",
+  //   icon: Banknote,
+  // },
+  // {
+  //   name: "Investors",
+  //   href: "/dss/admin/investors",
+  //   icon: TrendingUp,
+  // },
   {
-    name: "Disbursements",
-    href: "/dss/admin/disbursements",
-    icon: Banknote,
+    name: "Repayments",
+    href: "/dss/admin/repayments",
+    icon: CreditCard,
   },
   {
-    name: "Investors",
-    href: "/dss/admin/investors",
-    icon: TrendingUp,
+    name: "Documents",
+    href: "/dss/admin/documents",
+    icon: FolderOpen,
   },
   {
-    name: "Recovery & NPL",
-    href: "/dss/admin/recovery",
-    icon: AlertTriangle,
+    name: "Reports",
+    href: "/dss/admin/reports",
+    icon: BarChart2,
   },
-  {
-    name: "Settings",
-    href: "/dss/admin/settings",
-    icon: Settings,
-  },
-  {
-    name: "Profile",
-    href: "/dss/profile",
-    icon: User,
-  },
+  // {
+  //   name: "Recovery & NPL",
+  //   href: "/dss/admin/recovery",
+  //   icon: AlertTriangle,
+  // },
+  // {
+  //   name: "Settings",
+  //   href: "/dss/admin/settings",
+  //   icon: Settings,
+  // },
+  // {
+  //   name: "Profile",
+  //   href: "/dss/profile",
+  //   icon: User,
+  // },
 ];
 
 const clientNavigation = [
@@ -85,20 +102,25 @@ const clientNavigation = [
     name: "Apply for Loan",
   },
   {
+    href: "/dss/client/loans",
+    icon: FileText,
+    name: "My Loans",
+  },
+  {
     href: "/dss/client/profile",
     icon: User,
     name: "Profile",
   },
-  {
-    href: "/dss/client/disbursements",
-    icon: Banknote,
-    name: "Disbursements",
-  },
-  {
-    href: "/dss/client/reports",
-    icon: BarChart2,
-    name: "Reports",
-  },
+  // {
+  //   href: "/dss/client/disbursements",
+  //   icon: Banknote,
+  //   name: "Disbursements",
+  // },
+  // {
+  //   href: "/dss/client/reports",
+  //   icon: BarChart2,
+  //   name: "Reports",
+  // },
   {
     href: "/dss/client/settings",
     icon: Settings,

@@ -2,11 +2,19 @@
 
 import { neon } from "@neondatabase/serverless";
 import type { OnboardingFormData } from "@/lib/types";
+import { auth } from "@/lib/auth";
 
 const sql = neon(process.env.DATABASE_URL!);
 
 export async function submitLoanApplication(data: OnboardingFormData) {
   try {
+    const session = await auth.api.getSession();
+    if (!session?.user) {
+      return {
+        success: false,
+        message: "User not authenticated. Please log in.",
+      };
+    }
     // Create user
     const [user] = await sql`
       INSERT INTO users (email, full_name, phone, role)
@@ -128,6 +136,13 @@ export async function submitLoanApplication(data: OnboardingFormData) {
 
 export async function getLoanApplication(applicationId: string) {
   try {
+    const session = await auth.api.getSession();
+    if (!session?.user) {
+      return {
+        success: false,
+        message: "User not authenticated. Please log in.",
+      };
+    }
     const [application] = await sql`
       SELECT 
         la.*,
@@ -170,6 +185,14 @@ export async function getLoanApplication(applicationId: string) {
 }
 
 export async function getAllLoanApplications(status?: string) {
+  const session = await auth.api.getSession();
+  if (!session?.user) {
+    return {
+      success: false,
+      message: "User not authenticated. Please log in.",
+    };
+  }
+
   try {
     let applications;
     if (status && status !== "all") {
@@ -212,6 +235,14 @@ export async function updateLoanStatus(
   rejectionReason?: string
 ) {
   try {
+    const session = await auth.api.getSession();
+    if (!session?.user) {
+      return {
+        success: false,
+        message: "User not authenticated. Please log in.",
+      };
+    }
+
     const updateData: Record<string, unknown> = {
       status,
       reviewed_by: reviewerId,
@@ -297,6 +328,14 @@ export async function updateLoanStatus(
 }
 
 export async function getDashboardStats() {
+  const session = await auth.api.getSession();
+  if (!session?.user) {
+    return {
+      success: false,
+      message: "User not authenticated. Please log in.",
+    };
+  }
+  
   try {
     const [stats] = await sql`
       SELECT
