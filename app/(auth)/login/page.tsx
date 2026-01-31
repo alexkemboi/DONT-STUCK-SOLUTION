@@ -14,7 +14,7 @@ export default function LoginPage() {
                 <Building2 className="h-7 w-7 text-white" />
               </div>
               <div>
-                <span className="text-2xl font-bold text-white">DSS Finance</span>
+                <span className="text-2xl font-bold text-white">DON'T STUCK SOLUTION</span>
                 <p className="text-sm text-slate-400">Loan Management System</p>
               </div>
             </div>
