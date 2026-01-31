@@ -1,6 +1,7 @@
 "use server";
 
 import { neon } from "@neondatabase/serverless";
+import prisma from "@/lib/prisma";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -166,6 +167,16 @@ export async function investInLoan(
         updated_at = NOW()
       WHERE id = ${portfolio.id}
     `;
+
+    await prisma.auditLog.create({
+      data: {
+        userId: investorId,
+        action: "INVEST",
+        entity: "LoanAllocation",
+        entityId: loanApplicationId,
+        newValue: { amount, expectedReturn, loanApplicationId },
+      },
+    }).catch(() => {});
 
     return {
       success: true,

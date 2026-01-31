@@ -102,6 +102,33 @@ export async function getGuarantorsByLoanId(
 }
 
 // ============================================================================
+// LOAN DETAIL (with guarantors)
+// ============================================================================
+
+export type LoanWithDetails = LoanApplication & {
+  guarantors: Guarantor[];
+};
+
+export async function getLoanById(
+  id: string
+): Promise<ServiceResult<LoanWithDetails>> {
+  try {
+    const loan = await prisma.loanApplication.findUnique({
+      where: { id },
+      include: {
+        guarantors: true,
+      },
+    });
+    if (!loan) {
+      return { success: false, error: "Loan not found" };
+    }
+    return { success: true, data: loan };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+// ============================================================================
 // ADMIN — ALL LOANS
 // ============================================================================
 

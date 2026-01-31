@@ -16,7 +16,7 @@ interface ProfileState {
     bankDetails: BankDetail | null
     isLoading: boolean
     isEditing: boolean
-    activeSection: 'overview' | 'personal' | 'address' | 'employment' | 'referees' | 'bank'
+    activeSection: 'overview' | 'personal' | 'address' | 'employment' | 'referees' | 'bank' 
 }
 
 const initialState: ProfileState = {
@@ -27,7 +27,7 @@ const initialState: ProfileState = {
     bankDetails: null,
     isLoading: false,
     isEditing: false,
-    activeSection: 'personal',
+    activeSection: 'overview',
 }
 
 const profileSlice = createSlice({

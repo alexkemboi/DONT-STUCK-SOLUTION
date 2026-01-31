@@ -7,6 +7,7 @@ import {
   createLoanApplication,
   addGuarantor,
   getLoansByClientId,
+  getLoanById,
   getAllLoans,
   updateLoanStatus,
   type LoanWithClient,
@@ -59,6 +60,16 @@ export async function submitLoanApplicationAction(data: LoanApplicationSubmitDat
       });
       guarantorResults.push(result);
     }
+
+    await prisma.auditLog.create({
+      data: {
+        userId: session.user.id as string,
+        action: "CREATE",
+        entity: "LoanApplication",
+        entityId: loanId,
+        newValue: { purpose: data.purpose, amountRequested: data.amountRequested, repaymentPeriod: data.repaymentPeriod, guarantors: data.guarantors.length },
+      },
+    }).catch(() => {});
 
     return {
       success: true,
@@ -126,6 +137,84 @@ export async function getClientForApplyAction() {
     }
 
     return { success: true, data: user.client };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+export interface SerializedClientLoan {
+  id: string;
+  purpose: string;
+  amountRequested: number;
+  approvedAmount: number | null;
+  interestRate: number;
+  repaymentPeriod: number;
+  status: string;
+  qualificationType: string | null;
+  appliedAt: string;
+  rejectionReason: string | null;
+  guarantors: {
+    id: string;
+    fullName: string;
+    phone: string;
+    email: string | null;
+    relationship: string | null;
+    confirmationStatus: string;
+  }[];
+}
+
+export async function getClientLoanDetailAction(loanId: string) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id as string },
+      select: { client: true },
+    });
+
+    if (!user?.client) {
+      return { success: false, error: "Client profile not found" };
+    }
+
+    const result = await getLoanById(loanId);
+    if (!result.success || !result.data) {
+      return { success: false, error: result.error || "Loan not found" };
+    }
+
+    // Ensure loan belongs to this client
+    if (result.data.clientId !== user.client.id) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const loan = result.data;
+    const serialized: SerializedClientLoan = {
+      id: loan.id,
+      purpose: loan.purpose,
+      amountRequested: Number(loan.amountRequested),
+      approvedAmount: loan.approvedAmount ? Number(loan.approvedAmount) : null,
+      interestRate: Number(loan.interestRate),
+      repaymentPeriod: loan.repaymentPeriod,
+      status: loan.status,
+      qualificationType: loan.qualificationType || null,
+      appliedAt: loan.appliedAt.toISOString(),
+      rejectionReason: loan.rejectionReason || null,
+      guarantors: loan.guarantors.map((g) => ({
+        id: g.id,
+        fullName: g.fullName,
+        phone: g.phone,
+        email: g.email,
+        relationship: g.relationship,
+        confirmationStatus: g.confirmationStatus,
+      })),
+    };
+
+    return { success: true, data: serialized };
   } catch (error) {
     return { success: false, error: (error as Error).message };
   }
@@ -209,6 +298,18 @@ export async function approveLoanAction(loanId: string) {
       "Approved",
       session.user.id as string
     );
+
+    if (result.success) {
+      await prisma.auditLog.create({
+        data: {
+          userId: session.user.id as string,
+          action: "APPROVE",
+          entity: "LoanApplication",
+          entityId: loanId,
+        },
+      }).catch(() => {});
+    }
+
     return { success: result.success, error: result.error };
   } catch (error) {
     return { success: false, error: (error as Error).message };
@@ -231,6 +332,19 @@ export async function rejectLoanAction(loanId: string, reason: string) {
       session.user.id as string,
       reason
     );
+
+    if (result.success) {
+      await prisma.auditLog.create({
+        data: {
+          userId: session.user.id as string,
+          action: "REJECT",
+          entity: "LoanApplication",
+          entityId: loanId,
+          newValue: { reason },
+        },
+      }).catch(() => {});
+    }
+
     return { success: result.success, error: result.error };
   } catch (error) {
     return { success: false, error: (error as Error).message };
@@ -248,6 +362,18 @@ export async function disburseLoanAction(loanId: string) {
     }
 
     const result = await updateLoanStatus(loanId, "Disbursed");
+
+    if (result.success) {
+      await prisma.auditLog.create({
+        data: {
+          userId: session.user.id as string,
+          action: "DISBURSE",
+          entity: "LoanApplication",
+          entityId: loanId,
+        },
+      }).catch(() => {});
+    }
+
     return { success: result.success, error: result.error };
   } catch (error) {
     return { success: false, error: (error as Error).message };
