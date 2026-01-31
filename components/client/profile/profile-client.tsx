@@ -201,7 +201,7 @@ export function ProfileClient({
 
                                             {/* Personal Details Section */}
                                             <SidebarSection title="Personal Details">
-                                                <InfoRow icon={Calendar} label="Date of birth" value={formatDate(client?.dateOfBirth)} />
+                                                <InfoRow icon={Calendar} label="Date of birth" value={formatDate(client?.dateOfBirth as string)} />
                                                 <InfoRow icon={User} label="National ID" value={client?.idPassportNo} />
                                                 <InfoRow icon={User} label="Nationality" value={client?.nationality} />
                                                 <InfoRow icon={User} label="Marital Status" value={client?.maritalStatus} />
@@ -245,7 +245,7 @@ export function ProfileClient({
                                                                 <td className="px-6 py-4 text-foreground font-medium">{employment.employerName}</td>
                                                                 <td className="px-6 py-4 text-foreground">{employment.jobTitle}</td>
                                                                 <td className="px-6 py-4 text-foreground">{employment.department || '-'}</td>
-                                                                <td className="px-6 py-4 text-foreground">{formatDate(employment.dateJoined) || '-'}</td>
+                                                                <td className="px-6 py-4 text-foreground">{formatDate(employment.dateJoined as string) || '-'}</td>
                                                                 <td className="px-6 py-4 text-foreground">{employment.branchLocation || '-'}</td>
                                                                 <td className="px-6 py-4">
                                                                     <button type="button" className="text-muted-foreground hover:text-foreground">
@@ -375,7 +375,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <PersonalInfoForm />
+                                    <PersonalInfoForm client={client as Client} />    
                                 </div>
                             </motion.div>
                         </TabsContent>

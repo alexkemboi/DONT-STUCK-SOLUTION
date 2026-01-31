@@ -70,6 +70,11 @@ const adminnavigation = [
     href: "/dss/admin/reports",
     icon: BarChart2,
   },
+  {
+    name: "New Reports",
+    href: "/dss/admin/newreport",
+    icon: BarChart2,
+  },
   // {
   //   name: "Recovery & NPL",
   //   href: "/dss/admin/recovery",

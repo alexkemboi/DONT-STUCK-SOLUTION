@@ -206,3 +206,36 @@ export async function getLoanPortfolioSummaryAction(): Promise<{
     return { success: false, error: (error as Error).message };
   }
 }
+
+
+export async function getReports() {
+  const clientsWithBalances = await prisma.loanApplication.count({
+    where: {
+      status: {
+        in: ["Disbursed", "Active"],
+      },
+    },
+  });
+
+  const overduePayments = await prisma.repayment.count({
+    where: {
+    },
+  });
+
+  const totalDisbursed = await prisma.loanApplication.aggregate({
+    _sum: {
+      approvedAmount: true,
+    },
+    where: {
+      status: {
+        in: ["Disbursed", "Active", "Closed"],
+      },
+    },
+  });
+
+  return {
+    clientsWithBalances,
+    overduePayments,
+    totalDisbursed: totalDisbursed._sum.approvedAmount || 0,
+  };
+}
