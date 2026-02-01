@@ -93,11 +93,12 @@ export function LoginForm() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rounded-md border border-gray-200 bg-white p-5">
+
       {/* Header */}
-      <div className="text-center lg:text-left">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-          Welcome back
+      <div className="text-center lg:text-center">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900 text-center">
+         DONT STUCK SOLUTIONS
         </h1>
         <p className="mt-2 text-sm text-slate-600">
           Sign in to access your loan management dashboard
@@ -251,7 +252,7 @@ export function LoginForm() {
           type="submit"
           className="w-full h-11 border-2 border-emerald-500 hover:bg-emerald-600 bg-white text-emerald-500 hover:text-white transition-all duration-200"
         >
-          <Link href="/auth/register">
+          <Link href="/register">
             <span className="flex items-center justify-center">
               Create an account
             </span>

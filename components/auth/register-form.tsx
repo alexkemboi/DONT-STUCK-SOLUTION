@@ -80,7 +80,7 @@ export function RegisterForm() {
           toast.success("Welcome aboard!", {
             description: "Your account has been created successfully.",
           });
-          router.push("/client");
+          router.push("/dss/client");
     }else{
 
       dispatch(loginFailure(user.error || "Registration failed"));

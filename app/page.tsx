@@ -33,7 +33,7 @@ export default async function page() {
     }
 
   }else{
-      return redirect("/login");
+      return redirect("/");
   }
 
 

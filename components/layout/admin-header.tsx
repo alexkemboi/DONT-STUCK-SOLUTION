@@ -15,6 +15,9 @@ import {
 import { toast } from "sonner";
 import { NotificationBell } from "./notification-bell";
 import { AdminSearch } from "./admin-search";
+import { useRouter } from "next/navigation";
+
+
 
 interface UserSchema {
   id: string;
@@ -41,13 +44,15 @@ interface AdminHeaderProps {
 
 export function AdminHeader({ user, notifications }: AdminHeaderProps) {
   const dispatch = useAppDispatch();
-
+const router = useRouter();
   const handleLogout = () => {
     dispatch(logout());
     toast.success("Logged out successfully", {
       description: "You have been signed out of your account.",
     });
-    window.location.href = "/login";
+     router.replace("/");
+ 
+  
   };
 
   return (
@@ -112,7 +117,7 @@ export function AdminHeader({ user, notifications }: AdminHeaderProps) {
                   {user?.name?.charAt(0).toUpperCase() || "J"}{user?.name?.charAt(0).toUpperCase() || "D"}
                 </div>
                 <div className="hidden md:flex md:flex-col md:items-start md:text-left">
-                  <span className="text-sm font-medium text-slate-900">{user?.name?.split(" ")[0] || "John"} {user?.name?.split(" ")[1] || "Doe"}</span>
+                  <span className="text-sm font-medium text-slate-900">{user?.name?.split(" ")[0] || "_"} {user?.name?.split(" ")[1] || "_"}</span>
                   <span className="text-xs text-slate-500">{user?.role}</span>
                 </div>
                 <ChevronDown className="hidden h-4 w-4 text-slate-400 md:block" />
@@ -124,7 +129,7 @@ export function AdminHeader({ user, notifications }: AdminHeaderProps) {
                   {user?.name?.charAt(0).toUpperCase() || "J"}{user?.name?.charAt(0).toUpperCase() || "D"}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-900">{user?.name?.split(" ")[0] || "John"} {user?.name?.split(" ")[1] || "Doe"}</p>
+                  <p className="text-sm font-medium text-slate-900">{user?.name?.split(" ")[0] || "_"} {user?.name?.split(" ")[1] || "_"}</p>
                   <p className="text-xs text-slate-500">{user?.email || "john@dssfinance.com"}  </p>
                 </div>
               </div>
