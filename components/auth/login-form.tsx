@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { Eye, EyeOff, LogIn, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import Image from "next/image";
+import dss from "@/public/dss.png"
 import {
   loginStart,
   loginSuccess,
@@ -89,7 +91,7 @@ export function LoginForm() {
           router.push("/dss/admin");
         }
       } else {
-        router.push("/");
+        router.push("/login");
       }
     
     }
@@ -100,9 +102,19 @@ export function LoginForm() {
 
       {/* Header */}
       <div className="text-center lg:text-center">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 text-center">
+        <div className="flex flex-col items-center justify-center gap-3">
+                 <Image
+                    src={dss}
+                    alt="Don't Stuck Solutions Logo"
+                    width={204}
+                    height={204}
+                    priority
+                  />
+               
+              </div>
+        {/* <h1 className="text-2xl font-bold tracking-tight text-slate-900 text-center">
          DONT STUCK SOLUTIONS
-        </h1>
+        </h1> */}
         <p className="mt-2 text-sm text-slate-600">
           Sign in to access your loan management dashboard
         </p>
