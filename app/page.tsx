@@ -12,6 +12,9 @@ export default async function page() {
   );
 
 
+
+  // console.log("session", session)
+
   
 
 
@@ -445,4 +448,7 @@ export default async function page() {
   //     </footer>
   //   </div>
   // );
+
+
+  
 }

@@ -1,25 +1,48 @@
 import { getClientById } from "@/app/actions/admin";
-import { PersonalInfoForm } from "@/components/client/profile/personal-info-form";
-import { AddressForm } from "@/components/client/profile/address-form";
-import { EmploymentForm } from "@/components/client/profile/employment-form";
-import { RefereeForm } from "@/components/client/profile/referee-form";
-import { BankDetails } from "@/components/client/profile/bank-details";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ClientDetailView } from "@/components/admin/clients/client-detail-view";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export default async function ClientDetailsPage({
   params,
 }: {
-    params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = (await params);
+  const { id } = await params;
   const { data: client, error } = await getClientById(id);
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="space-y-4">
+        <Link
+          href="/dss/admin/clients"
+          className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Clients
+        </Link>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+          <p className="text-red-600 font-medium">{error}</p>
+        </div>
+      </div>
+    );
   }
 
   if (!client) {
-    return <div>Client not found</div>;
+    return (
+      <div className="space-y-4">
+        <Link
+          href="/dss/admin/clients"
+          className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Clients
+        </Link>
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-6 text-center">
+          <p className="text-slate-600">Client not found</p>
+        </div>
+      </div>
+    );
   }
 
   const employment = client.employmentDetails?.[0]
@@ -34,85 +57,36 @@ export default async function ClientDetailsPage({
     createdAt: referee.createdAt?.toISOString(),
   }));
 
-
   const bankDetails = client.bankDetails?.[0]
     ? {
-      ...client.bankDetails[0],
-      proofDocument: client.bankDetails[0].proofDocument ?? undefined,
-    }
+        ...client.bankDetails[0],
+        proofDocument: client.bankDetails[0].proofDocument ?? undefined,
+        accountName: client.bankDetails[0].accountName as string,
+        accountNumber: client.bankDetails[0].accountNumber as string,
+        branch: client.bankDetails[0].branch as string,
+        bankName: client.bankDetails[0].bankName as string,
+        proofDocumentUrl: client.bankDetails[0].proofDocumentUrl as string,
+        createdAt: client.bankDetails[0].createdAt.toISOString() as string,
+        updatedAt: client.bankDetails[0].updatedAt.toISOString() as string,
+      }
     : undefined;
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-900">
-          {client.surname} {client.otherNames}
-        </h1>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Personal Information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <PersonalInfoForm client={client} isReadOnly={true} />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Address</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <AddressForm addresses={client.addresses} isReadOnly={true} />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Employment Details</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <EmploymentForm employment={employment} isReadOnly={true} />
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Bank Details</CardTitle>
-            </CardHeader>
-            <CardContent>
-      
-          <BankDetails bankDetails={
-            {
-              ...bankDetails,
-              accountName:bankDetails?.accountName as string,
-              accountNumber:bankDetails?.accountNumber as string,
-              branch:bankDetails?.branch as string,
-              bankName:bankDetails?.bankName as string,
-            proofDocumentUrl:bankDetails?.proofDocumentUrl as string,
-            createdAt:bankDetails?.createdAt.toISOString() as string,
-                  updatedAt: bankDetails?.createdAt.toISOString() as string
-            }
-          } isReadOnly={true} />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Referees</CardTitle>
-            </CardHeader>
-            <CardContent>
-       
-            <RefereeForm referees={referees} isReadOnly={true} />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+      <Link
+        href="/dss/admin/clients"
+        className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Clients
+      </Link>
+      <ClientDetailView
+        client={client}
+        addresses={client.addresses || []}
+        employment={employment}
+        bankDetails={bankDetails}
+        referees={referees || []}
+      />
     </div>
   );
 }

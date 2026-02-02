@@ -8,10 +8,13 @@ import {
   addGuarantor,
   getLoansByClientId,
   getLoanById,
+  getFullLoanById,
   getAllLoans,
   updateLoanStatus,
+  updateGuarantorStatus,
   type LoanWithClient,
 } from "@/services/loan.service";
+import { revalidatePath } from "next/cache";
 import type { LoanApplicationSubmitData } from "@/lib/types";
 
 export async function submitLoanApplicationAction(data: LoanApplicationSubmitData) {
@@ -293,6 +296,23 @@ export async function approveLoanAction(loanId: string) {
       return { success: false, error: "Unauthorized" };
     }
 
+    // Business rule: check guarantor statuses before approving
+    const guarantors = await prisma.guarantor.findMany({
+      where: { loanId },
+      select: { confirmationStatus: true },
+    });
+
+    const hasDeclinedGuarantor = guarantors.some(
+      (g) => g.confirmationStatus === "Declined"
+    );
+
+    if (hasDeclinedGuarantor) {
+      return {
+        success: false,
+        error: "Cannot approve loan: one or more guarantors have been declined",
+      };
+    }
+
     const result = await updateLoanStatus(
       loanId,
       "Approved",
@@ -375,6 +395,232 @@ export async function disburseLoanAction(loanId: string) {
     }
 
     return { success: result.success, error: result.error };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+// ============================================================================
+// ADMIN — LOAN DETAIL
+// ============================================================================
+
+export interface SerializedLoanDetail {
+  id: string;
+  clientId: string;
+  purpose: string;
+  amountRequested: number;
+  approvedAmount: number | null;
+  interestRate: number;
+  repaymentPeriod: number;
+  status: string;
+  qualificationType: string | null;
+  appliedAt: string;
+  reviewedAt: string | null;
+  approvedAt: string | null;
+  startDate: string | null;
+  rejectionReason: string | null;
+  client: {
+    id: string;
+    surname: string;
+    otherNames: string;
+    phoneMobile: string;
+    emailPersonal: string | null;
+    idPassportNo: string;
+    status: string;
+  };
+  guarantors: {
+    id: string;
+    fullName: string;
+    phone: string;
+    email: string | null;
+    idNumber: string | null;
+    relationship: string | null;
+    confirmationStatus: string;
+    confirmedAt: string | null;
+  }[];
+  documents: {
+    id: string;
+    documentType: string;
+    fileName: string;
+    filePath: string;
+    uploadedAt: string;
+  }[];
+  financials: {
+    processingFee: number;
+    legalFee: number;
+    penaltyFee: number;
+    interestAmount: number;
+  } | null;
+  security: {
+    idCopy: boolean;
+    passportPhoto: boolean;
+    appointmentLetter: boolean;
+    payslips: boolean;
+    bankStatement: boolean;
+    chequeLeafNo: string | null;
+  } | null;
+  disbursement: {
+    amount: number;
+    method: string;
+    reference: string | null;
+    disbursedAt: string;
+  } | null;
+  repayments: {
+    id: string;
+    amount: number;
+    paymentMethod: string;
+    paymentDate: string;
+    category: string;
+    reference: string | null;
+  }[];
+  reviewedBy: string | null;
+  approvedBy: string | null;
+}
+
+export async function getAdminLoanDetailAction(loanId: string): Promise<{
+  success: boolean;
+  data?: SerializedLoanDetail;
+  error?: string;
+}> {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id as string },
+      select: { role: true },
+    });
+
+    if (user?.role !== "Admin") {
+      return { success: false, error: "Admin access required" };
+    }
+
+    const result = await getFullLoanById(loanId);
+    if (!result.success || !result.data) {
+      return { success: false, error: result.error || "Loan not found" };
+    }
+
+    const loan = result.data;
+    const serialized: SerializedLoanDetail = {
+      id: loan.id,
+      clientId: loan.clientId,
+      purpose: loan.purpose,
+      amountRequested: Number(loan.amountRequested),
+      approvedAmount: loan.approvedAmount ? Number(loan.approvedAmount) : null,
+      interestRate: Number(loan.interestRate),
+      repaymentPeriod: loan.repaymentPeriod,
+      status: loan.status,
+      qualificationType: loan.qualificationType || null,
+      appliedAt: loan.appliedAt.toISOString(),
+      reviewedAt: loan.reviewedAt?.toISOString() || null,
+      approvedAt: loan.approvedAt?.toISOString() || null,
+      startDate: loan.startDate?.toISOString() || null,
+      rejectionReason: loan.rejectionReason || null,
+      client: loan.client,
+      guarantors: loan.guarantors.map((g) => ({
+        id: g.id,
+        fullName: g.fullName,
+        phone: g.phone,
+        email: g.email,
+        idNumber: g.idNumber,
+        relationship: g.relationship,
+        confirmationStatus: g.confirmationStatus,
+        confirmedAt: g.confirmedAt?.toISOString() || null,
+      })),
+      documents: loan.documents.map((d) => ({
+        id: d.id,
+        documentType: d.documentType,
+        fileName: d.fileName,
+        filePath: d.filePath,
+        uploadedAt: d.uploadedAt.toISOString(),
+      })),
+      financials: loan.financials
+        ? {
+            processingFee: Number(loan.financials.processingFee),
+            legalFee: Number(loan.financials.legalFee),
+            penaltyFee: Number(loan.financials.penaltyFee),
+            interestAmount: Number(loan.financials.interestAmount),
+          }
+        : null,
+      security: loan.security || null,
+      disbursement: loan.disbursement
+        ? {
+            amount: Number(loan.disbursement.amount),
+            method: loan.disbursement.method,
+            reference: loan.disbursement.reference,
+            disbursedAt: loan.disbursement.disbursedAt.toISOString(),
+          }
+        : null,
+      repayments: loan.repayments.map((r) => ({
+        id: r.id,
+        amount: Number(r.amount),
+        paymentMethod: r.paymentMethod,
+        paymentDate: r.paymentDate.toISOString(),
+        category: r.category,
+        reference: r.reference,
+      })),
+      reviewedBy: loan.reviewedBy?.name || null,
+      approvedBy: loan.approvedBy?.name || null,
+    };
+
+    return { success: true, data: serialized };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+// ============================================================================
+// ADMIN — GUARANTOR STATUS
+// ============================================================================
+
+export async function updateGuarantorStatusAction(
+  guarantorId: string,
+  status: "Confirmed" | "Declined"
+) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id as string },
+      select: { role: true },
+    });
+
+    if (user?.role !== "Admin") {
+      return { success: false, error: "Admin access required" };
+    }
+
+    const result = await updateGuarantorStatus(guarantorId, status);
+    if (!result.success) {
+      return { success: false, error: result.error || "Failed to update guarantor status" };
+    }
+
+    await prisma.auditLog.create({
+      data: {
+        userId: session.user.id as string,
+        action: status === "Confirmed" ? "CONFIRM" : "DECLINE",
+        entity: "Guarantor",
+        entityId: guarantorId,
+        newValue: { status },
+      },
+    }).catch(() => {});
+
+    const guarantor = result.data;
+    if (guarantor) {
+      revalidatePath(`/dss/admin/loans/${guarantor.loanId}`);
+    }
+
+    return { success: true };
   } catch (error) {
     return { success: false, error: (error as Error).message };
   }

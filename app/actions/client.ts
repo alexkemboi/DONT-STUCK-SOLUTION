@@ -3,7 +3,8 @@
 import { auth } from "@/lib/auth";
 import { BankDetail, Client, ClientAddress, EmploymentDetail, Referee } from "@/lib/types";
 import { headers } from "next/headers";
-import { createAddress, createBankDetail, createClientService, createEmployment, createReferee, deleteReferee, getAddresses, getBankDetails, getLatestEmployment, getReferees, updateAddress, updateClient, updateEmployment, updateReferee } from "@/services/client.service";
+import { revalidatePath } from "next/cache";
+import { createAddress, createBankDetail, createClientService, createEmployment, createReferee, deleteReferee, getAddresses, getBankDetails, getLatestEmployment, getReferees, updateAddress, updateBankDetail, updateClient, updateEmployment, updateReferee } from "@/services/client.service";
 import prisma from "@/lib/prisma";
 import { fileToInput, uploadFile } from "@/services/storage.service";
 
@@ -84,6 +85,8 @@ export async function updateClientAction(id: string, data: Partial<Client>): Pro
                 newValue: payload as object,
             },
         }).catch(() => {});
+
+        revalidatePath("/dss/client/profile");
 
         return {
             success: true,
@@ -202,6 +205,8 @@ export async function updateAddressAction(params: { id: string; data: Partial<Cl
             },
         }).catch(() => {});
 
+        revalidatePath("/dss/client/profile");
+
         return {
             success: true,
             data: updatedAddress.data
@@ -253,6 +258,8 @@ export async function createClientAddressAction(data:ClientAddress) {
                     newValue: payload as object,
                 },
             }).catch(() => {});
+
+            revalidatePath("/dss/client/profile");
 
             return {
                 success: true,
@@ -338,6 +345,8 @@ export async function createEmploymentDetailAction(data:EmploymentDetail) {
             },
         }).catch(() => {});
 
+        revalidatePath("/dss/client/profile");
+
         return {
             success: true,
             data: newEmployment.data
@@ -381,6 +390,8 @@ export async function updateEmploymentDetailAction(id:string, data:Partial<Emplo
                 newValue: payload as object,
             },
         }).catch(() => {});
+
+        revalidatePath("/dss/client/profile");
 
         return {
             success: true,
@@ -464,6 +475,8 @@ export async function createRefereeAction(data:Referee) {
             },
         }).catch(() => {});
 
+        revalidatePath("/dss/client/profile");
+
         return {
             success: true,
             data: newReferee.data
@@ -512,6 +525,8 @@ export async function updateRefereeAction(refereeId: string, data: Partial<Refer
             },
         }).catch(() => {});
 
+        revalidatePath("/dss/client/profile");
+
         return {
             success: true,
             data: newReferee.data
@@ -555,6 +570,8 @@ export async function deleteRefereeAction(refereeId: string) {
                 entityId: refereeId,
             },
         }).catch(() => {});
+
+        revalidatePath("/dss/client/profile");
 
         return {
             success: response.success
@@ -639,6 +656,8 @@ export async function createBankAction(data:BankDetail) {
             },
         }).catch(() => {});
 
+        revalidatePath("/dss/client/profile");
+
         return {
             success: true,
             data: newBankDetail.data
@@ -649,6 +668,42 @@ export async function createBankAction(data:BankDetail) {
     }
 }
 
+
+export async function updateBankAction(id: string, data: Partial<BankDetail>) {
+    try {
+        const session = await auth.api.getSession({
+            headers: await headers()
+        });
+
+        if (!session?.user) {
+            throw new Error("Unauthorized");
+        }
+
+        const updatedBankDetail = await updateBankDetail(id, data);
+        if (!updatedBankDetail.success) {
+            throw new Error(updatedBankDetail.error || "Failed to update bank details");
+        }
+
+        await prisma.auditLog.create({
+            data: {
+                userId: session.user.id as string,
+                action: "UPDATE",
+                entity: "BankDetail",
+                entityId: id,
+                newValue: { bankName: data.bankName, accountNumber: data.accountNumber },
+            },
+        }).catch(() => {});
+
+        revalidatePath("/dss/client/profile");
+
+        return {
+            success: true,
+            data: updatedBankDetail.data
+        };
+    } catch (error) {
+        return { success: false, error: (error as Error).message };
+    }
+}
 
 export async function uploadBankDocumentAction(formData: FormData): Promise<{ success: boolean; data?: { url: string }; error?: string }> {
     try {

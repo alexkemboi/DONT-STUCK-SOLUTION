@@ -237,7 +237,7 @@ export function LoansTable({ loans }: LoansTableProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem
-              onClick={() => toast.info(`Viewing ${loan.id}`)}
+              onClick={() => router.push(`/dss/admin/loans/${loan.id}`)}
             >
               <Eye className="mr-2 h-4 w-4" />
               View Details

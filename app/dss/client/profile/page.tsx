@@ -25,7 +25,7 @@ const page = async() => {
                    <ProfileClient
                        bankDetailsSource={bankDetails || null}
                        refereesSource={referees.data || []}
-                    //    employmentSource={employment || null}
+                       employmentSource={employment || null}
                        addressSource={addresses?.data?.[0] || null}
                        clientSource={client || null}
                    />

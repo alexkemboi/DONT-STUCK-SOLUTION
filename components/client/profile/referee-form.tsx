@@ -11,6 +11,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { refereeSchema } from '@/lib/validations'
 import type { RefereeFormValues, Referee } from '@/lib/types'
 import { createRefereeAction, deleteRefereeAction, updateRefereeAction } from '@/app/actions/client'
+import { adminCreateRefereeAction } from '@/app/actions/admin'
 import { toast } from 'sonner'
 
 const emptyReferee: RefereeFormValues = {
@@ -28,15 +29,18 @@ const emptyReferee: RefereeFormValues = {
 interface RefereeFormProps {
     referees?: Referee[];
     isReadOnly?: boolean;
+    clientId?: string;
     onSuccess?: () => void;
 }
 
-export function RefereeForm({ referees = [], isReadOnly = false, onSuccess }: RefereeFormProps) {
+export function RefereeForm({ referees = [], isReadOnly = false, clientId, onSuccess }: RefereeFormProps) {
     const [showAddForm, setShowAddForm] = useState(false)
     const [editingId, setEditingId] = useState<string | null>(null)
 
     const handleAddSubmit = async (values: RefereeFormValues) => {
-        const response = await createRefereeAction(values)
+        const response = clientId
+            ? await adminCreateRefereeAction(clientId, values)
+            : await createRefereeAction(values)
         if(!response.success){
             toast.error(`Failed to add referee: ${response.error}`)
             return

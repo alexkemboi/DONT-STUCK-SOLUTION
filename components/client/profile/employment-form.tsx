@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { employmentSchema } from '@/lib/validations'
 import type { EmploymentFormValues, EmploymentDetail } from '@/lib/types'
 import { createEmploymentDetailAction, updateEmploymentDetailAction } from '@/app/actions/client'
+import { adminCreateEmploymentAction } from '@/app/actions/admin'
 import { toast } from 'sonner'
 
 const employmentTypeOptions = [
@@ -20,10 +21,11 @@ const employmentTypeOptions = [
 interface EmploymentFormProps {
     employment?: EmploymentDetail;
     isReadOnly?: boolean;
+    clientId?: string;
     onSuccess?: () => void
 }
 
-export function EmploymentForm({ employment, isReadOnly = false, onSuccess }: EmploymentFormProps) {
+export function EmploymentForm({ employment, isReadOnly = false, clientId, onSuccess }: EmploymentFormProps) {
     const initialValues: EmploymentFormValues = {
         id: employment?.id || '',
         clientId: employment?.clientId || '',
@@ -58,7 +60,9 @@ export function EmploymentForm({ employment, isReadOnly = false, onSuccess }: Em
             return;
         }
 
-        const response = await createEmploymentDetailAction(values)
+        const response = clientId
+            ? await adminCreateEmploymentAction(clientId, values)
+            : await createEmploymentDetailAction(values)
         if(!response.success){
             toast.error(`Failed to save employment details: ${response.error}`)
             return

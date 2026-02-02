@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button'
 import { bankDetailSchema } from '@/lib/validations'
 import type { BankDetailFormValues, BankDetail } from '@/lib/types'
 import { ChangeEvent, useState } from 'react'
-import { createBankAction, uploadBankDocumentAction } from '@/app/actions/client'
+import { createBankAction, updateBankAction, uploadBankDocumentAction } from '@/app/actions/client'
+import { adminCreateBankAction } from '@/app/actions/admin'
 import { toast } from 'sonner'
 import { X } from 'lucide-react'
 import { deleteFile, UploadResult } from '@/services/storage.service'
@@ -15,10 +16,11 @@ import { deleteFile, UploadResult } from '@/services/storage.service'
 interface BankDetailsProps {
     bankDetails?: BankDetail;
     isReadOnly?: boolean;
+    clientId?: string;
     onSuccess?: () => void
 }
 
-export function BankDetails({ bankDetails, isReadOnly = false, onSuccess }: BankDetailsProps) {
+export function BankDetails({ bankDetails, isReadOnly = false, clientId, onSuccess }: BankDetailsProps) {
     const [uploading, setUploading] = useState(false)
     const [proofDocumentUrl, setProofDocumentUrl] = useState<UploadResult | null>(null)
 
@@ -52,13 +54,26 @@ export function BankDetails({ bankDetails, isReadOnly = false, onSuccess }: Bank
             toast.error('Please upload a proof document')
             return;
         }
-        
+
         const finalValues = {
             ...values,
             proofDocumentUrl: proofDocumentUrl?.data?.url || bankDetails?.proofDocumentUrl,
         };
 
-        const response = await createBankAction(finalValues)
+        if (bankDetails?.id) {
+            const response = await updateBankAction(bankDetails.id, finalValues)
+            if (!response.success) {
+                toast.error(response.error || 'Failed to update bank details')
+                return;
+            }
+            toast.success('Bank details updated successfully')
+            onSuccess?.()
+            return;
+        }
+
+        const response = clientId
+            ? await adminCreateBankAction(clientId, finalValues)
+            : await createBankAction(finalValues)
         if (response.success == false) {
             toast.error(response.error || 'Failed to create bank details')
             return;
@@ -91,6 +106,7 @@ export function BankDetails({ bankDetails, isReadOnly = false, onSuccess }: Bank
                 initialValues={initialValues}
                 validationSchema={bankDetailSchema}
                 onSubmit={handleSubmit}
+                enableReinitialize
             >
                 {({ isSubmitting, dirty, setFieldValue }) => (
                     <Form className="space-y-6">
