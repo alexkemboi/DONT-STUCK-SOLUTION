@@ -13,7 +13,7 @@ export default function LoginPage() {
                 <Building2 className="h-7 w-7 text-white" />
               </div>
               <div>
-                <span className="text-2xl font-bold text-red-900">DON'T STUCK SOLUTIONS</span>
+                <span className="text-2xl font-bold text-slate-900">DON'T STUCK SOLUTIONS</span>
               </div>
             </div>
 
