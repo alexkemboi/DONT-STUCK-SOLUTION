@@ -15,6 +15,7 @@ import {
   BarChart2,
   CreditCard,
   FolderOpen,
+  UserCog,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setMobileSidebarOpen } from "@/lib/store/slices/ui-slice";
@@ -69,6 +70,11 @@ const adminnavigation = [
     name: "Reports",
     href: "/dss/admin/reports",
     icon: BarChart2,
+  },
+  {
+    name: "Staff",
+    href: "/dss/admin/staff",
+    icon: UserCog,
   }
   // {
   //   name: "New Reports",

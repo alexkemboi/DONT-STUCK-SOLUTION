@@ -208,6 +208,198 @@ export async function getLoanPortfolioSummaryAction(): Promise<{
 }
 
 
+// ============================================================================
+// REPORT DATA EXPORT
+// ============================================================================
+
+export type ReportType = "portfolio" | "repayments" | "clients" | "disbursements";
+
+export async function getReportDataAction(
+  reportType: ReportType,
+  startDate?: string,
+  endDate?: string
+): Promise<{ success: boolean; data?: Record<string, unknown>[]; error?: string }> {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const adminUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { role: true },
+    });
+
+    if (adminUser?.role !== "Admin") {
+      return { success: false, error: "Admin access required" };
+    }
+
+    const start = startDate ? new Date(startDate) : undefined;
+    const end = endDate ? new Date(endDate) : undefined;
+    if (end) {
+      end.setHours(23, 59, 59, 999);
+    }
+
+    switch (reportType) {
+      case "portfolio": {
+        const loans = await prisma.loanApplication.findMany({
+          where: {
+            ...(start || end
+              ? {
+                  appliedAt: {
+                    ...(start ? { gte: start } : {}),
+                    ...(end ? { lte: end } : {}),
+                  },
+                }
+              : {}),
+          },
+          include: {
+            client: {
+              select: { surname: true, otherNames: true },
+            },
+          },
+          orderBy: { appliedAt: "desc" },
+        });
+
+        return {
+          success: true,
+          data: loans.map((l) => ({
+            "Loan ID": l.id,
+            Client: `${l.client.surname} ${l.client.otherNames}`,
+            Purpose: l.purpose,
+            "Amount Requested": Number(l.amountRequested),
+            "Approved Amount": l.approvedAmount ? Number(l.approvedAmount) : "",
+            "Interest Rate": Number(l.interestRate),
+            "Period (months)": l.repaymentPeriod,
+            Status: l.status,
+            "Applied At": l.appliedAt.toISOString().split("T")[0],
+          })),
+        };
+      }
+
+      case "repayments": {
+        const repayments = await prisma.repayment.findMany({
+          where: {
+            ...(start || end
+              ? {
+                  paymentDate: {
+                    ...(start ? { gte: start } : {}),
+                    ...(end ? { lte: end } : {}),
+                  },
+                }
+              : {}),
+          },
+          include: {
+            loan: {
+              select: {
+                id: true,
+                client: {
+                  select: { surname: true, otherNames: true },
+                },
+              },
+            },
+          },
+          orderBy: { paymentDate: "desc" },
+        });
+
+        return {
+          success: true,
+          data: repayments.map((r) => ({
+            "Repayment ID": r.id,
+            "Loan ID": r.loan.id,
+            Client: `${r.loan.client.surname} ${r.loan.client.otherNames}`,
+            Amount: Number(r.amount),
+            Method: r.paymentMethod,
+            Category: r.category,
+            Reference: r.reference || "",
+            "Payment Date": r.paymentDate.toISOString().split("T")[0],
+          })),
+        };
+      }
+
+      case "clients": {
+        const clients = await prisma.client.findMany({
+          include: {
+            loanApplications: {
+              select: {
+                amountRequested: true,
+                status: true,
+              },
+            },
+          },
+          orderBy: { surname: "asc" },
+        });
+
+        return {
+          success: true,
+          data: clients.map((c) => ({
+            Name: `${c.surname} ${c.otherNames}`,
+            Phone: c.phoneMobile,
+            Email: c.emailPersonal || "",
+            "ID/Passport": c.idPassportNo,
+            Status: c.status,
+            "Total Loans": c.loanApplications.length,
+            "Total Amount": c.loanApplications.reduce(
+              (sum: number, l: { amountRequested: unknown }) => sum + Number(l.amountRequested),
+              0
+            ),
+            "Active Loans": c.loanApplications.filter(
+              (l: { status: string }) => l.status === "Disbursed" || l.status === "Active"
+            ).length,
+          })),
+        };
+      }
+
+      case "disbursements": {
+        const disbursements = await prisma.loanDisbursement.findMany({
+          where: {
+            ...(start || end
+              ? {
+                  disbursedAt: {
+                    ...(start ? { gte: start } : {}),
+                    ...(end ? { lte: end } : {}),
+                  },
+                }
+              : {}),
+          },
+          include: {
+            loan: {
+              select: {
+                id: true,
+                client: {
+                  select: { surname: true, otherNames: true },
+                },
+              },
+            },
+          },
+          orderBy: { disbursedAt: "desc" },
+        });
+
+        return {
+          success: true,
+          data: disbursements.map((d) => ({
+            "Disbursement ID": d.id,
+            "Loan ID": d.loan.id,
+            Client: `${d.loan.client.surname} ${d.loan.client.otherNames}`,
+            Amount: Number(d.amount),
+            Method: d.method,
+            Reference: d.reference || "",
+            "Disbursed At": d.disbursedAt.toISOString().split("T")[0],
+          })),
+        };
+      }
+
+      default:
+        return { success: false, error: "Invalid report type" };
+    }
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
 export async function getReports() {
   const clientsWithBalances = await prisma.loanApplication.count({
     where: {

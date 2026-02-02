@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { NotificationBell } from "./notification-bell";
 import { AdminSearch } from "./admin-search";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/authclient";
 
 
 
@@ -44,15 +45,16 @@ interface AdminHeaderProps {
 
 export function AdminHeader({ user, notifications }: AdminHeaderProps) {
   const dispatch = useAppDispatch();
+ 
 const router = useRouter();
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(logout());
+    
     toast.success("Logged out successfully", {
       description: "You have been signed out of your account.",
     });
-     router.replace("/");
- 
-  
+    await authClient.signOut()
+   
   };
 
   return (

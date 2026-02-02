@@ -7,15 +7,17 @@ import { Button } from '@/components/ui/button'
 import { addressSchema } from '@/lib/validations'
 import type { AddressFormValues, ClientAddress } from '@/lib/types'
 import { createClientAddressAction, updateAddressAction } from '@/app/actions/client'
+import { adminCreateAddressAction } from '@/app/actions/admin'
 import { toast } from 'sonner'
 
 interface AddressFormProps {
     addresses?: ClientAddress[];
     isReadOnly?: boolean;
+    clientId?: string;
     onSuccess?: () => void
 }
 
-export function AddressForm({ addresses, isReadOnly = false, onSuccess }: AddressFormProps) {
+export function AddressForm({ addresses, isReadOnly = false, clientId, onSuccess }: AddressFormProps) {
     const address = addresses?.[0];
 
     const initialValues: AddressFormValues = {
@@ -44,7 +46,9 @@ export function AddressForm({ addresses, isReadOnly = false, onSuccess }: Addres
             return;
         }
 
-        const response = await createClientAddressAction(values);
+        const response = clientId
+            ? await adminCreateAddressAction(clientId, values)
+            : await createClientAddressAction(values);
         if(!response.success){
             toast.error("Failed to save address. Please try again.");
             return;

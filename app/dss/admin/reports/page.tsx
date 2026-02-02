@@ -1,5 +1,6 @@
 import { getLoanPortfolioSummaryAction } from "@/app/actions/reports";
 import { PortfolioReport } from "@/components/admin/reports/portfolio-report";
+import { ReportsManager } from "@/components/admin/reports/reports-manager";
 
 export default async function ReportsPage() {
   const result = await getLoanPortfolioSummaryAction();
@@ -9,7 +10,7 @@ export default async function ReportsPage() {
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
         <p className="text-slate-500">
-          Loan portfolio summary and performance metrics.
+          Loan portfolio summary, performance metrics, and data export.
         </p>
       </div>
 
@@ -20,6 +21,8 @@ export default async function ReportsPage() {
           Failed to load report data: {result.error}
         </p>
       )}
+
+      <ReportsManager />
     </div>
   );
 }
