@@ -45,7 +45,7 @@ interface AdminHeaderProps {
 
 export function AdminHeader({ user, notifications }: AdminHeaderProps) {
   const dispatch = useAppDispatch();
- 
+
 const router = useRouter();
   const handleLogout = async () => {
     dispatch(logout());
@@ -54,6 +54,7 @@ const router = useRouter();
       description: "You have been signed out of your account.",
     });
     await authClient.signOut()
+    router.push("/login")
    
   };
 
