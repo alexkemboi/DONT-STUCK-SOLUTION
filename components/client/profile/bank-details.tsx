@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { bankDetailSchema } from '@/lib/validations'
 import type { BankDetailFormValues, BankDetail } from '@/lib/types'
 import { ChangeEvent, useState } from 'react'
-import { createBankAction, uploadBankDocumentAction } from '@/app/actions/client'
+import { createBankAction, updateBankAction, uploadBankDocumentAction } from '@/app/actions/client'
 import { toast } from 'sonner'
 import { X } from 'lucide-react'
 import { deleteFile, UploadResult } from '@/services/storage.service'
@@ -52,11 +52,22 @@ export function BankDetails({ bankDetails, isReadOnly = false, onSuccess }: Bank
             toast.error('Please upload a proof document')
             return;
         }
-        
+
         const finalValues = {
             ...values,
             proofDocumentUrl: proofDocumentUrl?.data?.url || bankDetails?.proofDocumentUrl,
         };
+
+        if (bankDetails?.id) {
+            const response = await updateBankAction(bankDetails.id, finalValues)
+            if (!response.success) {
+                toast.error(response.error || 'Failed to update bank details')
+                return;
+            }
+            toast.success('Bank details updated successfully')
+            onSuccess?.()
+            return;
+        }
 
         const response = await createBankAction(finalValues)
         if (response.success == false) {
@@ -91,6 +102,7 @@ export function BankDetails({ bankDetails, isReadOnly = false, onSuccess }: Bank
                 initialValues={initialValues}
                 validationSchema={bankDetailSchema}
                 onSubmit={handleSubmit}
+                enableReinitialize
             >
                 {({ isSubmitting, dirty, setFieldValue }) => (
                     <Form className="space-y-6">

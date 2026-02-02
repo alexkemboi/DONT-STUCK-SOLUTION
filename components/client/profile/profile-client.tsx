@@ -50,13 +50,13 @@ function SidebarSection({ title, children }: { title: string; children: React.Re
 export function ProfileClient({
     bankDetailsSource,
     refereesSource,
-    // employmentSource,
+    employmentSource,
     addressSource,
     clientSource
 }:{
     bankDetailsSource: any | null,
     refereesSource:Referee[],
-    // employmentSource: any | null,
+    employmentSource: any | null,
     addressSource: ClientAddress | null,
     clientSource: any | null
 }) {
@@ -69,13 +69,15 @@ export function ProfileClient({
                 ? new Date(clientSource.data.dateOfBirth).toISOString()
                 : null
         }
-        dispatch(setBankDetails(bankDetailsSource.data as BankDetail))
+        dispatch(setBankDetails(bankDetailsSource?.data as BankDetail))
         dispatch(setClient(client as Client))
         dispatch(setAddress(addressSource as ClientAddress))
         dispatch(setReferees(refereesSource))
-        // dispatch(setEmployment(employmentSource.data as EmploymentDetail ))
+        if (employmentSource?.data) {
+            dispatch(setEmployment(employmentSource.data as EmploymentDetail))
+        }
         return
-    }, [clientSource, addressSource, refereesSource])
+    }, [clientSource, addressSource, refereesSource, bankDetailsSource, employmentSource])
 
     const dispatch = useAppDispatch()
     const { activeSection, isEditing, client, address, employment, bankDetails, referees } = useAppSelector((state) => state.profile)
@@ -375,7 +377,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <PersonalInfoForm client={client as Client} />    
+                                    <PersonalInfoForm client={client as Client} isReadOnly={!isEditing} />
                                 </div>
                             </motion.div>
                         </TabsContent>
@@ -402,7 +404,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <AddressForm />
+                                    <AddressForm addresses={address ? [address] : []} isReadOnly={!isEditing} />
                                 </div>
                             </motion.div>
                         </TabsContent>
@@ -429,7 +431,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <EmploymentForm />
+                                    <EmploymentForm employment={employment || undefined} isReadOnly={!isEditing} />
                                 </div>
                             </motion.div>
                         </TabsContent>
@@ -456,7 +458,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <RefereeForm />
+                                    <RefereeForm referees={referees} isReadOnly={!isEditing} />
                                 </div>
                             </motion.div>
                         </TabsContent>
@@ -483,7 +485,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <BankDetailsForm />
+                                    <BankDetailsForm bankDetails={bankDetails || undefined} isReadOnly={!isEditing} />
                                 </div>
                             </motion.div>
                         </TabsContent>

@@ -109,6 +109,26 @@ export type LoanWithDetails = LoanApplication & {
   guarantors: Guarantor[];
 };
 
+export type LoanWithFullDetails = LoanApplication & {
+  client: {
+    id: string;
+    surname: string;
+    otherNames: string;
+    phoneMobile: string;
+    emailPersonal: string | null;
+    idPassportNo: string;
+    status: string;
+  };
+  guarantors: Guarantor[];
+  documents: { id: string; documentType: string; fileName: string; filePath: string; uploadedAt: Date }[];
+  financials: { processingFee: any; legalFee: any; penaltyFee: any; interestAmount: any } | null;
+  security: { idCopy: boolean; passportPhoto: boolean; appointmentLetter: boolean; payslips: boolean; bankStatement: boolean; chequeLeafNo: string | null } | null;
+  disbursement: { amount: any; method: string; reference: string | null; disbursedAt: Date } | null;
+  repayments: { id: string; amount: any; paymentMethod: string; paymentDate: Date; category: string; reference: string | null }[];
+  reviewedBy: { name: string } | null;
+  approvedBy: { name: string } | null;
+};
+
 export async function getLoanById(
   id: string
 ): Promise<ServiceResult<LoanWithDetails>> {
@@ -193,6 +213,116 @@ export async function updateLoanStatus(
       data: updateData,
     });
     return { success: true, data: updated };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+// ============================================================================
+// ADMIN — FULL LOAN DETAIL
+// ============================================================================
+
+export async function getFullLoanById(
+  id: string
+): Promise<ServiceResult<LoanWithFullDetails>> {
+  try {
+    const loan = await prisma.loanApplication.findUnique({
+      where: { id },
+      include: {
+        client: {
+          select: {
+            id: true,
+            surname: true,
+            otherNames: true,
+            phoneMobile: true,
+            emailPersonal: true,
+            idPassportNo: true,
+            status: true,
+          },
+        },
+        guarantors: {
+          orderBy: { createdAt: "desc" },
+        },
+        documents: {
+          select: {
+            id: true,
+            documentType: true,
+            fileName: true,
+            filePath: true,
+            uploadedAt: true,
+          },
+        },
+        financials: {
+          select: {
+            processingFee: true,
+            legalFee: true,
+            penaltyFee: true,
+            interestAmount: true,
+          },
+        },
+        security: {
+          select: {
+            idCopy: true,
+            passportPhoto: true,
+            appointmentLetter: true,
+            payslips: true,
+            bankStatement: true,
+            chequeLeafNo: true,
+          },
+        },
+        disbursement: {
+          select: {
+            amount: true,
+            method: true,
+            reference: true,
+            disbursedAt: true,
+          },
+        },
+        repayments: {
+          select: {
+            id: true,
+            amount: true,
+            paymentMethod: true,
+            paymentDate: true,
+            category: true,
+            reference: true,
+          },
+          orderBy: { paymentDate: "desc" },
+        },
+        reviewedBy: {
+          select: { name: true },
+        },
+        approvedBy: {
+          select: { name: true },
+        },
+      },
+    });
+    if (!loan) {
+      return { success: false, error: "Loan not found" };
+    }
+    return { success: true, data: loan as LoanWithFullDetails };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+// ============================================================================
+// ADMIN — GUARANTOR STATUS UPDATE
+// ============================================================================
+
+export async function updateGuarantorStatus(
+  guarantorId: string,
+  status: "Confirmed" | "Declined"
+): Promise<ServiceResult<Guarantor>> {
+  try {
+    const guarantor = await prisma.guarantor.update({
+      where: { id: guarantorId },
+      data: {
+        confirmationStatus: status,
+        confirmedAt: new Date(),
+      },
+    });
+    return { success: true, data: guarantor };
   } catch (error) {
     return { success: false, error: (error as Error).message };
   }
