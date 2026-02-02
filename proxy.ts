@@ -107,6 +107,9 @@ export default async function proxy(req:NextRequest) {
 
 
 export const config = {
-    runtime: "nodejs",
-    matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)",  "/" , "/admin/:path*"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/",
+    "/admin/:path*",
+  ],
 };
