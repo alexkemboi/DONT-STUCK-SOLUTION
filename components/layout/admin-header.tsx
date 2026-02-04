@@ -47,12 +47,12 @@ export function AdminHeader({ user, notifications }: AdminHeaderProps) {
   const dispatch = useAppDispatch();
 
 const router = useRouter();
-  const handleLogout = async () => {
+const handleLogout = async () => {
     dispatch(logout());
     
-    toast.success("Logged out successfully", {
-      description: "You have been signed out of your account.",
-    });
+    // toast.success("Logged out successfully", {
+    //   description: "You have been signed out of your account.",
+    // });
     await authClient.signOut()
     router.push("/login")
    

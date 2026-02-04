@@ -38,6 +38,9 @@ import {
   type SerializedLoanDetail,
 } from "@/app/actions/loan";
 import Link from "next/link";
+import { AmortizationSchedule } from "@/components/shared/amortization-schedule";
+import { StoredSchedule } from "@/components/shared/stored-schedule";
+import type { SerializedSchedule } from "@/app/actions/schedule";
 
 const statusColors: Record<string, string> = {
   Pending: "bg-amber-100 text-amber-800",
@@ -74,9 +77,20 @@ const formatDate = (dateString: string | null) => {
 
 interface LoanDetailViewProps {
   loan: SerializedLoanDetail;
+  schedule?: SerializedSchedule[];
+  scheduleSummary?: {
+    totalScheduled: number;
+    totalPaid: number;
+    totalRemaining: number;
+    paidInstallments: number;
+    pendingInstallments: number;
+    overdueInstallments: number;
+    nextDueDate: string | null;
+    nextDueAmount: number | null;
+  };
 }
 
-export function LoanDetailView({ loan }: LoanDetailViewProps) {
+export function LoanDetailView({ loan, schedule, scheduleSummary }: LoanDetailViewProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
@@ -221,6 +235,30 @@ export function LoanDetailView({ loan }: LoanDetailViewProps) {
                     {loan.rejectionReason}
                   </p>
                 </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Repayment Breakdown */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Repayment Breakdown</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {schedule && schedule.length > 0 ? (
+                <StoredSchedule
+                  schedule={schedule}
+                  summary={scheduleSummary}
+                  compact={false}
+                />
+              ) : (
+                <AmortizationSchedule
+                  principal={loan.approvedAmount || loan.amountRequested}
+                  monthlyInterestRate={loan.interestRate}
+                  periodMonths={loan.repaymentPeriod}
+                  showFullSchedule={true}
+                  compact={false}
+                />
               )}
             </CardContent>
           </Card>

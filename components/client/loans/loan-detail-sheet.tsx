@@ -15,6 +15,9 @@ import {
   getClientLoanDetailAction,
   type SerializedClientLoan,
 } from "@/app/actions/loan";
+import { getScheduleAction, getScheduleSummaryAction, type SerializedSchedule } from "@/app/actions/schedule";
+import { AmortizationSchedule } from "@/components/shared/amortization-schedule";
+import { StoredSchedule } from "@/components/shared/stored-schedule";
 
 const statusColors: Record<string, string> = {
   Pending: "bg-amber-100 text-amber-800",
@@ -25,14 +28,6 @@ const statusColors: Record<string, string> = {
   NPL: "bg-red-100 text-red-800",
   Closed: "bg-gray-100 text-gray-800",
 };
-
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("en-KE", {
-    style: "currency",
-    currency: "KES",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
 
 const formatDate = (date: string) =>
   new Date(date).toLocaleDateString("en-KE", {
@@ -48,41 +43,54 @@ interface LoanDetailSheetProps {
 
 export function LoanDetailSheet({ loanId, onClose }: LoanDetailSheetProps) {
   const [loan, setLoan] = useState<SerializedClientLoan | null>(null);
+  const [schedule, setSchedule] = useState<SerializedSchedule[]>([]);
+  const [scheduleSummary, setScheduleSummary] = useState<{
+    totalScheduled: number;
+    totalPaid: number;
+    totalRemaining: number;
+    paidInstallments: number;
+    pendingInstallments: number;
+    overdueInstallments: number;
+    nextDueDate: string | null;
+    nextDueAmount: number | null;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!loanId) {
       setLoan(null);
+      setSchedule([]);
+      setScheduleSummary(null);
       return;
     }
 
     setLoading(true);
-    getClientLoanDetailAction(loanId)
-      .then((result) => {
-        if (result.success && result.data) {
-          setLoan(result.data);
+    Promise.all([
+      getClientLoanDetailAction(loanId),
+      getScheduleAction(loanId),
+      getScheduleSummaryAction(loanId),
+    ])
+      .then(([loanResult, scheduleResult, summaryResult]) => {
+        if (loanResult.success && loanResult.data) {
+          setLoan(loanResult.data);
+        }
+        if (scheduleResult.success && scheduleResult.data) {
+          setSchedule(scheduleResult.data);
+        }
+        if (summaryResult.success && summaryResult.data) {
+          setScheduleSummary(summaryResult.data);
         }
       })
       .finally(() => setLoading(false));
   }, [loanId]);
 
-  // Compute monthly payment using amortization formula
-  const computeMonthlyPayment = (loan: SerializedClientLoan) => {
-    const principal = loan.approvedAmount || loan.amountRequested;
-    const monthlyRate = loan.interestRate / 100 / 12;
-    const n = loan.repaymentPeriod;
-    if (monthlyRate === 0) return principal / n;
-    return (principal * monthlyRate * Math.pow(1 + monthlyRate, n)) /
-      (Math.pow(1 + monthlyRate, n) - 1);
-  };
-
   return (
     <Sheet open={!!loanId} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+      <SheetContent className="w-full sm:max-w-2xl overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Loan Details</SheetTitle>
           <SheetDescription>
-            Full details of your loan application.
+            Full details of your loan application including repayment breakdown.
           </SheetDescription>
         </SheetHeader>
 
@@ -91,7 +99,7 @@ export function LoanDetailSheet({ loanId, onClose }: LoanDetailSheetProps) {
             <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
           </div>
         ) : loan ? (
-          <div className="mt-6 space-y-6 p-6">
+          <div className="mt-6 space-y-6 pr-2">
             {/* Status & Purpose */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -109,47 +117,24 @@ export function LoanDetailSheet({ loanId, onClose }: LoanDetailSheetProps) {
 
             <Separator />
 
-            {/* Financial Details */}
+            {/* Amortization Schedule */}
             <div className="space-y-3">
               <h4 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">
-                Financial Details
+                Repayment Breakdown
               </h4>
-              <div className="grid grid-cols-2 gap-4">
-                <DetailItem
-                  label="Amount Requested"
-                  value={formatCurrency(loan.amountRequested)}
+              {schedule.length > 0 ? (
+                <StoredSchedule
+                  schedule={schedule}
+                  summary={scheduleSummary || undefined}
+                  compact={true}
                 />
-                <DetailItem
-                  label="Approved Amount"
-                  value={
-                    loan.approvedAmount
-                      ? formatCurrency(loan.approvedAmount)
-                      : "—"
-                  }
-                />
-                <DetailItem
-                  label="Interest Rate"
-                  value={`${loan.interestRate}% p.a.`}
-                />
-                <DetailItem
-                  label="Repayment Period"
-                  value={`${loan.repaymentPeriod} months`}
-                />
-                <DetailItem
-                  label="Monthly Payment"
-                  value={formatCurrency(computeMonthlyPayment(loan))}
-                />
-                <DetailItem
-                  label="Total Repayable"
-                  value={formatCurrency(
-                    computeMonthlyPayment(loan) * loan.repaymentPeriod
-                  )}
-                />
-              </div>
-              {loan.qualificationType && (
-                <DetailItem
-                  label="Qualification Type"
-                  value={loan.qualificationType}
+              ) : (
+                <AmortizationSchedule
+                  principal={loan.approvedAmount || loan.amountRequested}
+                  monthlyInterestRate={loan.interestRate}
+                  periodMonths={loan.repaymentPeriod}
+                  showFullSchedule={true}
+                  compact={true}
                 />
               )}
             </div>
@@ -224,14 +209,5 @@ export function LoanDetailSheet({ loanId, onClose }: LoanDetailSheetProps) {
         ) : null}
       </SheetContent>
     </Sheet>
-  );
-}
-
-function DetailItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <p className="text-xs text-slate-500">{label}</p>
-      <p className="text-sm font-medium text-slate-900">{value}</p>
-    </div>
   );
 }

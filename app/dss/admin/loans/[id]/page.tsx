@@ -1,4 +1,5 @@
 import { getAdminLoanDetailAction } from "@/app/actions/loan";
+import { getScheduleAction, getScheduleSummaryAction } from "@/app/actions/schedule";
 import { LoanDetailView } from "@/components/admin/loans/loan-detail-view";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -9,7 +10,11 @@ export default async function LoanDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const result = await getAdminLoanDetailAction(id);
+  const [result, scheduleResult, summaryResult] = await Promise.all([
+    getAdminLoanDetailAction(id),
+    getScheduleAction(id),
+    getScheduleSummaryAction(id),
+  ]);
 
   if (!result.success || !result.data) {
     return (
@@ -39,7 +44,11 @@ export default async function LoanDetailPage({
         <ArrowLeft className="h-4 w-4" />
         Back to Loans
       </Link>
-      <LoanDetailView loan={result.data} />
+      <LoanDetailView
+        loan={result.data}
+        schedule={scheduleResult.success ? scheduleResult.data : undefined}
+        scheduleSummary={summaryResult.success ? summaryResult.data : undefined}
+      />
     </div>
   );
 }

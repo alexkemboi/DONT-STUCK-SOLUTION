@@ -193,6 +193,7 @@ model LoanApplication {
   npl                 NonPerformingLoan?
   recoveryRecords     RecoveryRecord[]
   repayments          Repayment[]
+  repaymentSchedule   RepaymentSchedule[]
   vehicleSecurity     VehicleSecurity?
 
   @@index([clientId])
@@ -385,21 +386,48 @@ model Transaction {
 }
 
 model Repayment {
-  id            String            @id @default(cuid())
-  loanId        String            @map("loan_id")
-  amount        Decimal           @db.Decimal(15, 2)
-  paymentMethod PaymentMethod     @map("payment_method")
-  paymentDate   DateTime          @map("payment_date")
+  id            String              @id @default(cuid())
+  loanId        String              @map("loan_id")
+  amount        Decimal             @db.Decimal(15, 2)
+  paymentMethod PaymentMethod       @map("payment_method")
+  paymentDate   DateTime            @map("payment_date")
   category      RepaymentCategory
   reference     String?
-  createdAt     DateTime          @default(now()) @map("created_at")
-  loan          LoanApplication   @relation(fields: [loanId], references: [id])
+  createdAt     DateTime            @default(now()) @map("created_at")
+  loan          LoanApplication     @relation(fields: [loanId], references: [id])
+  scheduleItems RepaymentSchedule[] @relation("RepaymentToSchedule")
 
   @@index([loanId])
   @@index([paymentDate])
   @@index([paymentMethod])
   @@index([category])
   @@map("repayments")
+}
+
+model RepaymentSchedule {
+  id                String          @id @default(cuid())
+  loanId            String          @map("loan_id")
+  installmentNumber Int             @map("installment_number")
+  dueDate           DateTime        @map("due_date")
+  scheduledPayment  Decimal         @map("scheduled_payment") @db.Decimal(15, 2)
+  principalPortion  Decimal         @map("principal_portion") @db.Decimal(15, 2)
+  interestPortion   Decimal         @map("interest_portion") @db.Decimal(15, 2)
+  expectedBalance   Decimal         @map("expected_balance") @db.Decimal(15, 2)
+  actualAmountPaid  Decimal         @default(0) @map("actual_amount_paid") @db.Decimal(15, 2)
+  actualPaymentDate DateTime?       @map("actual_payment_date")
+  status            ScheduleStatus  @default(Pending)
+  repaymentId       String?         @map("repayment_id")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+  loan              LoanApplication @relation(fields: [loanId], references: [id], onDelete: Cascade)
+  repayment         Repayment?      @relation("RepaymentToSchedule", fields: [repaymentId], references: [id])
+
+  @@unique([loanId, installmentNumber])
+  @@index([loanId])
+  @@index([dueDate])
+  @@index([status])
+  @@index([repaymentId])
+  @@map("repayment_schedules")
 }
 
 model NonPerformingLoan {
@@ -726,6 +754,13 @@ enum RepaymentCategory {
   Employment
   Business
   Repeat
+}
+
+enum ScheduleStatus {
+  Pending
+  Paid
+  Partial
+  Overdue
 }
 
 enum PaymentMethod {
