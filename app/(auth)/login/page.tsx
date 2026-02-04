@@ -1,6 +1,6 @@
 import { LoginForm } from "@/components/auth/login-form";
 import { Building2, Shield, TrendingUp, Users, Zap } from "lucide-react";
-import {dssimage} from ""
+
 export default function LoginPage() {
   return (
     <div className="min-h-screen bg-slate-50">
