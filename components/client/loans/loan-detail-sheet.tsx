@@ -99,7 +99,7 @@ export function LoanDetailSheet({ loanId, onClose }: LoanDetailSheetProps) {
             <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
           </div>
         ) : loan ? (
-          <div className="mt-6 space-y-6 pr-2">
+          <div className="mt-6 space-y-6 pr-2 md:p-4  p-2">
             {/* Status & Purpose */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
