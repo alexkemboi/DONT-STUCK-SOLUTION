@@ -9,7 +9,7 @@ export const personalInfoSchema = Yup.object({
     nationality: Yup.string().required('Nationality is required'),
     dependents: Yup.number().min(0, 'Cannot be negative').required('Number of dependents is required'),
     idPassportNo: Yup.string().required('ID/Passport number is required'),
-    kraPin: Yup.string(),
+    kraPin: Yup.string().required("kra pin is required"),
     phoneWork: Yup.string(),
     phoneMobile: Yup.string().required('Mobile phone is required').matches(/^[0-9+]+$/, 'Invalid phone number'),
     phoneAlternative: Yup.string(),

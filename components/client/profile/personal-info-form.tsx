@@ -7,7 +7,7 @@ import { FormSelect } from '@/components/forms/form-select'
 import { Button } from '@/components/ui/button'
 import { personalInfoSchema } from '@/lib/validations'
 import type { PersonalInfoFormValues, Client } from '@/lib/types'
-import { updateClientAction } from '@/app/actions/client'
+import { createClientAction, updateClientAction } from '@/app/actions/client'
 import { toast } from 'sonner'
 
 const titleOptions = [
@@ -60,6 +60,16 @@ export function PersonalInfoForm({ client, isReadOnly = false, onSuccess }: Pers
                 return;
             }
             toast.success("Client profile updated successfully.");
+            onSuccess?.()
+            return;
+        }else{
+            const res = await createClientAction(values)
+
+            if(!res.success){
+                toast.error("Failed to create client")
+            }
+
+            toast.success("Client profile created successfully.");
             onSuccess?.()
             return;
         }
