@@ -11,6 +11,11 @@ import {
   getLoanRepaymentSummary,
   type RepaymentWithLoan,
 } from "@/services/repayment.service";
+import {
+  updateScheduleWithPayment,
+  getNextPendingInstallment,
+} from "@/services/repayment-schedule.service";
+import { revalidatePath } from "next/cache";
 
 // ============================================================================
 // TYPES
@@ -57,6 +62,7 @@ export async function recordRepaymentAction(data: {
   paymentDate: string;
   category: RepaymentCategory;
   reference?: string;
+  scheduleId?: string; // Optional: link to specific schedule installment
 }) {
   try {
     const session = await auth.api.getSession({
@@ -67,16 +73,40 @@ export async function recordRepaymentAction(data: {
       return { success: false, error: "Unauthorized" };
     }
 
+    const paymentDateObj = new Date(data.paymentDate);
+
     const result = await createRepayment({
       loanId: data.loanId,
       amount: data.amount,
       paymentMethod: data.paymentMethod,
-      paymentDate: new Date(data.paymentDate),
+      paymentDate: paymentDateObj,
       category: data.category,
       reference: data.reference,
     });
 
     if (result.success && result.data) {
+      // If scheduleId provided, update that specific installment
+      // Otherwise, auto-apply to next pending installment
+      let targetScheduleId = data.scheduleId;
+
+      if (!targetScheduleId) {
+        // Find next pending installment for this loan
+        const nextInstallment = await getNextPendingInstallment(data.loanId);
+        if (nextInstallment.success && nextInstallment.data) {
+          targetScheduleId = nextInstallment.data.id;
+        }
+      }
+
+      // Update schedule entry with payment
+      if (targetScheduleId) {
+        await updateScheduleWithPayment(
+          targetScheduleId,
+          result.data.id,
+          data.amount,
+          paymentDateObj
+        );
+      }
+
       await prisma.auditLog.create({
         data: {
           userId: session.user.id as string,
@@ -88,9 +118,13 @@ export async function recordRepaymentAction(data: {
             amount: data.amount,
             paymentMethod: data.paymentMethod,
             reference: data.reference,
+            scheduleId: targetScheduleId,
           },
         },
       }).catch(() => {});
+
+      revalidatePath(`/dss/admin/loans/${data.loanId}`);
+      revalidatePath("/dss/admin/repayments");
     }
 
     return { success: result.success, error: result.error };

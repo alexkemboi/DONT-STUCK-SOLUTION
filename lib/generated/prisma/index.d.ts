@@ -104,6 +104,11 @@ export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
  */
 export type Repayment = $Result.DefaultSelection<Prisma.$RepaymentPayload>
 /**
+ * Model RepaymentSchedule
+ * 
+ */
+export type RepaymentSchedule = $Result.DefaultSelection<Prisma.$RepaymentSchedulePayload>
+/**
  * Model NonPerformingLoan
  * 
  */
@@ -277,6 +282,16 @@ export const RepaymentCategory: {
 export type RepaymentCategory = (typeof RepaymentCategory)[keyof typeof RepaymentCategory]
 
 
+export const ScheduleStatus: {
+  Pending: 'Pending',
+  Paid: 'Paid',
+  Partial: 'Partial',
+  Overdue: 'Overdue'
+};
+
+export type ScheduleStatus = (typeof ScheduleStatus)[keyof typeof ScheduleStatus]
+
+
 export const PaymentMethod: {
   Cash: 'Cash',
   Bank: 'Bank',
@@ -448,6 +463,10 @@ export const DisbursementMethod: typeof $Enums.DisbursementMethod
 export type RepaymentCategory = $Enums.RepaymentCategory
 
 export const RepaymentCategory: typeof $Enums.RepaymentCategory
+
+export type ScheduleStatus = $Enums.ScheduleStatus
+
+export const ScheduleStatus: typeof $Enums.ScheduleStatus
 
 export type PaymentMethod = $Enums.PaymentMethod
 
@@ -797,6 +816,16 @@ export class PrismaClient<
     * ```
     */
   get repayment(): Prisma.RepaymentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.repaymentSchedule`: Exposes CRUD operations for the **RepaymentSchedule** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RepaymentSchedules
+    * const repaymentSchedules = await prisma.repaymentSchedule.findMany()
+    * ```
+    */
+  get repaymentSchedule(): Prisma.RepaymentScheduleDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.nonPerformingLoan`: Exposes CRUD operations for the **NonPerformingLoan** model.
@@ -1419,6 +1448,7 @@ export namespace Prisma {
     InvoicePayment: 'InvoicePayment',
     Transaction: 'Transaction',
     Repayment: 'Repayment',
+    RepaymentSchedule: 'RepaymentSchedule',
     NonPerformingLoan: 'NonPerformingLoan',
     RecoveryAgent: 'RecoveryAgent',
     RecoveryRecord: 'RecoveryRecord',
@@ -1451,7 +1481,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "clientAddress" | "employmentDetail" | "referee" | "bankDetail" | "loanApplication" | "loanQualification" | "loanSecurity" | "vehicleSecurity" | "guarantor" | "loanDisbursement" | "loanFinancial" | "invoice" | "invoiceItem" | "invoicePayment" | "transaction" | "repayment" | "nonPerformingLoan" | "recoveryAgent" | "recoveryRecord" | "investor" | "investorAllocation" | "investorPayout" | "document" | "expense" | "smsLog" | "auditLog" | "chartOfAccount" | "transactionMatrix" | "systemConfig" | "session" | "account" | "verificationToken" | "verification"
+      modelProps: "user" | "client" | "clientAddress" | "employmentDetail" | "referee" | "bankDetail" | "loanApplication" | "loanQualification" | "loanSecurity" | "vehicleSecurity" | "guarantor" | "loanDisbursement" | "loanFinancial" | "invoice" | "invoiceItem" | "invoicePayment" | "transaction" | "repayment" | "repaymentSchedule" | "nonPerformingLoan" | "recoveryAgent" | "recoveryRecord" | "investor" | "investorAllocation" | "investorPayout" | "document" | "expense" | "smsLog" | "auditLog" | "chartOfAccount" | "transactionMatrix" | "systemConfig" | "session" | "account" | "verificationToken" | "verification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2784,6 +2814,80 @@ export namespace Prisma {
           count: {
             args: Prisma.RepaymentCountArgs<ExtArgs>
             result: $Utils.Optional<RepaymentCountAggregateOutputType> | number
+          }
+        }
+      }
+      RepaymentSchedule: {
+        payload: Prisma.$RepaymentSchedulePayload<ExtArgs>
+        fields: Prisma.RepaymentScheduleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RepaymentScheduleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RepaymentScheduleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload>
+          }
+          findFirst: {
+            args: Prisma.RepaymentScheduleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RepaymentScheduleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload>
+          }
+          findMany: {
+            args: Prisma.RepaymentScheduleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload>[]
+          }
+          create: {
+            args: Prisma.RepaymentScheduleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload>
+          }
+          createMany: {
+            args: Prisma.RepaymentScheduleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RepaymentScheduleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload>[]
+          }
+          delete: {
+            args: Prisma.RepaymentScheduleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload>
+          }
+          update: {
+            args: Prisma.RepaymentScheduleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload>
+          }
+          deleteMany: {
+            args: Prisma.RepaymentScheduleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RepaymentScheduleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RepaymentScheduleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload>[]
+          }
+          upsert: {
+            args: Prisma.RepaymentScheduleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepaymentSchedulePayload>
+          }
+          aggregate: {
+            args: Prisma.RepaymentScheduleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRepaymentSchedule>
+          }
+          groupBy: {
+            args: Prisma.RepaymentScheduleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RepaymentScheduleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RepaymentScheduleCountArgs<ExtArgs>
+            result: $Utils.Optional<RepaymentScheduleCountAggregateOutputType> | number
           }
         }
       }
@@ -4171,6 +4275,7 @@ export namespace Prisma {
     invoicePayment?: InvoicePaymentOmit
     transaction?: TransactionOmit
     repayment?: RepaymentOmit
+    repaymentSchedule?: RepaymentScheduleOmit
     nonPerformingLoan?: NonPerformingLoanOmit
     recoveryAgent?: RecoveryAgentOmit
     recoveryRecord?: RecoveryRecordOmit
@@ -4426,6 +4531,7 @@ export namespace Prisma {
     invoices: number
     recoveryRecords: number
     repayments: number
+    repaymentSchedule: number
   }
 
   export type LoanApplicationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4435,6 +4541,7 @@ export namespace Prisma {
     invoices?: boolean | LoanApplicationCountOutputTypeCountInvoicesArgs
     recoveryRecords?: boolean | LoanApplicationCountOutputTypeCountRecoveryRecordsArgs
     repayments?: boolean | LoanApplicationCountOutputTypeCountRepaymentsArgs
+    repaymentSchedule?: boolean | LoanApplicationCountOutputTypeCountRepaymentScheduleArgs
   }
 
   // Custom InputTypes
@@ -4488,6 +4595,13 @@ export namespace Prisma {
    */
   export type LoanApplicationCountOutputTypeCountRepaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RepaymentWhereInput
+  }
+
+  /**
+   * LoanApplicationCountOutputType without action
+   */
+  export type LoanApplicationCountOutputTypeCountRepaymentScheduleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RepaymentScheduleWhereInput
   }
 
 
@@ -4559,6 +4673,37 @@ export namespace Prisma {
    */
   export type TransactionCountOutputTypeCountInvoicePaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InvoicePaymentWhereInput
+  }
+
+
+  /**
+   * Count Type RepaymentCountOutputType
+   */
+
+  export type RepaymentCountOutputType = {
+    scheduleItems: number
+  }
+
+  export type RepaymentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    scheduleItems?: boolean | RepaymentCountOutputTypeCountScheduleItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RepaymentCountOutputType without action
+   */
+  export type RepaymentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentCountOutputType
+     */
+    select?: RepaymentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RepaymentCountOutputType without action
+   */
+  export type RepaymentCountOutputTypeCountScheduleItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RepaymentScheduleWhereInput
   }
 
 
@@ -12498,6 +12643,7 @@ export namespace Prisma {
     npl?: boolean | LoanApplication$nplArgs<ExtArgs>
     recoveryRecords?: boolean | LoanApplication$recoveryRecordsArgs<ExtArgs>
     repayments?: boolean | LoanApplication$repaymentsArgs<ExtArgs>
+    repaymentSchedule?: boolean | LoanApplication$repaymentScheduleArgs<ExtArgs>
     vehicleSecurity?: boolean | LoanApplication$vehicleSecurityArgs<ExtArgs>
     _count?: boolean | LoanApplicationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["loanApplication"]>
@@ -12587,6 +12733,7 @@ export namespace Prisma {
     npl?: boolean | LoanApplication$nplArgs<ExtArgs>
     recoveryRecords?: boolean | LoanApplication$recoveryRecordsArgs<ExtArgs>
     repayments?: boolean | LoanApplication$repaymentsArgs<ExtArgs>
+    repaymentSchedule?: boolean | LoanApplication$repaymentScheduleArgs<ExtArgs>
     vehicleSecurity?: boolean | LoanApplication$vehicleSecurityArgs<ExtArgs>
     _count?: boolean | LoanApplicationCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -12618,6 +12765,7 @@ export namespace Prisma {
       npl: Prisma.$NonPerformingLoanPayload<ExtArgs> | null
       recoveryRecords: Prisma.$RecoveryRecordPayload<ExtArgs>[]
       repayments: Prisma.$RepaymentPayload<ExtArgs>[]
+      repaymentSchedule: Prisma.$RepaymentSchedulePayload<ExtArgs>[]
       vehicleSecurity: Prisma.$VehicleSecurityPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -13047,6 +13195,7 @@ export namespace Prisma {
     npl<T extends LoanApplication$nplArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$nplArgs<ExtArgs>>): Prisma__NonPerformingLoanClient<$Result.GetResult<Prisma.$NonPerformingLoanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     recoveryRecords<T extends LoanApplication$recoveryRecordsArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$recoveryRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecoveryRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     repayments<T extends LoanApplication$repaymentsArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$repaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    repaymentSchedule<T extends LoanApplication$repaymentScheduleArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$repaymentScheduleArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     vehicleSecurity<T extends LoanApplication$vehicleSecurityArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$vehicleSecurityArgs<ExtArgs>>): Prisma__VehicleSecurityClient<$Result.GetResult<Prisma.$VehicleSecurityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -13765,6 +13914,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RepaymentScalarFieldEnum | RepaymentScalarFieldEnum[]
+  }
+
+  /**
+   * LoanApplication.repaymentSchedule
+   */
+  export type LoanApplication$repaymentScheduleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    where?: RepaymentScheduleWhereInput
+    orderBy?: RepaymentScheduleOrderByWithRelationInput | RepaymentScheduleOrderByWithRelationInput[]
+    cursor?: RepaymentScheduleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RepaymentScheduleScalarFieldEnum | RepaymentScheduleScalarFieldEnum[]
   }
 
   /**
@@ -25547,6 +25720,8 @@ export namespace Prisma {
     reference?: boolean
     createdAt?: boolean
     loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
+    scheduleItems?: boolean | Repayment$scheduleItemsArgs<ExtArgs>
+    _count?: boolean | RepaymentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["repayment"]>
 
   export type RepaymentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -25587,6 +25762,8 @@ export namespace Prisma {
   export type RepaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanId" | "amount" | "paymentMethod" | "paymentDate" | "category" | "reference" | "createdAt", ExtArgs["result"]["repayment"]>
   export type RepaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
+    scheduleItems?: boolean | Repayment$scheduleItemsArgs<ExtArgs>
+    _count?: boolean | RepaymentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RepaymentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
@@ -25599,6 +25776,7 @@ export namespace Prisma {
     name: "Repayment"
     objects: {
       loan: Prisma.$LoanApplicationPayload<ExtArgs>
+      scheduleItems: Prisma.$RepaymentSchedulePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -26004,6 +26182,7 @@ export namespace Prisma {
   export interface Prisma__RepaymentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     loan<T extends LoanApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplicationDefaultArgs<ExtArgs>>): Prisma__LoanApplicationClient<$Result.GetResult<Prisma.$LoanApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    scheduleItems<T extends Repayment$scheduleItemsArgs<ExtArgs> = {}>(args?: Subset<T, Repayment$scheduleItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26437,6 +26616,30 @@ export namespace Prisma {
   }
 
   /**
+   * Repayment.scheduleItems
+   */
+  export type Repayment$scheduleItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    where?: RepaymentScheduleWhereInput
+    orderBy?: RepaymentScheduleOrderByWithRelationInput | RepaymentScheduleOrderByWithRelationInput[]
+    cursor?: RepaymentScheduleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RepaymentScheduleScalarFieldEnum | RepaymentScheduleScalarFieldEnum[]
+  }
+
+  /**
    * Repayment without action
    */
   export type RepaymentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -26452,6 +26655,1330 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: RepaymentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RepaymentSchedule
+   */
+
+  export type AggregateRepaymentSchedule = {
+    _count: RepaymentScheduleCountAggregateOutputType | null
+    _avg: RepaymentScheduleAvgAggregateOutputType | null
+    _sum: RepaymentScheduleSumAggregateOutputType | null
+    _min: RepaymentScheduleMinAggregateOutputType | null
+    _max: RepaymentScheduleMaxAggregateOutputType | null
+  }
+
+  export type RepaymentScheduleAvgAggregateOutputType = {
+    installmentNumber: number | null
+    scheduledPayment: Decimal | null
+    principalPortion: Decimal | null
+    interestPortion: Decimal | null
+    expectedBalance: Decimal | null
+    actualAmountPaid: Decimal | null
+    actualPrincipalPaid: Decimal | null
+    actualInterestPaid: Decimal | null
+    remainingPrincipal: Decimal | null
+    remainingInterest: Decimal | null
+  }
+
+  export type RepaymentScheduleSumAggregateOutputType = {
+    installmentNumber: number | null
+    scheduledPayment: Decimal | null
+    principalPortion: Decimal | null
+    interestPortion: Decimal | null
+    expectedBalance: Decimal | null
+    actualAmountPaid: Decimal | null
+    actualPrincipalPaid: Decimal | null
+    actualInterestPaid: Decimal | null
+    remainingPrincipal: Decimal | null
+    remainingInterest: Decimal | null
+  }
+
+  export type RepaymentScheduleMinAggregateOutputType = {
+    id: string | null
+    loanId: string | null
+    installmentNumber: number | null
+    dueDate: Date | null
+    scheduledPayment: Decimal | null
+    principalPortion: Decimal | null
+    interestPortion: Decimal | null
+    expectedBalance: Decimal | null
+    actualAmountPaid: Decimal | null
+    actualPrincipalPaid: Decimal | null
+    actualInterestPaid: Decimal | null
+    remainingPrincipal: Decimal | null
+    remainingInterest: Decimal | null
+    actualPaymentDate: Date | null
+    status: $Enums.ScheduleStatus | null
+    repaymentId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RepaymentScheduleMaxAggregateOutputType = {
+    id: string | null
+    loanId: string | null
+    installmentNumber: number | null
+    dueDate: Date | null
+    scheduledPayment: Decimal | null
+    principalPortion: Decimal | null
+    interestPortion: Decimal | null
+    expectedBalance: Decimal | null
+    actualAmountPaid: Decimal | null
+    actualPrincipalPaid: Decimal | null
+    actualInterestPaid: Decimal | null
+    remainingPrincipal: Decimal | null
+    remainingInterest: Decimal | null
+    actualPaymentDate: Date | null
+    status: $Enums.ScheduleStatus | null
+    repaymentId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RepaymentScheduleCountAggregateOutputType = {
+    id: number
+    loanId: number
+    installmentNumber: number
+    dueDate: number
+    scheduledPayment: number
+    principalPortion: number
+    interestPortion: number
+    expectedBalance: number
+    actualAmountPaid: number
+    actualPrincipalPaid: number
+    actualInterestPaid: number
+    remainingPrincipal: number
+    remainingInterest: number
+    actualPaymentDate: number
+    status: number
+    repaymentId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RepaymentScheduleAvgAggregateInputType = {
+    installmentNumber?: true
+    scheduledPayment?: true
+    principalPortion?: true
+    interestPortion?: true
+    expectedBalance?: true
+    actualAmountPaid?: true
+    actualPrincipalPaid?: true
+    actualInterestPaid?: true
+    remainingPrincipal?: true
+    remainingInterest?: true
+  }
+
+  export type RepaymentScheduleSumAggregateInputType = {
+    installmentNumber?: true
+    scheduledPayment?: true
+    principalPortion?: true
+    interestPortion?: true
+    expectedBalance?: true
+    actualAmountPaid?: true
+    actualPrincipalPaid?: true
+    actualInterestPaid?: true
+    remainingPrincipal?: true
+    remainingInterest?: true
+  }
+
+  export type RepaymentScheduleMinAggregateInputType = {
+    id?: true
+    loanId?: true
+    installmentNumber?: true
+    dueDate?: true
+    scheduledPayment?: true
+    principalPortion?: true
+    interestPortion?: true
+    expectedBalance?: true
+    actualAmountPaid?: true
+    actualPrincipalPaid?: true
+    actualInterestPaid?: true
+    remainingPrincipal?: true
+    remainingInterest?: true
+    actualPaymentDate?: true
+    status?: true
+    repaymentId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RepaymentScheduleMaxAggregateInputType = {
+    id?: true
+    loanId?: true
+    installmentNumber?: true
+    dueDate?: true
+    scheduledPayment?: true
+    principalPortion?: true
+    interestPortion?: true
+    expectedBalance?: true
+    actualAmountPaid?: true
+    actualPrincipalPaid?: true
+    actualInterestPaid?: true
+    remainingPrincipal?: true
+    remainingInterest?: true
+    actualPaymentDate?: true
+    status?: true
+    repaymentId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RepaymentScheduleCountAggregateInputType = {
+    id?: true
+    loanId?: true
+    installmentNumber?: true
+    dueDate?: true
+    scheduledPayment?: true
+    principalPortion?: true
+    interestPortion?: true
+    expectedBalance?: true
+    actualAmountPaid?: true
+    actualPrincipalPaid?: true
+    actualInterestPaid?: true
+    remainingPrincipal?: true
+    remainingInterest?: true
+    actualPaymentDate?: true
+    status?: true
+    repaymentId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RepaymentScheduleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RepaymentSchedule to aggregate.
+     */
+    where?: RepaymentScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RepaymentSchedules to fetch.
+     */
+    orderBy?: RepaymentScheduleOrderByWithRelationInput | RepaymentScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RepaymentScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RepaymentSchedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RepaymentSchedules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RepaymentSchedules
+    **/
+    _count?: true | RepaymentScheduleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RepaymentScheduleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RepaymentScheduleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RepaymentScheduleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RepaymentScheduleMaxAggregateInputType
+  }
+
+  export type GetRepaymentScheduleAggregateType<T extends RepaymentScheduleAggregateArgs> = {
+        [P in keyof T & keyof AggregateRepaymentSchedule]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRepaymentSchedule[P]>
+      : GetScalarType<T[P], AggregateRepaymentSchedule[P]>
+  }
+
+
+
+
+  export type RepaymentScheduleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RepaymentScheduleWhereInput
+    orderBy?: RepaymentScheduleOrderByWithAggregationInput | RepaymentScheduleOrderByWithAggregationInput[]
+    by: RepaymentScheduleScalarFieldEnum[] | RepaymentScheduleScalarFieldEnum
+    having?: RepaymentScheduleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RepaymentScheduleCountAggregateInputType | true
+    _avg?: RepaymentScheduleAvgAggregateInputType
+    _sum?: RepaymentScheduleSumAggregateInputType
+    _min?: RepaymentScheduleMinAggregateInputType
+    _max?: RepaymentScheduleMaxAggregateInputType
+  }
+
+  export type RepaymentScheduleGroupByOutputType = {
+    id: string
+    loanId: string
+    installmentNumber: number
+    dueDate: Date
+    scheduledPayment: Decimal
+    principalPortion: Decimal
+    interestPortion: Decimal
+    expectedBalance: Decimal
+    actualAmountPaid: Decimal
+    actualPrincipalPaid: Decimal
+    actualInterestPaid: Decimal
+    remainingPrincipal: Decimal
+    remainingInterest: Decimal
+    actualPaymentDate: Date | null
+    status: $Enums.ScheduleStatus
+    repaymentId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: RepaymentScheduleCountAggregateOutputType | null
+    _avg: RepaymentScheduleAvgAggregateOutputType | null
+    _sum: RepaymentScheduleSumAggregateOutputType | null
+    _min: RepaymentScheduleMinAggregateOutputType | null
+    _max: RepaymentScheduleMaxAggregateOutputType | null
+  }
+
+  type GetRepaymentScheduleGroupByPayload<T extends RepaymentScheduleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RepaymentScheduleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RepaymentScheduleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RepaymentScheduleGroupByOutputType[P]>
+            : GetScalarType<T[P], RepaymentScheduleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RepaymentScheduleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    loanId?: boolean
+    installmentNumber?: boolean
+    dueDate?: boolean
+    scheduledPayment?: boolean
+    principalPortion?: boolean
+    interestPortion?: boolean
+    expectedBalance?: boolean
+    actualAmountPaid?: boolean
+    actualPrincipalPaid?: boolean
+    actualInterestPaid?: boolean
+    remainingPrincipal?: boolean
+    remainingInterest?: boolean
+    actualPaymentDate?: boolean
+    status?: boolean
+    repaymentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
+    repayment?: boolean | RepaymentSchedule$repaymentArgs<ExtArgs>
+  }, ExtArgs["result"]["repaymentSchedule"]>
+
+  export type RepaymentScheduleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    loanId?: boolean
+    installmentNumber?: boolean
+    dueDate?: boolean
+    scheduledPayment?: boolean
+    principalPortion?: boolean
+    interestPortion?: boolean
+    expectedBalance?: boolean
+    actualAmountPaid?: boolean
+    actualPrincipalPaid?: boolean
+    actualInterestPaid?: boolean
+    remainingPrincipal?: boolean
+    remainingInterest?: boolean
+    actualPaymentDate?: boolean
+    status?: boolean
+    repaymentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
+    repayment?: boolean | RepaymentSchedule$repaymentArgs<ExtArgs>
+  }, ExtArgs["result"]["repaymentSchedule"]>
+
+  export type RepaymentScheduleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    loanId?: boolean
+    installmentNumber?: boolean
+    dueDate?: boolean
+    scheduledPayment?: boolean
+    principalPortion?: boolean
+    interestPortion?: boolean
+    expectedBalance?: boolean
+    actualAmountPaid?: boolean
+    actualPrincipalPaid?: boolean
+    actualInterestPaid?: boolean
+    remainingPrincipal?: boolean
+    remainingInterest?: boolean
+    actualPaymentDate?: boolean
+    status?: boolean
+    repaymentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
+    repayment?: boolean | RepaymentSchedule$repaymentArgs<ExtArgs>
+  }, ExtArgs["result"]["repaymentSchedule"]>
+
+  export type RepaymentScheduleSelectScalar = {
+    id?: boolean
+    loanId?: boolean
+    installmentNumber?: boolean
+    dueDate?: boolean
+    scheduledPayment?: boolean
+    principalPortion?: boolean
+    interestPortion?: boolean
+    expectedBalance?: boolean
+    actualAmountPaid?: boolean
+    actualPrincipalPaid?: boolean
+    actualInterestPaid?: boolean
+    remainingPrincipal?: boolean
+    remainingInterest?: boolean
+    actualPaymentDate?: boolean
+    status?: boolean
+    repaymentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RepaymentScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanId" | "installmentNumber" | "dueDate" | "scheduledPayment" | "principalPortion" | "interestPortion" | "expectedBalance" | "actualAmountPaid" | "actualPrincipalPaid" | "actualInterestPaid" | "remainingPrincipal" | "remainingInterest" | "actualPaymentDate" | "status" | "repaymentId" | "createdAt" | "updatedAt", ExtArgs["result"]["repaymentSchedule"]>
+  export type RepaymentScheduleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
+    repayment?: boolean | RepaymentSchedule$repaymentArgs<ExtArgs>
+  }
+  export type RepaymentScheduleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
+    repayment?: boolean | RepaymentSchedule$repaymentArgs<ExtArgs>
+  }
+  export type RepaymentScheduleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
+    repayment?: boolean | RepaymentSchedule$repaymentArgs<ExtArgs>
+  }
+
+  export type $RepaymentSchedulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RepaymentSchedule"
+    objects: {
+      loan: Prisma.$LoanApplicationPayload<ExtArgs>
+      repayment: Prisma.$RepaymentPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      loanId: string
+      installmentNumber: number
+      dueDate: Date
+      scheduledPayment: Prisma.Decimal
+      principalPortion: Prisma.Decimal
+      interestPortion: Prisma.Decimal
+      expectedBalance: Prisma.Decimal
+      actualAmountPaid: Prisma.Decimal
+      actualPrincipalPaid: Prisma.Decimal
+      actualInterestPaid: Prisma.Decimal
+      remainingPrincipal: Prisma.Decimal
+      remainingInterest: Prisma.Decimal
+      actualPaymentDate: Date | null
+      status: $Enums.ScheduleStatus
+      repaymentId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["repaymentSchedule"]>
+    composites: {}
+  }
+
+  type RepaymentScheduleGetPayload<S extends boolean | null | undefined | RepaymentScheduleDefaultArgs> = $Result.GetResult<Prisma.$RepaymentSchedulePayload, S>
+
+  type RepaymentScheduleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RepaymentScheduleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RepaymentScheduleCountAggregateInputType | true
+    }
+
+  export interface RepaymentScheduleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RepaymentSchedule'], meta: { name: 'RepaymentSchedule' } }
+    /**
+     * Find zero or one RepaymentSchedule that matches the filter.
+     * @param {RepaymentScheduleFindUniqueArgs} args - Arguments to find a RepaymentSchedule
+     * @example
+     * // Get one RepaymentSchedule
+     * const repaymentSchedule = await prisma.repaymentSchedule.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RepaymentScheduleFindUniqueArgs>(args: SelectSubset<T, RepaymentScheduleFindUniqueArgs<ExtArgs>>): Prisma__RepaymentScheduleClient<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RepaymentSchedule that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RepaymentScheduleFindUniqueOrThrowArgs} args - Arguments to find a RepaymentSchedule
+     * @example
+     * // Get one RepaymentSchedule
+     * const repaymentSchedule = await prisma.repaymentSchedule.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RepaymentScheduleFindUniqueOrThrowArgs>(args: SelectSubset<T, RepaymentScheduleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RepaymentScheduleClient<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RepaymentSchedule that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepaymentScheduleFindFirstArgs} args - Arguments to find a RepaymentSchedule
+     * @example
+     * // Get one RepaymentSchedule
+     * const repaymentSchedule = await prisma.repaymentSchedule.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RepaymentScheduleFindFirstArgs>(args?: SelectSubset<T, RepaymentScheduleFindFirstArgs<ExtArgs>>): Prisma__RepaymentScheduleClient<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RepaymentSchedule that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepaymentScheduleFindFirstOrThrowArgs} args - Arguments to find a RepaymentSchedule
+     * @example
+     * // Get one RepaymentSchedule
+     * const repaymentSchedule = await prisma.repaymentSchedule.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RepaymentScheduleFindFirstOrThrowArgs>(args?: SelectSubset<T, RepaymentScheduleFindFirstOrThrowArgs<ExtArgs>>): Prisma__RepaymentScheduleClient<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RepaymentSchedules that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepaymentScheduleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RepaymentSchedules
+     * const repaymentSchedules = await prisma.repaymentSchedule.findMany()
+     * 
+     * // Get first 10 RepaymentSchedules
+     * const repaymentSchedules = await prisma.repaymentSchedule.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const repaymentScheduleWithIdOnly = await prisma.repaymentSchedule.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RepaymentScheduleFindManyArgs>(args?: SelectSubset<T, RepaymentScheduleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RepaymentSchedule.
+     * @param {RepaymentScheduleCreateArgs} args - Arguments to create a RepaymentSchedule.
+     * @example
+     * // Create one RepaymentSchedule
+     * const RepaymentSchedule = await prisma.repaymentSchedule.create({
+     *   data: {
+     *     // ... data to create a RepaymentSchedule
+     *   }
+     * })
+     * 
+     */
+    create<T extends RepaymentScheduleCreateArgs>(args: SelectSubset<T, RepaymentScheduleCreateArgs<ExtArgs>>): Prisma__RepaymentScheduleClient<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RepaymentSchedules.
+     * @param {RepaymentScheduleCreateManyArgs} args - Arguments to create many RepaymentSchedules.
+     * @example
+     * // Create many RepaymentSchedules
+     * const repaymentSchedule = await prisma.repaymentSchedule.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RepaymentScheduleCreateManyArgs>(args?: SelectSubset<T, RepaymentScheduleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RepaymentSchedules and returns the data saved in the database.
+     * @param {RepaymentScheduleCreateManyAndReturnArgs} args - Arguments to create many RepaymentSchedules.
+     * @example
+     * // Create many RepaymentSchedules
+     * const repaymentSchedule = await prisma.repaymentSchedule.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RepaymentSchedules and only return the `id`
+     * const repaymentScheduleWithIdOnly = await prisma.repaymentSchedule.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RepaymentScheduleCreateManyAndReturnArgs>(args?: SelectSubset<T, RepaymentScheduleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RepaymentSchedule.
+     * @param {RepaymentScheduleDeleteArgs} args - Arguments to delete one RepaymentSchedule.
+     * @example
+     * // Delete one RepaymentSchedule
+     * const RepaymentSchedule = await prisma.repaymentSchedule.delete({
+     *   where: {
+     *     // ... filter to delete one RepaymentSchedule
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RepaymentScheduleDeleteArgs>(args: SelectSubset<T, RepaymentScheduleDeleteArgs<ExtArgs>>): Prisma__RepaymentScheduleClient<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RepaymentSchedule.
+     * @param {RepaymentScheduleUpdateArgs} args - Arguments to update one RepaymentSchedule.
+     * @example
+     * // Update one RepaymentSchedule
+     * const repaymentSchedule = await prisma.repaymentSchedule.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RepaymentScheduleUpdateArgs>(args: SelectSubset<T, RepaymentScheduleUpdateArgs<ExtArgs>>): Prisma__RepaymentScheduleClient<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RepaymentSchedules.
+     * @param {RepaymentScheduleDeleteManyArgs} args - Arguments to filter RepaymentSchedules to delete.
+     * @example
+     * // Delete a few RepaymentSchedules
+     * const { count } = await prisma.repaymentSchedule.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RepaymentScheduleDeleteManyArgs>(args?: SelectSubset<T, RepaymentScheduleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RepaymentSchedules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepaymentScheduleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RepaymentSchedules
+     * const repaymentSchedule = await prisma.repaymentSchedule.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RepaymentScheduleUpdateManyArgs>(args: SelectSubset<T, RepaymentScheduleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RepaymentSchedules and returns the data updated in the database.
+     * @param {RepaymentScheduleUpdateManyAndReturnArgs} args - Arguments to update many RepaymentSchedules.
+     * @example
+     * // Update many RepaymentSchedules
+     * const repaymentSchedule = await prisma.repaymentSchedule.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RepaymentSchedules and only return the `id`
+     * const repaymentScheduleWithIdOnly = await prisma.repaymentSchedule.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RepaymentScheduleUpdateManyAndReturnArgs>(args: SelectSubset<T, RepaymentScheduleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RepaymentSchedule.
+     * @param {RepaymentScheduleUpsertArgs} args - Arguments to update or create a RepaymentSchedule.
+     * @example
+     * // Update or create a RepaymentSchedule
+     * const repaymentSchedule = await prisma.repaymentSchedule.upsert({
+     *   create: {
+     *     // ... data to create a RepaymentSchedule
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RepaymentSchedule we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RepaymentScheduleUpsertArgs>(args: SelectSubset<T, RepaymentScheduleUpsertArgs<ExtArgs>>): Prisma__RepaymentScheduleClient<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RepaymentSchedules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepaymentScheduleCountArgs} args - Arguments to filter RepaymentSchedules to count.
+     * @example
+     * // Count the number of RepaymentSchedules
+     * const count = await prisma.repaymentSchedule.count({
+     *   where: {
+     *     // ... the filter for the RepaymentSchedules we want to count
+     *   }
+     * })
+    **/
+    count<T extends RepaymentScheduleCountArgs>(
+      args?: Subset<T, RepaymentScheduleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RepaymentScheduleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RepaymentSchedule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepaymentScheduleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RepaymentScheduleAggregateArgs>(args: Subset<T, RepaymentScheduleAggregateArgs>): Prisma.PrismaPromise<GetRepaymentScheduleAggregateType<T>>
+
+    /**
+     * Group by RepaymentSchedule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepaymentScheduleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RepaymentScheduleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RepaymentScheduleGroupByArgs['orderBy'] }
+        : { orderBy?: RepaymentScheduleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RepaymentScheduleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRepaymentScheduleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RepaymentSchedule model
+   */
+  readonly fields: RepaymentScheduleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RepaymentSchedule.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RepaymentScheduleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    loan<T extends LoanApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplicationDefaultArgs<ExtArgs>>): Prisma__LoanApplicationClient<$Result.GetResult<Prisma.$LoanApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    repayment<T extends RepaymentSchedule$repaymentArgs<ExtArgs> = {}>(args?: Subset<T, RepaymentSchedule$repaymentArgs<ExtArgs>>): Prisma__RepaymentClient<$Result.GetResult<Prisma.$RepaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RepaymentSchedule model
+   */
+  interface RepaymentScheduleFieldRefs {
+    readonly id: FieldRef<"RepaymentSchedule", 'String'>
+    readonly loanId: FieldRef<"RepaymentSchedule", 'String'>
+    readonly installmentNumber: FieldRef<"RepaymentSchedule", 'Int'>
+    readonly dueDate: FieldRef<"RepaymentSchedule", 'DateTime'>
+    readonly scheduledPayment: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly principalPortion: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly interestPortion: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly expectedBalance: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly actualAmountPaid: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly actualPrincipalPaid: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly actualInterestPaid: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly remainingPrincipal: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly remainingInterest: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly actualPaymentDate: FieldRef<"RepaymentSchedule", 'DateTime'>
+    readonly status: FieldRef<"RepaymentSchedule", 'ScheduleStatus'>
+    readonly repaymentId: FieldRef<"RepaymentSchedule", 'String'>
+    readonly createdAt: FieldRef<"RepaymentSchedule", 'DateTime'>
+    readonly updatedAt: FieldRef<"RepaymentSchedule", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RepaymentSchedule findUnique
+   */
+  export type RepaymentScheduleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which RepaymentSchedule to fetch.
+     */
+    where: RepaymentScheduleWhereUniqueInput
+  }
+
+  /**
+   * RepaymentSchedule findUniqueOrThrow
+   */
+  export type RepaymentScheduleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which RepaymentSchedule to fetch.
+     */
+    where: RepaymentScheduleWhereUniqueInput
+  }
+
+  /**
+   * RepaymentSchedule findFirst
+   */
+  export type RepaymentScheduleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which RepaymentSchedule to fetch.
+     */
+    where?: RepaymentScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RepaymentSchedules to fetch.
+     */
+    orderBy?: RepaymentScheduleOrderByWithRelationInput | RepaymentScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RepaymentSchedules.
+     */
+    cursor?: RepaymentScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RepaymentSchedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RepaymentSchedules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RepaymentSchedules.
+     */
+    distinct?: RepaymentScheduleScalarFieldEnum | RepaymentScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * RepaymentSchedule findFirstOrThrow
+   */
+  export type RepaymentScheduleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which RepaymentSchedule to fetch.
+     */
+    where?: RepaymentScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RepaymentSchedules to fetch.
+     */
+    orderBy?: RepaymentScheduleOrderByWithRelationInput | RepaymentScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RepaymentSchedules.
+     */
+    cursor?: RepaymentScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RepaymentSchedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RepaymentSchedules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RepaymentSchedules.
+     */
+    distinct?: RepaymentScheduleScalarFieldEnum | RepaymentScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * RepaymentSchedule findMany
+   */
+  export type RepaymentScheduleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which RepaymentSchedules to fetch.
+     */
+    where?: RepaymentScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RepaymentSchedules to fetch.
+     */
+    orderBy?: RepaymentScheduleOrderByWithRelationInput | RepaymentScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RepaymentSchedules.
+     */
+    cursor?: RepaymentScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RepaymentSchedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RepaymentSchedules.
+     */
+    skip?: number
+    distinct?: RepaymentScheduleScalarFieldEnum | RepaymentScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * RepaymentSchedule create
+   */
+  export type RepaymentScheduleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RepaymentSchedule.
+     */
+    data: XOR<RepaymentScheduleCreateInput, RepaymentScheduleUncheckedCreateInput>
+  }
+
+  /**
+   * RepaymentSchedule createMany
+   */
+  export type RepaymentScheduleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RepaymentSchedules.
+     */
+    data: RepaymentScheduleCreateManyInput | RepaymentScheduleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RepaymentSchedule createManyAndReturn
+   */
+  export type RepaymentScheduleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * The data used to create many RepaymentSchedules.
+     */
+    data: RepaymentScheduleCreateManyInput | RepaymentScheduleCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RepaymentSchedule update
+   */
+  export type RepaymentScheduleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RepaymentSchedule.
+     */
+    data: XOR<RepaymentScheduleUpdateInput, RepaymentScheduleUncheckedUpdateInput>
+    /**
+     * Choose, which RepaymentSchedule to update.
+     */
+    where: RepaymentScheduleWhereUniqueInput
+  }
+
+  /**
+   * RepaymentSchedule updateMany
+   */
+  export type RepaymentScheduleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RepaymentSchedules.
+     */
+    data: XOR<RepaymentScheduleUpdateManyMutationInput, RepaymentScheduleUncheckedUpdateManyInput>
+    /**
+     * Filter which RepaymentSchedules to update
+     */
+    where?: RepaymentScheduleWhereInput
+    /**
+     * Limit how many RepaymentSchedules to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RepaymentSchedule updateManyAndReturn
+   */
+  export type RepaymentScheduleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * The data used to update RepaymentSchedules.
+     */
+    data: XOR<RepaymentScheduleUpdateManyMutationInput, RepaymentScheduleUncheckedUpdateManyInput>
+    /**
+     * Filter which RepaymentSchedules to update
+     */
+    where?: RepaymentScheduleWhereInput
+    /**
+     * Limit how many RepaymentSchedules to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RepaymentSchedule upsert
+   */
+  export type RepaymentScheduleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RepaymentSchedule to update in case it exists.
+     */
+    where: RepaymentScheduleWhereUniqueInput
+    /**
+     * In case the RepaymentSchedule found by the `where` argument doesn't exist, create a new RepaymentSchedule with this data.
+     */
+    create: XOR<RepaymentScheduleCreateInput, RepaymentScheduleUncheckedCreateInput>
+    /**
+     * In case the RepaymentSchedule was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RepaymentScheduleUpdateInput, RepaymentScheduleUncheckedUpdateInput>
+  }
+
+  /**
+   * RepaymentSchedule delete
+   */
+  export type RepaymentScheduleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
+    /**
+     * Filter which RepaymentSchedule to delete.
+     */
+    where: RepaymentScheduleWhereUniqueInput
+  }
+
+  /**
+   * RepaymentSchedule deleteMany
+   */
+  export type RepaymentScheduleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RepaymentSchedules to delete
+     */
+    where?: RepaymentScheduleWhereInput
+    /**
+     * Limit how many RepaymentSchedules to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RepaymentSchedule.repayment
+   */
+  export type RepaymentSchedule$repaymentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repayment
+     */
+    select?: RepaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repayment
+     */
+    omit?: RepaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentInclude<ExtArgs> | null
+    where?: RepaymentWhereInput
+  }
+
+  /**
+   * RepaymentSchedule without action
+   */
+  export type RepaymentScheduleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RepaymentSchedule
+     */
+    select?: RepaymentScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RepaymentSchedule
+     */
+    omit?: RepaymentScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentScheduleInclude<ExtArgs> | null
   }
 
 
@@ -45576,6 +47103,30 @@ export namespace Prisma {
   export type RepaymentScalarFieldEnum = (typeof RepaymentScalarFieldEnum)[keyof typeof RepaymentScalarFieldEnum]
 
 
+  export const RepaymentScheduleScalarFieldEnum: {
+    id: 'id',
+    loanId: 'loanId',
+    installmentNumber: 'installmentNumber',
+    dueDate: 'dueDate',
+    scheduledPayment: 'scheduledPayment',
+    principalPortion: 'principalPortion',
+    interestPortion: 'interestPortion',
+    expectedBalance: 'expectedBalance',
+    actualAmountPaid: 'actualAmountPaid',
+    actualPrincipalPaid: 'actualPrincipalPaid',
+    actualInterestPaid: 'actualInterestPaid',
+    remainingPrincipal: 'remainingPrincipal',
+    remainingInterest: 'remainingInterest',
+    actualPaymentDate: 'actualPaymentDate',
+    status: 'status',
+    repaymentId: 'repaymentId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RepaymentScheduleScalarFieldEnum = (typeof RepaymentScheduleScalarFieldEnum)[keyof typeof RepaymentScheduleScalarFieldEnum]
+
+
   export const NonPerformingLoanScalarFieldEnum: {
     id: 'id',
     loanId: 'loanId',
@@ -46158,6 +47709,20 @@ export namespace Prisma {
    * Reference to a field of type 'RepaymentCategory[]'
    */
   export type ListEnumRepaymentCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RepaymentCategory[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ScheduleStatus'
+   */
+  export type EnumScheduleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduleStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ScheduleStatus[]'
+   */
+  export type ListEnumScheduleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduleStatus[]'>
     
 
 
@@ -46934,6 +48499,7 @@ export namespace Prisma {
     npl?: XOR<NonPerformingLoanNullableScalarRelationFilter, NonPerformingLoanWhereInput> | null
     recoveryRecords?: RecoveryRecordListRelationFilter
     repayments?: RepaymentListRelationFilter
+    repaymentSchedule?: RepaymentScheduleListRelationFilter
     vehicleSecurity?: XOR<VehicleSecurityNullableScalarRelationFilter, VehicleSecurityWhereInput> | null
   }
 
@@ -46970,6 +48536,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanOrderByWithRelationInput
     recoveryRecords?: RecoveryRecordOrderByRelationAggregateInput
     repayments?: RepaymentOrderByRelationAggregateInput
+    repaymentSchedule?: RepaymentScheduleOrderByRelationAggregateInput
     vehicleSecurity?: VehicleSecurityOrderByWithRelationInput
   }
 
@@ -47009,6 +48576,7 @@ export namespace Prisma {
     npl?: XOR<NonPerformingLoanNullableScalarRelationFilter, NonPerformingLoanWhereInput> | null
     recoveryRecords?: RecoveryRecordListRelationFilter
     repayments?: RepaymentListRelationFilter
+    repaymentSchedule?: RepaymentScheduleListRelationFilter
     vehicleSecurity?: XOR<VehicleSecurityNullableScalarRelationFilter, VehicleSecurityWhereInput> | null
   }, "id">
 
@@ -47863,6 +49431,7 @@ export namespace Prisma {
     reference?: StringNullableFilter<"Repayment"> | string | null
     createdAt?: DateTimeFilter<"Repayment"> | Date | string
     loan?: XOR<LoanApplicationScalarRelationFilter, LoanApplicationWhereInput>
+    scheduleItems?: RepaymentScheduleListRelationFilter
   }
 
   export type RepaymentOrderByWithRelationInput = {
@@ -47875,6 +49444,7 @@ export namespace Prisma {
     reference?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     loan?: LoanApplicationOrderByWithRelationInput
+    scheduleItems?: RepaymentScheduleOrderByRelationAggregateInput
   }
 
   export type RepaymentWhereUniqueInput = Prisma.AtLeast<{
@@ -47890,6 +49460,7 @@ export namespace Prisma {
     reference?: StringNullableFilter<"Repayment"> | string | null
     createdAt?: DateTimeFilter<"Repayment"> | Date | string
     loan?: XOR<LoanApplicationScalarRelationFilter, LoanApplicationWhereInput>
+    scheduleItems?: RepaymentScheduleListRelationFilter
   }, "id">
 
   export type RepaymentOrderByWithAggregationInput = {
@@ -47920,6 +49491,132 @@ export namespace Prisma {
     category?: EnumRepaymentCategoryWithAggregatesFilter<"Repayment"> | $Enums.RepaymentCategory
     reference?: StringNullableWithAggregatesFilter<"Repayment"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Repayment"> | Date | string
+  }
+
+  export type RepaymentScheduleWhereInput = {
+    AND?: RepaymentScheduleWhereInput | RepaymentScheduleWhereInput[]
+    OR?: RepaymentScheduleWhereInput[]
+    NOT?: RepaymentScheduleWhereInput | RepaymentScheduleWhereInput[]
+    id?: StringFilter<"RepaymentSchedule"> | string
+    loanId?: StringFilter<"RepaymentSchedule"> | string
+    installmentNumber?: IntFilter<"RepaymentSchedule"> | number
+    dueDate?: DateTimeFilter<"RepaymentSchedule"> | Date | string
+    scheduledPayment?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: DateTimeNullableFilter<"RepaymentSchedule"> | Date | string | null
+    status?: EnumScheduleStatusFilter<"RepaymentSchedule"> | $Enums.ScheduleStatus
+    repaymentId?: StringNullableFilter<"RepaymentSchedule"> | string | null
+    createdAt?: DateTimeFilter<"RepaymentSchedule"> | Date | string
+    updatedAt?: DateTimeFilter<"RepaymentSchedule"> | Date | string
+    loan?: XOR<LoanApplicationScalarRelationFilter, LoanApplicationWhereInput>
+    repayment?: XOR<RepaymentNullableScalarRelationFilter, RepaymentWhereInput> | null
+  }
+
+  export type RepaymentScheduleOrderByWithRelationInput = {
+    id?: SortOrder
+    loanId?: SortOrder
+    installmentNumber?: SortOrder
+    dueDate?: SortOrder
+    scheduledPayment?: SortOrder
+    principalPortion?: SortOrder
+    interestPortion?: SortOrder
+    expectedBalance?: SortOrder
+    actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
+    actualPaymentDate?: SortOrderInput | SortOrder
+    status?: SortOrder
+    repaymentId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    loan?: LoanApplicationOrderByWithRelationInput
+    repayment?: RepaymentOrderByWithRelationInput
+  }
+
+  export type RepaymentScheduleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    loanId_installmentNumber?: RepaymentScheduleLoanIdInstallmentNumberCompoundUniqueInput
+    AND?: RepaymentScheduleWhereInput | RepaymentScheduleWhereInput[]
+    OR?: RepaymentScheduleWhereInput[]
+    NOT?: RepaymentScheduleWhereInput | RepaymentScheduleWhereInput[]
+    loanId?: StringFilter<"RepaymentSchedule"> | string
+    installmentNumber?: IntFilter<"RepaymentSchedule"> | number
+    dueDate?: DateTimeFilter<"RepaymentSchedule"> | Date | string
+    scheduledPayment?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: DateTimeNullableFilter<"RepaymentSchedule"> | Date | string | null
+    status?: EnumScheduleStatusFilter<"RepaymentSchedule"> | $Enums.ScheduleStatus
+    repaymentId?: StringNullableFilter<"RepaymentSchedule"> | string | null
+    createdAt?: DateTimeFilter<"RepaymentSchedule"> | Date | string
+    updatedAt?: DateTimeFilter<"RepaymentSchedule"> | Date | string
+    loan?: XOR<LoanApplicationScalarRelationFilter, LoanApplicationWhereInput>
+    repayment?: XOR<RepaymentNullableScalarRelationFilter, RepaymentWhereInput> | null
+  }, "id" | "loanId_installmentNumber">
+
+  export type RepaymentScheduleOrderByWithAggregationInput = {
+    id?: SortOrder
+    loanId?: SortOrder
+    installmentNumber?: SortOrder
+    dueDate?: SortOrder
+    scheduledPayment?: SortOrder
+    principalPortion?: SortOrder
+    interestPortion?: SortOrder
+    expectedBalance?: SortOrder
+    actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
+    actualPaymentDate?: SortOrderInput | SortOrder
+    status?: SortOrder
+    repaymentId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RepaymentScheduleCountOrderByAggregateInput
+    _avg?: RepaymentScheduleAvgOrderByAggregateInput
+    _max?: RepaymentScheduleMaxOrderByAggregateInput
+    _min?: RepaymentScheduleMinOrderByAggregateInput
+    _sum?: RepaymentScheduleSumOrderByAggregateInput
+  }
+
+  export type RepaymentScheduleScalarWhereWithAggregatesInput = {
+    AND?: RepaymentScheduleScalarWhereWithAggregatesInput | RepaymentScheduleScalarWhereWithAggregatesInput[]
+    OR?: RepaymentScheduleScalarWhereWithAggregatesInput[]
+    NOT?: RepaymentScheduleScalarWhereWithAggregatesInput | RepaymentScheduleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RepaymentSchedule"> | string
+    loanId?: StringWithAggregatesFilter<"RepaymentSchedule"> | string
+    installmentNumber?: IntWithAggregatesFilter<"RepaymentSchedule"> | number
+    dueDate?: DateTimeWithAggregatesFilter<"RepaymentSchedule"> | Date | string
+    scheduledPayment?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: DateTimeNullableWithAggregatesFilter<"RepaymentSchedule"> | Date | string | null
+    status?: EnumScheduleStatusWithAggregatesFilter<"RepaymentSchedule"> | $Enums.ScheduleStatus
+    repaymentId?: StringNullableWithAggregatesFilter<"RepaymentSchedule"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"RepaymentSchedule"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RepaymentSchedule"> | Date | string
   }
 
   export type NonPerformingLoanWhereInput = {
@@ -49919,6 +51616,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -49952,6 +51650,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -49985,6 +51684,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -50018,6 +51718,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -50945,6 +52646,7 @@ export namespace Prisma {
     reference?: string | null
     createdAt?: Date | string
     loan: LoanApplicationCreateNestedOneWithoutRepaymentsInput
+    scheduleItems?: RepaymentScheduleCreateNestedManyWithoutRepaymentInput
   }
 
   export type RepaymentUncheckedCreateInput = {
@@ -50956,6 +52658,7 @@ export namespace Prisma {
     category: $Enums.RepaymentCategory
     reference?: string | null
     createdAt?: Date | string
+    scheduleItems?: RepaymentScheduleUncheckedCreateNestedManyWithoutRepaymentInput
   }
 
   export type RepaymentUpdateInput = {
@@ -50967,6 +52670,7 @@ export namespace Prisma {
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     loan?: LoanApplicationUpdateOneRequiredWithoutRepaymentsNestedInput
+    scheduleItems?: RepaymentScheduleUpdateManyWithoutRepaymentNestedInput
   }
 
   export type RepaymentUncheckedUpdateInput = {
@@ -50978,6 +52682,7 @@ export namespace Prisma {
     category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleItems?: RepaymentScheduleUncheckedUpdateManyWithoutRepaymentNestedInput
   }
 
   export type RepaymentCreateManyInput = {
@@ -51010,6 +52715,151 @@ export namespace Prisma {
     category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RepaymentScheduleCreateInput = {
+    id?: string
+    installmentNumber: number
+    dueDate: Date | string
+    scheduledPayment: Decimal | DecimalJsLike | number | string
+    principalPortion: Decimal | DecimalJsLike | number | string
+    interestPortion: Decimal | DecimalJsLike | number | string
+    expectedBalance: Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: Date | string | null
+    status?: $Enums.ScheduleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loan: LoanApplicationCreateNestedOneWithoutRepaymentScheduleInput
+    repayment?: RepaymentCreateNestedOneWithoutScheduleItemsInput
+  }
+
+  export type RepaymentScheduleUncheckedCreateInput = {
+    id?: string
+    loanId: string
+    installmentNumber: number
+    dueDate: Date | string
+    scheduledPayment: Decimal | DecimalJsLike | number | string
+    principalPortion: Decimal | DecimalJsLike | number | string
+    interestPortion: Decimal | DecimalJsLike | number | string
+    expectedBalance: Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: Date | string | null
+    status?: $Enums.ScheduleStatus
+    repaymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RepaymentScheduleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledPayment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loan?: LoanApplicationUpdateOneRequiredWithoutRepaymentScheduleNestedInput
+    repayment?: RepaymentUpdateOneWithoutScheduleItemsNestedInput
+  }
+
+  export type RepaymentScheduleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    loanId?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledPayment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
+    repaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RepaymentScheduleCreateManyInput = {
+    id?: string
+    loanId: string
+    installmentNumber: number
+    dueDate: Date | string
+    scheduledPayment: Decimal | DecimalJsLike | number | string
+    principalPortion: Decimal | DecimalJsLike | number | string
+    interestPortion: Decimal | DecimalJsLike | number | string
+    expectedBalance: Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: Date | string | null
+    status?: $Enums.ScheduleStatus
+    repaymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RepaymentScheduleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledPayment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RepaymentScheduleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    loanId?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledPayment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
+    repaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NonPerformingLoanCreateInput = {
@@ -53124,6 +54974,12 @@ export namespace Prisma {
     none?: RepaymentWhereInput
   }
 
+  export type RepaymentScheduleListRelationFilter = {
+    every?: RepaymentScheduleWhereInput
+    some?: RepaymentScheduleWhereInput
+    none?: RepaymentScheduleWhereInput
+  }
+
   export type VehicleSecurityNullableScalarRelationFilter = {
     is?: VehicleSecurityWhereInput | null
     isNot?: VehicleSecurityWhereInput | null
@@ -53142,6 +54998,10 @@ export namespace Prisma {
   }
 
   export type RepaymentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RepaymentScheduleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -53974,6 +55834,122 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRepaymentCategoryFilter<$PrismaModel>
     _max?: NestedEnumRepaymentCategoryFilter<$PrismaModel>
+  }
+
+  export type EnumScheduleStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ScheduleStatus | EnumScheduleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ScheduleStatus[] | ListEnumScheduleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ScheduleStatus[] | ListEnumScheduleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduleStatusFilter<$PrismaModel> | $Enums.ScheduleStatus
+  }
+
+  export type RepaymentNullableScalarRelationFilter = {
+    is?: RepaymentWhereInput | null
+    isNot?: RepaymentWhereInput | null
+  }
+
+  export type RepaymentScheduleLoanIdInstallmentNumberCompoundUniqueInput = {
+    loanId: string
+    installmentNumber: number
+  }
+
+  export type RepaymentScheduleCountOrderByAggregateInput = {
+    id?: SortOrder
+    loanId?: SortOrder
+    installmentNumber?: SortOrder
+    dueDate?: SortOrder
+    scheduledPayment?: SortOrder
+    principalPortion?: SortOrder
+    interestPortion?: SortOrder
+    expectedBalance?: SortOrder
+    actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
+    actualPaymentDate?: SortOrder
+    status?: SortOrder
+    repaymentId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RepaymentScheduleAvgOrderByAggregateInput = {
+    installmentNumber?: SortOrder
+    scheduledPayment?: SortOrder
+    principalPortion?: SortOrder
+    interestPortion?: SortOrder
+    expectedBalance?: SortOrder
+    actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
+  }
+
+  export type RepaymentScheduleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    loanId?: SortOrder
+    installmentNumber?: SortOrder
+    dueDate?: SortOrder
+    scheduledPayment?: SortOrder
+    principalPortion?: SortOrder
+    interestPortion?: SortOrder
+    expectedBalance?: SortOrder
+    actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
+    actualPaymentDate?: SortOrder
+    status?: SortOrder
+    repaymentId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RepaymentScheduleMinOrderByAggregateInput = {
+    id?: SortOrder
+    loanId?: SortOrder
+    installmentNumber?: SortOrder
+    dueDate?: SortOrder
+    scheduledPayment?: SortOrder
+    principalPortion?: SortOrder
+    interestPortion?: SortOrder
+    expectedBalance?: SortOrder
+    actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
+    actualPaymentDate?: SortOrder
+    status?: SortOrder
+    repaymentId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RepaymentScheduleSumOrderByAggregateInput = {
+    installmentNumber?: SortOrder
+    scheduledPayment?: SortOrder
+    principalPortion?: SortOrder
+    interestPortion?: SortOrder
+    expectedBalance?: SortOrder
+    actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
+  }
+
+  export type EnumScheduleStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ScheduleStatus | EnumScheduleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ScheduleStatus[] | ListEnumScheduleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ScheduleStatus[] | ListEnumScheduleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduleStatusWithAggregatesFilter<$PrismaModel> | $Enums.ScheduleStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumScheduleStatusFilter<$PrismaModel>
+    _max?: NestedEnumScheduleStatusFilter<$PrismaModel>
   }
 
   export type NonPerformingLoanCountOrderByAggregateInput = {
@@ -55644,6 +57620,13 @@ export namespace Prisma {
     connect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
   }
 
+  export type RepaymentScheduleCreateNestedManyWithoutLoanInput = {
+    create?: XOR<RepaymentScheduleCreateWithoutLoanInput, RepaymentScheduleUncheckedCreateWithoutLoanInput> | RepaymentScheduleCreateWithoutLoanInput[] | RepaymentScheduleUncheckedCreateWithoutLoanInput[]
+    connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutLoanInput | RepaymentScheduleCreateOrConnectWithoutLoanInput[]
+    createMany?: RepaymentScheduleCreateManyLoanInputEnvelope
+    connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+  }
+
   export type VehicleSecurityCreateNestedOneWithoutLoanInput = {
     create?: XOR<VehicleSecurityCreateWithoutLoanInput, VehicleSecurityUncheckedCreateWithoutLoanInput>
     connectOrCreate?: VehicleSecurityCreateOrConnectWithoutLoanInput
@@ -55720,6 +57703,13 @@ export namespace Prisma {
     connectOrCreate?: RepaymentCreateOrConnectWithoutLoanInput | RepaymentCreateOrConnectWithoutLoanInput[]
     createMany?: RepaymentCreateManyLoanInputEnvelope
     connect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
+  }
+
+  export type RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput = {
+    create?: XOR<RepaymentScheduleCreateWithoutLoanInput, RepaymentScheduleUncheckedCreateWithoutLoanInput> | RepaymentScheduleCreateWithoutLoanInput[] | RepaymentScheduleUncheckedCreateWithoutLoanInput[]
+    connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutLoanInput | RepaymentScheduleCreateOrConnectWithoutLoanInput[]
+    createMany?: RepaymentScheduleCreateManyLoanInputEnvelope
+    connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
   }
 
   export type VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput = {
@@ -55906,6 +57896,20 @@ export namespace Prisma {
     deleteMany?: RepaymentScalarWhereInput | RepaymentScalarWhereInput[]
   }
 
+  export type RepaymentScheduleUpdateManyWithoutLoanNestedInput = {
+    create?: XOR<RepaymentScheduleCreateWithoutLoanInput, RepaymentScheduleUncheckedCreateWithoutLoanInput> | RepaymentScheduleCreateWithoutLoanInput[] | RepaymentScheduleUncheckedCreateWithoutLoanInput[]
+    connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutLoanInput | RepaymentScheduleCreateOrConnectWithoutLoanInput[]
+    upsert?: RepaymentScheduleUpsertWithWhereUniqueWithoutLoanInput | RepaymentScheduleUpsertWithWhereUniqueWithoutLoanInput[]
+    createMany?: RepaymentScheduleCreateManyLoanInputEnvelope
+    set?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    disconnect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    delete?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    update?: RepaymentScheduleUpdateWithWhereUniqueWithoutLoanInput | RepaymentScheduleUpdateWithWhereUniqueWithoutLoanInput[]
+    updateMany?: RepaymentScheduleUpdateManyWithWhereWithoutLoanInput | RepaymentScheduleUpdateManyWithWhereWithoutLoanInput[]
+    deleteMany?: RepaymentScheduleScalarWhereInput | RepaymentScheduleScalarWhereInput[]
+  }
+
   export type VehicleSecurityUpdateOneWithoutLoanNestedInput = {
     create?: XOR<VehicleSecurityCreateWithoutLoanInput, VehicleSecurityUncheckedCreateWithoutLoanInput>
     connectOrCreate?: VehicleSecurityCreateOrConnectWithoutLoanInput
@@ -56048,6 +58052,20 @@ export namespace Prisma {
     update?: RepaymentUpdateWithWhereUniqueWithoutLoanInput | RepaymentUpdateWithWhereUniqueWithoutLoanInput[]
     updateMany?: RepaymentUpdateManyWithWhereWithoutLoanInput | RepaymentUpdateManyWithWhereWithoutLoanInput[]
     deleteMany?: RepaymentScalarWhereInput | RepaymentScalarWhereInput[]
+  }
+
+  export type RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput = {
+    create?: XOR<RepaymentScheduleCreateWithoutLoanInput, RepaymentScheduleUncheckedCreateWithoutLoanInput> | RepaymentScheduleCreateWithoutLoanInput[] | RepaymentScheduleUncheckedCreateWithoutLoanInput[]
+    connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutLoanInput | RepaymentScheduleCreateOrConnectWithoutLoanInput[]
+    upsert?: RepaymentScheduleUpsertWithWhereUniqueWithoutLoanInput | RepaymentScheduleUpsertWithWhereUniqueWithoutLoanInput[]
+    createMany?: RepaymentScheduleCreateManyLoanInputEnvelope
+    set?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    disconnect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    delete?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    update?: RepaymentScheduleUpdateWithWhereUniqueWithoutLoanInput | RepaymentScheduleUpdateWithWhereUniqueWithoutLoanInput[]
+    updateMany?: RepaymentScheduleUpdateManyWithWhereWithoutLoanInput | RepaymentScheduleUpdateManyWithWhereWithoutLoanInput[]
+    deleteMany?: RepaymentScheduleScalarWhereInput | RepaymentScheduleScalarWhereInput[]
   }
 
   export type VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput = {
@@ -56392,6 +58410,20 @@ export namespace Prisma {
     connect?: LoanApplicationWhereUniqueInput
   }
 
+  export type RepaymentScheduleCreateNestedManyWithoutRepaymentInput = {
+    create?: XOR<RepaymentScheduleCreateWithoutRepaymentInput, RepaymentScheduleUncheckedCreateWithoutRepaymentInput> | RepaymentScheduleCreateWithoutRepaymentInput[] | RepaymentScheduleUncheckedCreateWithoutRepaymentInput[]
+    connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutRepaymentInput | RepaymentScheduleCreateOrConnectWithoutRepaymentInput[]
+    createMany?: RepaymentScheduleCreateManyRepaymentInputEnvelope
+    connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+  }
+
+  export type RepaymentScheduleUncheckedCreateNestedManyWithoutRepaymentInput = {
+    create?: XOR<RepaymentScheduleCreateWithoutRepaymentInput, RepaymentScheduleUncheckedCreateWithoutRepaymentInput> | RepaymentScheduleCreateWithoutRepaymentInput[] | RepaymentScheduleUncheckedCreateWithoutRepaymentInput[]
+    connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutRepaymentInput | RepaymentScheduleCreateOrConnectWithoutRepaymentInput[]
+    createMany?: RepaymentScheduleCreateManyRepaymentInputEnvelope
+    connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+  }
+
   export type EnumRepaymentCategoryFieldUpdateOperationsInput = {
     set?: $Enums.RepaymentCategory
   }
@@ -56402,6 +58434,68 @@ export namespace Prisma {
     upsert?: LoanApplicationUpsertWithoutRepaymentsInput
     connect?: LoanApplicationWhereUniqueInput
     update?: XOR<XOR<LoanApplicationUpdateToOneWithWhereWithoutRepaymentsInput, LoanApplicationUpdateWithoutRepaymentsInput>, LoanApplicationUncheckedUpdateWithoutRepaymentsInput>
+  }
+
+  export type RepaymentScheduleUpdateManyWithoutRepaymentNestedInput = {
+    create?: XOR<RepaymentScheduleCreateWithoutRepaymentInput, RepaymentScheduleUncheckedCreateWithoutRepaymentInput> | RepaymentScheduleCreateWithoutRepaymentInput[] | RepaymentScheduleUncheckedCreateWithoutRepaymentInput[]
+    connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutRepaymentInput | RepaymentScheduleCreateOrConnectWithoutRepaymentInput[]
+    upsert?: RepaymentScheduleUpsertWithWhereUniqueWithoutRepaymentInput | RepaymentScheduleUpsertWithWhereUniqueWithoutRepaymentInput[]
+    createMany?: RepaymentScheduleCreateManyRepaymentInputEnvelope
+    set?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    disconnect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    delete?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    update?: RepaymentScheduleUpdateWithWhereUniqueWithoutRepaymentInput | RepaymentScheduleUpdateWithWhereUniqueWithoutRepaymentInput[]
+    updateMany?: RepaymentScheduleUpdateManyWithWhereWithoutRepaymentInput | RepaymentScheduleUpdateManyWithWhereWithoutRepaymentInput[]
+    deleteMany?: RepaymentScheduleScalarWhereInput | RepaymentScheduleScalarWhereInput[]
+  }
+
+  export type RepaymentScheduleUncheckedUpdateManyWithoutRepaymentNestedInput = {
+    create?: XOR<RepaymentScheduleCreateWithoutRepaymentInput, RepaymentScheduleUncheckedCreateWithoutRepaymentInput> | RepaymentScheduleCreateWithoutRepaymentInput[] | RepaymentScheduleUncheckedCreateWithoutRepaymentInput[]
+    connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutRepaymentInput | RepaymentScheduleCreateOrConnectWithoutRepaymentInput[]
+    upsert?: RepaymentScheduleUpsertWithWhereUniqueWithoutRepaymentInput | RepaymentScheduleUpsertWithWhereUniqueWithoutRepaymentInput[]
+    createMany?: RepaymentScheduleCreateManyRepaymentInputEnvelope
+    set?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    disconnect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    delete?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+    update?: RepaymentScheduleUpdateWithWhereUniqueWithoutRepaymentInput | RepaymentScheduleUpdateWithWhereUniqueWithoutRepaymentInput[]
+    updateMany?: RepaymentScheduleUpdateManyWithWhereWithoutRepaymentInput | RepaymentScheduleUpdateManyWithWhereWithoutRepaymentInput[]
+    deleteMany?: RepaymentScheduleScalarWhereInput | RepaymentScheduleScalarWhereInput[]
+  }
+
+  export type LoanApplicationCreateNestedOneWithoutRepaymentScheduleInput = {
+    create?: XOR<LoanApplicationCreateWithoutRepaymentScheduleInput, LoanApplicationUncheckedCreateWithoutRepaymentScheduleInput>
+    connectOrCreate?: LoanApplicationCreateOrConnectWithoutRepaymentScheduleInput
+    connect?: LoanApplicationWhereUniqueInput
+  }
+
+  export type RepaymentCreateNestedOneWithoutScheduleItemsInput = {
+    create?: XOR<RepaymentCreateWithoutScheduleItemsInput, RepaymentUncheckedCreateWithoutScheduleItemsInput>
+    connectOrCreate?: RepaymentCreateOrConnectWithoutScheduleItemsInput
+    connect?: RepaymentWhereUniqueInput
+  }
+
+  export type EnumScheduleStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ScheduleStatus
+  }
+
+  export type LoanApplicationUpdateOneRequiredWithoutRepaymentScheduleNestedInput = {
+    create?: XOR<LoanApplicationCreateWithoutRepaymentScheduleInput, LoanApplicationUncheckedCreateWithoutRepaymentScheduleInput>
+    connectOrCreate?: LoanApplicationCreateOrConnectWithoutRepaymentScheduleInput
+    upsert?: LoanApplicationUpsertWithoutRepaymentScheduleInput
+    connect?: LoanApplicationWhereUniqueInput
+    update?: XOR<XOR<LoanApplicationUpdateToOneWithWhereWithoutRepaymentScheduleInput, LoanApplicationUpdateWithoutRepaymentScheduleInput>, LoanApplicationUncheckedUpdateWithoutRepaymentScheduleInput>
+  }
+
+  export type RepaymentUpdateOneWithoutScheduleItemsNestedInput = {
+    create?: XOR<RepaymentCreateWithoutScheduleItemsInput, RepaymentUncheckedCreateWithoutScheduleItemsInput>
+    connectOrCreate?: RepaymentCreateOrConnectWithoutScheduleItemsInput
+    upsert?: RepaymentUpsertWithoutScheduleItemsInput
+    disconnect?: RepaymentWhereInput | boolean
+    delete?: RepaymentWhereInput | boolean
+    connect?: RepaymentWhereUniqueInput
+    update?: XOR<XOR<RepaymentUpdateToOneWithWhereWithoutScheduleItemsInput, RepaymentUpdateWithoutScheduleItemsInput>, RepaymentUncheckedUpdateWithoutScheduleItemsInput>
   }
 
   export type LoanApplicationCreateNestedOneWithoutNplInput = {
@@ -57372,6 +59466,23 @@ export namespace Prisma {
     _max?: NestedEnumRepaymentCategoryFilter<$PrismaModel>
   }
 
+  export type NestedEnumScheduleStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ScheduleStatus | EnumScheduleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ScheduleStatus[] | ListEnumScheduleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ScheduleStatus[] | ListEnumScheduleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduleStatusFilter<$PrismaModel> | $Enums.ScheduleStatus
+  }
+
+  export type NestedEnumScheduleStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ScheduleStatus | EnumScheduleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ScheduleStatus[] | ListEnumScheduleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ScheduleStatus[] | ListEnumScheduleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduleStatusWithAggregatesFilter<$PrismaModel> | $Enums.ScheduleStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumScheduleStatusFilter<$PrismaModel>
+    _max?: NestedEnumScheduleStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumDocumentTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.DocumentType | EnumDocumentTypeFieldRefInput<$PrismaModel>
     in?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
@@ -57740,6 +59851,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -57772,6 +59884,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -57814,6 +59927,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -57846,6 +59960,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -58455,6 +60570,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -58487,6 +60603,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -59773,6 +61890,7 @@ export namespace Prisma {
     category: $Enums.RepaymentCategory
     reference?: string | null
     createdAt?: Date | string
+    scheduleItems?: RepaymentScheduleCreateNestedManyWithoutRepaymentInput
   }
 
   export type RepaymentUncheckedCreateWithoutLoanInput = {
@@ -59783,6 +61901,7 @@ export namespace Prisma {
     category: $Enums.RepaymentCategory
     reference?: string | null
     createdAt?: Date | string
+    scheduleItems?: RepaymentScheduleUncheckedCreateNestedManyWithoutRepaymentInput
   }
 
   export type RepaymentCreateOrConnectWithoutLoanInput = {
@@ -59792,6 +61911,56 @@ export namespace Prisma {
 
   export type RepaymentCreateManyLoanInputEnvelope = {
     data: RepaymentCreateManyLoanInput | RepaymentCreateManyLoanInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RepaymentScheduleCreateWithoutLoanInput = {
+    id?: string
+    installmentNumber: number
+    dueDate: Date | string
+    scheduledPayment: Decimal | DecimalJsLike | number | string
+    principalPortion: Decimal | DecimalJsLike | number | string
+    interestPortion: Decimal | DecimalJsLike | number | string
+    expectedBalance: Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: Date | string | null
+    status?: $Enums.ScheduleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    repayment?: RepaymentCreateNestedOneWithoutScheduleItemsInput
+  }
+
+  export type RepaymentScheduleUncheckedCreateWithoutLoanInput = {
+    id?: string
+    installmentNumber: number
+    dueDate: Date | string
+    scheduledPayment: Decimal | DecimalJsLike | number | string
+    principalPortion: Decimal | DecimalJsLike | number | string
+    interestPortion: Decimal | DecimalJsLike | number | string
+    expectedBalance: Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: Date | string | null
+    status?: $Enums.ScheduleStatus
+    repaymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RepaymentScheduleCreateOrConnectWithoutLoanInput = {
+    where: RepaymentScheduleWhereUniqueInput
+    create: XOR<RepaymentScheduleCreateWithoutLoanInput, RepaymentScheduleUncheckedCreateWithoutLoanInput>
+  }
+
+  export type RepaymentScheduleCreateManyLoanInputEnvelope = {
+    data: RepaymentScheduleCreateManyLoanInput | RepaymentScheduleCreateManyLoanInput[]
     skipDuplicates?: boolean
   }
 
@@ -60296,6 +62465,46 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Repayment"> | Date | string
   }
 
+  export type RepaymentScheduleUpsertWithWhereUniqueWithoutLoanInput = {
+    where: RepaymentScheduleWhereUniqueInput
+    update: XOR<RepaymentScheduleUpdateWithoutLoanInput, RepaymentScheduleUncheckedUpdateWithoutLoanInput>
+    create: XOR<RepaymentScheduleCreateWithoutLoanInput, RepaymentScheduleUncheckedCreateWithoutLoanInput>
+  }
+
+  export type RepaymentScheduleUpdateWithWhereUniqueWithoutLoanInput = {
+    where: RepaymentScheduleWhereUniqueInput
+    data: XOR<RepaymentScheduleUpdateWithoutLoanInput, RepaymentScheduleUncheckedUpdateWithoutLoanInput>
+  }
+
+  export type RepaymentScheduleUpdateManyWithWhereWithoutLoanInput = {
+    where: RepaymentScheduleScalarWhereInput
+    data: XOR<RepaymentScheduleUpdateManyMutationInput, RepaymentScheduleUncheckedUpdateManyWithoutLoanInput>
+  }
+
+  export type RepaymentScheduleScalarWhereInput = {
+    AND?: RepaymentScheduleScalarWhereInput | RepaymentScheduleScalarWhereInput[]
+    OR?: RepaymentScheduleScalarWhereInput[]
+    NOT?: RepaymentScheduleScalarWhereInput | RepaymentScheduleScalarWhereInput[]
+    id?: StringFilter<"RepaymentSchedule"> | string
+    loanId?: StringFilter<"RepaymentSchedule"> | string
+    installmentNumber?: IntFilter<"RepaymentSchedule"> | number
+    dueDate?: DateTimeFilter<"RepaymentSchedule"> | Date | string
+    scheduledPayment?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: DateTimeNullableFilter<"RepaymentSchedule"> | Date | string | null
+    status?: EnumScheduleStatusFilter<"RepaymentSchedule"> | $Enums.ScheduleStatus
+    repaymentId?: StringNullableFilter<"RepaymentSchedule"> | string | null
+    createdAt?: DateTimeFilter<"RepaymentSchedule"> | Date | string
+    updatedAt?: DateTimeFilter<"RepaymentSchedule"> | Date | string
+  }
+
   export type VehicleSecurityUpsertWithoutLoanInput = {
     update: XOR<VehicleSecurityUpdateWithoutLoanInput, VehicleSecurityUncheckedUpdateWithoutLoanInput>
     create: XOR<VehicleSecurityCreateWithoutLoanInput, VehicleSecurityUncheckedCreateWithoutLoanInput>
@@ -60362,6 +62571,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -60394,6 +62604,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -60442,6 +62653,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -60474,6 +62686,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -60506,6 +62719,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -60538,6 +62752,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -60586,6 +62801,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -60618,6 +62834,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -60651,6 +62868,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
   }
 
   export type LoanApplicationUncheckedCreateWithoutVehicleSecurityInput = {
@@ -60683,6 +62901,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
   }
 
   export type LoanApplicationCreateOrConnectWithoutVehicleSecurityInput = {
@@ -60731,6 +62950,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
   }
 
   export type LoanApplicationUncheckedUpdateWithoutVehicleSecurityInput = {
@@ -60763,6 +62983,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
   }
 
   export type LoanApplicationCreateWithoutGuarantorsInput = {
@@ -60794,6 +63015,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -60826,6 +63048,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -60874,6 +63097,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -60906,6 +63130,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -60938,6 +63163,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -60970,6 +63196,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -61018,6 +63245,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -61050,6 +63278,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -61082,6 +63311,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -61114,6 +63344,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -61162,6 +63393,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -61194,6 +63426,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -61343,6 +63576,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -61375,6 +63609,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -61548,6 +63783,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -61580,6 +63816,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -61900,6 +64137,7 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -61932,12 +64170,63 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
   export type LoanApplicationCreateOrConnectWithoutRepaymentsInput = {
     where: LoanApplicationWhereUniqueInput
     create: XOR<LoanApplicationCreateWithoutRepaymentsInput, LoanApplicationUncheckedCreateWithoutRepaymentsInput>
+  }
+
+  export type RepaymentScheduleCreateWithoutRepaymentInput = {
+    id?: string
+    installmentNumber: number
+    dueDate: Date | string
+    scheduledPayment: Decimal | DecimalJsLike | number | string
+    principalPortion: Decimal | DecimalJsLike | number | string
+    interestPortion: Decimal | DecimalJsLike | number | string
+    expectedBalance: Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: Date | string | null
+    status?: $Enums.ScheduleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loan: LoanApplicationCreateNestedOneWithoutRepaymentScheduleInput
+  }
+
+  export type RepaymentScheduleUncheckedCreateWithoutRepaymentInput = {
+    id?: string
+    loanId: string
+    installmentNumber: number
+    dueDate: Date | string
+    scheduledPayment: Decimal | DecimalJsLike | number | string
+    principalPortion: Decimal | DecimalJsLike | number | string
+    interestPortion: Decimal | DecimalJsLike | number | string
+    expectedBalance: Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: Date | string | null
+    status?: $Enums.ScheduleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RepaymentScheduleCreateOrConnectWithoutRepaymentInput = {
+    where: RepaymentScheduleWhereUniqueInput
+    create: XOR<RepaymentScheduleCreateWithoutRepaymentInput, RepaymentScheduleUncheckedCreateWithoutRepaymentInput>
+  }
+
+  export type RepaymentScheduleCreateManyRepaymentInputEnvelope = {
+    data: RepaymentScheduleCreateManyRepaymentInput | RepaymentScheduleCreateManyRepaymentInput[]
+    skipDuplicates?: boolean
   }
 
   export type LoanApplicationUpsertWithoutRepaymentsInput = {
@@ -61980,6 +64269,7 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -62012,7 +64302,232 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
+  }
+
+  export type RepaymentScheduleUpsertWithWhereUniqueWithoutRepaymentInput = {
+    where: RepaymentScheduleWhereUniqueInput
+    update: XOR<RepaymentScheduleUpdateWithoutRepaymentInput, RepaymentScheduleUncheckedUpdateWithoutRepaymentInput>
+    create: XOR<RepaymentScheduleCreateWithoutRepaymentInput, RepaymentScheduleUncheckedCreateWithoutRepaymentInput>
+  }
+
+  export type RepaymentScheduleUpdateWithWhereUniqueWithoutRepaymentInput = {
+    where: RepaymentScheduleWhereUniqueInput
+    data: XOR<RepaymentScheduleUpdateWithoutRepaymentInput, RepaymentScheduleUncheckedUpdateWithoutRepaymentInput>
+  }
+
+  export type RepaymentScheduleUpdateManyWithWhereWithoutRepaymentInput = {
+    where: RepaymentScheduleScalarWhereInput
+    data: XOR<RepaymentScheduleUpdateManyMutationInput, RepaymentScheduleUncheckedUpdateManyWithoutRepaymentInput>
+  }
+
+  export type LoanApplicationCreateWithoutRepaymentScheduleInput = {
+    id?: string
+    purpose: string
+    amountRequested: Decimal | DecimalJsLike | number | string
+    approvedAmount?: Decimal | DecimalJsLike | number | string | null
+    qualificationType?: $Enums.QualificationType | null
+    interestRate?: Decimal | DecimalJsLike | number | string
+    startDate?: Date | string | null
+    repaymentPeriod: number
+    status?: $Enums.LoanApplicationStatus
+    appliedAt?: Date | string
+    reviewedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    documents?: DocumentCreateNestedManyWithoutLoanInput
+    guarantors?: GuarantorCreateNestedManyWithoutLoanInput
+    investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
+    invoices?: InvoiceCreateNestedManyWithoutLoanInput
+    approvedBy?: UserCreateNestedOneWithoutApprovedLoansInput
+    client: ClientCreateNestedOneWithoutLoanApplicationsInput
+    reviewedBy?: UserCreateNestedOneWithoutReviewedLoansInput
+    disbursement?: LoanDisbursementCreateNestedOneWithoutLoanInput
+    financials?: LoanFinancialCreateNestedOneWithoutLoanInput
+    qualification?: LoanQualificationCreateNestedOneWithoutLoanInput
+    security?: LoanSecurityCreateNestedOneWithoutLoanInput
+    npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
+    recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
+  }
+
+  export type LoanApplicationUncheckedCreateWithoutRepaymentScheduleInput = {
+    id?: string
+    clientId: string
+    purpose: string
+    amountRequested: Decimal | DecimalJsLike | number | string
+    approvedAmount?: Decimal | DecimalJsLike | number | string | null
+    qualificationType?: $Enums.QualificationType | null
+    interestRate?: Decimal | DecimalJsLike | number | string
+    startDate?: Date | string | null
+    repaymentPeriod: number
+    status?: $Enums.LoanApplicationStatus
+    appliedAt?: Date | string
+    reviewedAt?: Date | string | null
+    reviewedById?: string | null
+    approvedAt?: Date | string | null
+    approvedById?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
+    guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
+    investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutLoanInput
+    disbursement?: LoanDisbursementUncheckedCreateNestedOneWithoutLoanInput
+    financials?: LoanFinancialUncheckedCreateNestedOneWithoutLoanInput
+    qualification?: LoanQualificationUncheckedCreateNestedOneWithoutLoanInput
+    security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
+    npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
+    recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
+  }
+
+  export type LoanApplicationCreateOrConnectWithoutRepaymentScheduleInput = {
+    where: LoanApplicationWhereUniqueInput
+    create: XOR<LoanApplicationCreateWithoutRepaymentScheduleInput, LoanApplicationUncheckedCreateWithoutRepaymentScheduleInput>
+  }
+
+  export type RepaymentCreateWithoutScheduleItemsInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    paymentMethod: $Enums.PaymentMethod
+    paymentDate: Date | string
+    category: $Enums.RepaymentCategory
+    reference?: string | null
+    createdAt?: Date | string
+    loan: LoanApplicationCreateNestedOneWithoutRepaymentsInput
+  }
+
+  export type RepaymentUncheckedCreateWithoutScheduleItemsInput = {
+    id?: string
+    loanId: string
+    amount: Decimal | DecimalJsLike | number | string
+    paymentMethod: $Enums.PaymentMethod
+    paymentDate: Date | string
+    category: $Enums.RepaymentCategory
+    reference?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RepaymentCreateOrConnectWithoutScheduleItemsInput = {
+    where: RepaymentWhereUniqueInput
+    create: XOR<RepaymentCreateWithoutScheduleItemsInput, RepaymentUncheckedCreateWithoutScheduleItemsInput>
+  }
+
+  export type LoanApplicationUpsertWithoutRepaymentScheduleInput = {
+    update: XOR<LoanApplicationUpdateWithoutRepaymentScheduleInput, LoanApplicationUncheckedUpdateWithoutRepaymentScheduleInput>
+    create: XOR<LoanApplicationCreateWithoutRepaymentScheduleInput, LoanApplicationUncheckedCreateWithoutRepaymentScheduleInput>
+    where?: LoanApplicationWhereInput
+  }
+
+  export type LoanApplicationUpdateToOneWithWhereWithoutRepaymentScheduleInput = {
+    where?: LoanApplicationWhereInput
+    data: XOR<LoanApplicationUpdateWithoutRepaymentScheduleInput, LoanApplicationUncheckedUpdateWithoutRepaymentScheduleInput>
+  }
+
+  export type LoanApplicationUpdateWithoutRepaymentScheduleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    purpose?: StringFieldUpdateOperationsInput | string
+    amountRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
+    interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    repaymentPeriod?: IntFieldUpdateOperationsInput | number
+    status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
+    appliedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documents?: DocumentUpdateManyWithoutLoanNestedInput
+    guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
+    investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
+    invoices?: InvoiceUpdateManyWithoutLoanNestedInput
+    approvedBy?: UserUpdateOneWithoutApprovedLoansNestedInput
+    client?: ClientUpdateOneRequiredWithoutLoanApplicationsNestedInput
+    reviewedBy?: UserUpdateOneWithoutReviewedLoansNestedInput
+    disbursement?: LoanDisbursementUpdateOneWithoutLoanNestedInput
+    financials?: LoanFinancialUpdateOneWithoutLoanNestedInput
+    qualification?: LoanQualificationUpdateOneWithoutLoanNestedInput
+    security?: LoanSecurityUpdateOneWithoutLoanNestedInput
+    npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
+    recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
+  }
+
+  export type LoanApplicationUncheckedUpdateWithoutRepaymentScheduleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    purpose?: StringFieldUpdateOperationsInput | string
+    amountRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
+    interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    repaymentPeriod?: IntFieldUpdateOperationsInput | number
+    status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
+    appliedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
+    guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
+    investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutLoanNestedInput
+    disbursement?: LoanDisbursementUncheckedUpdateOneWithoutLoanNestedInput
+    financials?: LoanFinancialUncheckedUpdateOneWithoutLoanNestedInput
+    qualification?: LoanQualificationUncheckedUpdateOneWithoutLoanNestedInput
+    security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
+    npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
+    recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
+  }
+
+  export type RepaymentUpsertWithoutScheduleItemsInput = {
+    update: XOR<RepaymentUpdateWithoutScheduleItemsInput, RepaymentUncheckedUpdateWithoutScheduleItemsInput>
+    create: XOR<RepaymentCreateWithoutScheduleItemsInput, RepaymentUncheckedCreateWithoutScheduleItemsInput>
+    where?: RepaymentWhereInput
+  }
+
+  export type RepaymentUpdateToOneWithWhereWithoutScheduleItemsInput = {
+    where?: RepaymentWhereInput
+    data: XOR<RepaymentUpdateWithoutScheduleItemsInput, RepaymentUncheckedUpdateWithoutScheduleItemsInput>
+  }
+
+  export type RepaymentUpdateWithoutScheduleItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loan?: LoanApplicationUpdateOneRequiredWithoutRepaymentsNestedInput
+  }
+
+  export type RepaymentUncheckedUpdateWithoutScheduleItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    loanId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LoanApplicationCreateWithoutNplInput = {
@@ -62044,6 +64559,7 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -62076,6 +64592,7 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -62124,6 +64641,7 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -62156,6 +64674,7 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -62355,6 +64874,7 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -62387,6 +64907,7 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -62468,6 +64989,7 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -62500,6 +65022,7 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -62759,6 +65282,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -62791,6 +65315,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -62874,6 +65399,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -62906,6 +65432,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -63063,6 +65590,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
     repayments?: RepaymentCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -63095,6 +65623,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
     repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -63210,6 +65739,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -63242,6 +65772,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -63899,6 +66430,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -63931,6 +66463,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -63983,6 +66516,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -64015,6 +66549,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -64401,6 +66936,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -64433,6 +66969,7 @@ export namespace Prisma {
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
     repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
+    repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -64565,6 +67102,26 @@ export namespace Prisma {
     category: $Enums.RepaymentCategory
     reference?: string | null
     createdAt?: Date | string
+  }
+
+  export type RepaymentScheduleCreateManyLoanInput = {
+    id?: string
+    installmentNumber: number
+    dueDate: Date | string
+    scheduledPayment: Decimal | DecimalJsLike | number | string
+    principalPortion: Decimal | DecimalJsLike | number | string
+    interestPortion: Decimal | DecimalJsLike | number | string
+    expectedBalance: Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: Date | string | null
+    status?: $Enums.ScheduleStatus
+    repaymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type DocumentUpdateWithoutLoanInput = {
@@ -64756,6 +67313,7 @@ export namespace Prisma {
     category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleItems?: RepaymentScheduleUpdateManyWithoutRepaymentNestedInput
   }
 
   export type RepaymentUncheckedUpdateWithoutLoanInput = {
@@ -64766,6 +67324,7 @@ export namespace Prisma {
     category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleItems?: RepaymentScheduleUncheckedUpdateManyWithoutRepaymentNestedInput
   }
 
   export type RepaymentUncheckedUpdateManyWithoutLoanInput = {
@@ -64776,6 +67335,66 @@ export namespace Prisma {
     category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RepaymentScheduleUpdateWithoutLoanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledPayment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    repayment?: RepaymentUpdateOneWithoutScheduleItemsNestedInput
+  }
+
+  export type RepaymentScheduleUncheckedUpdateWithoutLoanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledPayment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
+    repaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RepaymentScheduleUncheckedUpdateManyWithoutLoanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledPayment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
+    repaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InvoiceItemCreateManyInvoiceInput = {
@@ -64884,6 +67503,86 @@ export namespace Prisma {
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RepaymentScheduleCreateManyRepaymentInput = {
+    id?: string
+    loanId: string
+    installmentNumber: number
+    dueDate: Date | string
+    scheduledPayment: Decimal | DecimalJsLike | number | string
+    principalPortion: Decimal | DecimalJsLike | number | string
+    interestPortion: Decimal | DecimalJsLike | number | string
+    expectedBalance: Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: Date | string | null
+    status?: $Enums.ScheduleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RepaymentScheduleUpdateWithoutRepaymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledPayment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loan?: LoanApplicationUpdateOneRequiredWithoutRepaymentScheduleNestedInput
+  }
+
+  export type RepaymentScheduleUncheckedUpdateWithoutRepaymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    loanId?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledPayment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RepaymentScheduleUncheckedUpdateManyWithoutRepaymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    loanId?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledPayment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    principalPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RecoveryRecordCreateManyAgentInput = {

@@ -14,6 +14,7 @@ import {
   updateGuarantorStatus,
   type LoanWithClient,
 } from "@/services/loan.service";
+import { generateRepaymentSchedule } from "@/services/repayment-schedule.service";
 import { revalidatePath } from "next/cache";
 import type { LoanApplicationSubmitData } from "@/lib/types";
 
@@ -384,6 +385,12 @@ export async function disburseLoanAction(loanId: string) {
     const result = await updateLoanStatus(loanId, "Disbursed");
 
     if (result.success) {
+      // Generate repayment schedule when loan is disbursed
+      const scheduleResult = await generateRepaymentSchedule(loanId);
+      if (!scheduleResult.success) {
+        console.error("Failed to generate repayment schedule:", scheduleResult.error);
+      }
+
       await prisma.auditLog.create({
         data: {
           userId: session.user.id as string,
@@ -392,6 +399,9 @@ export async function disburseLoanAction(loanId: string) {
           entityId: loanId,
         },
       }).catch(() => {});
+
+      revalidatePath(`/dss/admin/loans/${loanId}`);
+      revalidatePath("/dss/admin/repayments");
     }
 
     return { success: result.success, error: result.error };

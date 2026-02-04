@@ -22,12 +22,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, Calendar, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import {
   recordRepaymentAction,
   type SerializedRepayment,
 } from "@/app/actions/repayment";
+import { getNextInstallmentAction, type SerializedSchedule } from "@/app/actions/schedule";
 import type { PaymentMethod, RepaymentCategory } from "@/lib/generated/prisma";
 
 const methodColors: Record<string, string> = {
@@ -84,6 +85,27 @@ export function RepaymentsDashboard({
   const [formCategory, setFormCategory] = useState<RepaymentCategory | "">("");
   const [formReference, setFormReference] = useState("");
 
+  // Schedule state
+  const [nextInstallment, setNextInstallment] = useState<SerializedSchedule | null>(null);
+  const [loadingSchedule, setLoadingSchedule] = useState(false);
+
+  // Fetch next installment when loan is selected
+  const handleLoanSelect = async (loanId: string) => {
+    setFormLoanId(loanId);
+    setNextInstallment(null);
+
+    if (loanId) {
+      setLoadingSchedule(true);
+      const result = await getNextInstallmentAction(loanId);
+      if (result.success && result.data) {
+        setNextInstallment(result.data);
+        // Pre-fill amount with scheduled payment
+        setFormAmount(result.data.scheduledPayment.toString());
+      }
+      setLoadingSchedule(false);
+    }
+  };
+
   const filteredRepayments = repayments.filter((r) => {
     const matchesSearch =
       r.clientName.toLowerCase().includes(search.toLowerCase()) ||
@@ -101,6 +123,7 @@ export function RepaymentsDashboard({
     setFormDate(new Date().toISOString().split("T")[0]);
     setFormCategory("");
     setFormReference("");
+    setNextInstallment(null);
   };
 
   const handleSubmit = async () => {
@@ -231,7 +254,7 @@ export function RepaymentsDashboard({
             {/* Loan Selection */}
             <div className="space-y-2">
               <Label>Loan *</Label>
-              <Select value={formLoanId} onValueChange={setFormLoanId}>
+              <Select value={formLoanId} onValueChange={handleLoanSelect}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a loan" />
                 </SelectTrigger>
@@ -248,6 +271,33 @@ export function RepaymentsDashboard({
                 <p className="text-xs text-slate-500">
                   Loan amount: {formatCurrency(selectedLoan.approvedAmount || selectedLoan.amountRequested)}
                 </p>
+              )}
+              {loadingSchedule && (
+                <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  Loading schedule...
+                </div>
+              )}
+              {nextInstallment && !loadingSchedule && (
+                <div className="mt-2 p-3 rounded-lg bg-blue-50 border border-blue-200">
+                  <div className="flex items-start gap-2">
+                    <Calendar className="h-4 w-4 text-blue-600 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="font-medium text-blue-900">
+                        Installment #{nextInstallment.installmentNumber}
+                      </p>
+                      <p className="text-blue-700">
+                        Due: {formatDate(nextInstallment.dueDate)} — {formatCurrency(nextInstallment.scheduledPayment)}
+                      </p>
+                      {nextInstallment.status === "Overdue" && (
+                        <div className="flex items-center gap-1 mt-1 text-red-600">
+                          <AlertCircle className="h-3 w-3" />
+                          <span className="text-xs font-medium">Overdue</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
 
