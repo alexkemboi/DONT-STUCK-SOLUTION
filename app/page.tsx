@@ -18,31 +18,27 @@ export default async function page() {
   
 
 
-  // if (session?.user) {
+  if (session?.user) {
 
 
-  //   const role = session.user.role;
+    const role = session.user.role;
 
-  //   if (role === "Admin") {
-  //     return redirect("/dss/admin");
-  //   } else if (role === "Client") {
-  //     return redirect("/dss/client");
-  //   } else if (role === "LoanOfficer") {
-  //     return redirect("/dss/loan-officer");
-  //   } else if (role === "Investor") {
-  //     return redirect("/dss/investor");
-  //   } else if (role === "RecoveryAgent") {
-  //     return redirect("/dss/recovery-agent");
-  //   }
+    if (role === "Admin") {
+      return redirect("/dss/admin");
+    } else if (role === "Client") {
+      return redirect("/dss/client");
+    } else if (role === "LoanOfficer") {
+      return redirect("/dss/loan-officer");
+    } else if (role === "Investor") {
+      return redirect("/dss/investor");
+    } else if (role === "RecoveryAgent") {
+      return redirect("/dss/recovery-agent");
+    }
 
-  // }else{
-  //     return redirect("/login");
-  // }
-return (
-  <div>
-    <>test</>
-    </div>
-)
+  }else{
+      return redirect("/login");
+  }
+
 
   // const { data: session } = authClient.useSession()
   // const router = useRouter();

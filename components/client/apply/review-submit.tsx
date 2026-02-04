@@ -34,7 +34,7 @@ export function ReviewSubmit() {
         const { amountRequested, repaymentPeriod } = loanDetails
         if (!amountRequested || !repaymentPeriod) return null
 
-        const monthlyRate = ANNUAL_INTEREST_RATE / 100 / 12
+        const monthlyRate = ANNUAL_INTEREST_RATE / 100 
         const monthlyPayment =
             (amountRequested * monthlyRate * Math.pow(1 + monthlyRate, repaymentPeriod)) /
             (Math.pow(1 + monthlyRate, repaymentPeriod) - 1)
@@ -130,7 +130,7 @@ export function ReviewSubmit() {
                             </div>
                             <div>
                                 <p className="text-xs text-muted-foreground">Interest Rate</p>
-                                <p className="text-sm font-medium">{ANNUAL_INTEREST_RATE}% p.a.</p>
+                                <p className="text-sm font-medium">{ANNUAL_INTEREST_RATE}% p.m.</p>
                             </div>
                             {calculations && (
                                 <div>
