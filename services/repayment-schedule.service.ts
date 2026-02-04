@@ -139,6 +139,10 @@ export async function generateRepaymentSchedule(
         principalPortion: row.principalPortion,
         interestPortion: row.interestPortion,
         expectedBalance: row.expectedBalance,
+        actualPrincipalPaid: 0,
+        actualInterestPaid: 0,
+        remainingPrincipal: row.principalPortion,
+        remainingInterest: row.interestPortion,
         status: "Pending" as ScheduleStatus,
       })),
     });
@@ -227,32 +231,152 @@ export async function updateScheduleWithPayment(
   try {
     const schedule = await prisma.repaymentSchedule.findUnique({
       where: { id: scheduleId },
+      include: {
+        loan: {
+          select: {
+            interestRate: true,
+            approvedAmount: true,
+            amountRequested: true,
+            repaymentPeriod: true,
+            startDate: true,
+            disbursement: {
+              select: { disbursedAt: true },
+            },
+          },
+        },
+      },
     });
 
-    if (!schedule) {
-      return { success: false, error: "Schedule entry not found" };
+    if (!schedule || !schedule.loan) {
+      return { success: false, error: "Schedule entry or associated loan not found" };
     }
 
-    const scheduledAmount = Number(schedule.scheduledPayment);
-    const totalPaid = Number(schedule.actualAmountPaid) + amountPaid;
+    let paymentRemaining = amountPaid;
+    let currentActualPrincipalPaid = Number(schedule.actualPrincipalPaid);
+    let currentActualInterestPaid = Number(schedule.actualInterestPaid);
+    let currentRemainingPrincipal = Number(schedule.remainingPrincipal);
+    let currentRemainingInterest = Number(schedule.remainingInterest);
+
+    // 1. Apply payment to outstanding interest first
+    const interestToPay = Math.min(paymentRemaining, currentRemainingInterest);
+    currentActualInterestPaid += interestToPay;
+    currentRemainingInterest -= interestToPay;
+    paymentRemaining -= interestToPay;
+
+    // 2. Apply remaining payment to outstanding principal
+    const principalToPay = Math.min(paymentRemaining, currentRemainingPrincipal);
+    currentActualPrincipalPaid += principalToPay;
+    currentRemainingPrincipal -= principalToPay;
+    paymentRemaining -= principalToPay;
+
+    // Update actual amount paid for this installment
+    const totalActualAmountPaid = currentActualPrincipalPaid + currentActualInterestPaid;
 
     // Determine new status
     let newStatus: ScheduleStatus = "Partial";
-    if (totalPaid >= scheduledAmount) {
+    if (currentRemainingPrincipal <= 0 && currentRemainingInterest <= 0) {
       newStatus = "Paid";
+    } else if (totalActualAmountPaid > 0) {
+      newStatus = "Partial";
+    } else {
+      newStatus = "Pending"; // Should not happen if amountPaid > 0
     }
 
-    const updated = await prisma.repaymentSchedule.update({
+    const updatedSchedule = await prisma.repaymentSchedule.update({
       where: { id: scheduleId },
       data: {
-        actualAmountPaid: totalPaid,
+        actualAmountPaid: totalActualAmountPaid,
+        actualPrincipalPaid: currentActualPrincipalPaid,
+        actualInterestPaid: currentActualInterestPaid,
+        remainingPrincipal: currentRemainingPrincipal,
+        remainingInterest: currentRemainingInterest,
         actualPaymentDate: paymentDate,
         status: newStatus,
         repaymentId,
       },
     });
 
-    return { success: true, data: updated };
+    // --- Propagation Logic for Subsequent Installments ---
+    // If there's an excess payment or a change in remaining principal,
+    // we need to adjust subsequent installments.
+
+    // Get all remaining installments for this loan, starting from the next one
+    const subsequentSchedules = await prisma.repaymentSchedule.findMany({
+      where: {
+        loanId: schedule.loanId,
+        installmentNumber: { gt: schedule.installmentNumber },
+      },
+      orderBy: { installmentNumber: "asc" },
+    });
+
+    // Calculate the current total outstanding principal for the loan
+    // This is the sum of remainingPrincipal for all installments from the current one onwards
+    let loanOutstandingPrincipal = Number(updatedSchedule.remainingPrincipal);
+    for (const subSchedule of subsequentSchedules) {
+      loanOutstandingPrincipal += Number(subSchedule.remainingPrincipal);
+    }
+
+    // Apply any excess payment to the loan's outstanding principal
+    if (paymentRemaining > 0) {
+      loanOutstandingPrincipal = Math.max(0, loanOutstandingPrincipal - paymentRemaining);
+    }
+
+    // Recalculate and update subsequent schedules
+    if (subsequentSchedules.length > 0 && loanOutstandingPrincipal > 0) {
+      const monthlyInterestRate = Number(schedule.loan.interestRate);
+      const remainingPeriodMonths = subsequentSchedules.length; // Number of installments left
+
+      // Recalculate the remaining schedule based on the new loanOutstandingPrincipal
+      const recalculatedRows = calculateScheduleRows(
+        loanOutstandingPrincipal,
+        monthlyInterestRate,
+        remainingPeriodMonths,
+        updatedSchedule.dueDate // Start date for recalculation is the due date of the current installment
+      );
+
+      const updates = recalculatedRows.map((row, index) => {
+        const targetSchedule = subsequentSchedules[index];
+        return prisma.repaymentSchedule.update({
+          where: { id: targetSchedule.id },
+          data: {
+            scheduledPayment: row.scheduledPayment,
+            principalPortion: row.principalPortion,
+            interestPortion: row.interestPortion,
+            expectedBalance: row.expectedBalance,
+            // Reset remaining principal/interest for these future installments
+            // as they are being recalculated based on the new outstanding balance
+            remainingPrincipal: row.principalPortion,
+            remainingInterest: row.interestPortion,
+            // Ensure status is not changed if it was already Paid or Overdue
+            status: targetSchedule.status === "Paid" ? "Paid" : "Pending", // Or "Overdue" if applicable
+          },
+        });
+      });
+      await prisma.$transaction(updates);
+    } else if (loanOutstandingPrincipal <= 0) {
+      // If loan outstanding principal is zero, mark all subsequent as paid or cancel them
+      // For now, let's mark them as paid with 0 amounts
+      const zeroOutUpdates = subsequentSchedules.map((subSchedule) =>
+        prisma.repaymentSchedule.update({
+          where: { id: subSchedule.id },
+          data: {
+            scheduledPayment: 0,
+            principalPortion: 0,
+            interestPortion: 0,
+            expectedBalance: 0,
+            actualAmountPaid: Number(subSchedule.actualAmountPaid), // Keep any actual payments made
+            actualPrincipalPaid: Number(subSchedule.actualPrincipalPaid),
+            actualInterestPaid: Number(subSchedule.actualInterestPaid),
+            remainingPrincipal: 0,
+            remainingInterest: 0,
+            status: "Paid", // Mark as paid if loan is fully covered
+          },
+        })
+      );
+      await prisma.$transaction(zeroOutUpdates);
+    }
+
+    return { success: true, data: updatedSchedule };
   } catch (error) {
     return { success: false, error: (error as Error).message };
   }

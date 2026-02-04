@@ -324,7 +324,7 @@ function SummaryCard({ icon: Icon, label, value, subtext, color, compact }: Summ
       "rounded-lg border border-slate-200 bg-white",
       compact ? "p-3" : "p-4"
     )}>
-      <div className="flex items-start gap-3">
+      <div className="flex items-start flex-col gap-3">
         <div className={cn("rounded-lg p-2", colorClasses[color])}>
           <Icon className="h-4 w-4" />
         </div>

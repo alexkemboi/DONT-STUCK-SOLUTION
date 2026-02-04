@@ -14,7 +14,7 @@ export function LoanCalculator() {
             monthlyInterestRate={MONTHLY_INTEREST_RATE}
             periodMonths={loanDetails.repaymentPeriod || 0}
             showFullSchedule={true}
-            compact={false}
+            compact={true}
         />
     )
 }

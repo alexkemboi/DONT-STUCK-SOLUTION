@@ -8,34 +8,31 @@ const sql = neon(process.env.DATABASE_URL!);
 
 export async function getInvestorStats(investorId: string) {
   try {
-    // Get portfolio stats
-    const [portfolio] = await sql`
-      SELECT * FROM investor_portfolios WHERE investor_id = ${investorId}
+    // Get portfolio stats by aggregating from InvestorAllocation
+    const [stats] = await sql`
+      SELECT
+        SUM(allocated_amount) AS total_invested,
+        SUM(actual_return) AS total_returns,
+        COUNT(DISTINCT loan_id) AS active_investments
+      FROM investor_allocations
+      WHERE investor_id = ${investorId}
     `;
 
-    if (!portfolio) {
-      // Create a demo portfolio for display
-      return {
-        totalInvested: 125000,
-        totalReturns: 18750,
-        activeInvestments: 8,
-        averageReturn: 15.0,
-        portfolioValue: 143750,
-      };
-    }
+    const totalInvested = Number(stats?.total_invested || 0);
+    const totalReturns = Number(stats?.total_returns || 0);
+    const activeInvestments = Number(stats?.active_investments || 0);
 
     const averageReturn =
-      portfolio.total_invested > 0
-        ? (portfolio.total_returns / portfolio.total_invested) * 100
+      totalInvested > 0
+        ? (totalReturns / totalInvested) * 100
         : 0;
 
     return {
-      totalInvested: Number(portfolio.total_invested),
-      totalReturns: Number(portfolio.total_returns),
-      activeInvestments: Number(portfolio.active_investments),
+      totalInvested,
+      totalReturns,
+      activeInvestments,
       averageReturn,
-      portfolioValue:
-        Number(portfolio.total_invested) + Number(portfolio.total_returns),
+      portfolioValue: totalInvested + totalReturns,
     };
   } catch (error) {
     console.error("Error fetching investor stats:", error);
@@ -52,31 +49,42 @@ export async function getInvestorStats(investorId: string) {
 export async function getInvestorAllocations(investorId: string): Promise<Allocation[]> {
   try {
     const allocations = await sql`
-      SELECT 
-        la.id,
-        la.loan_application_id,
-        la.allocated_amount,
-        la.expected_return,
-        la.actual_return,
-        la.status,
-        la.created_at,
-        loan.loan_type,
-        loan.requested_amount,
-        loan.approved_amount,
-        loan.interest_rate,
-        loan.tenure_months,
-        loan.status as loan_status,
-        u.full_name as borrower_name
-      FROM loan_allocations la
-      JOIN loan_applications loan ON la.loan_application_id = loan.id
-      JOIN applicants a ON loan.applicant_id = a.id
-      JOIN users u ON a.user_id = u.id
-      JOIN investor_portfolios ip ON la.investor_portfolio_id = ip.id
-      WHERE ip.investor_id = ${investorId}
-      ORDER BY la.created_at DESC
+      SELECT
+        ia.id,
+        ia.loan_id,
+        ia.allocated_amount,
+        ia.expected_return,
+        ia.actual_return,
+        la.status, -- LoanApplication status
+        ia.created_at,
+        la.purpose,
+        la.amount_requested,
+        la.approved_amount,
+        la.interest_rate,
+        la.repayment_period AS tenure_months,
+        c.surname || ' ' || c.other_names AS borrower_name
+      FROM investor_allocations ia
+      JOIN loan_applications la ON ia.loan_id = la.id
+      JOIN clients c ON la.client_id = c.id
+      WHERE ia.investor_id = ${investorId}
+      ORDER BY ia.created_at DESC
     `;
 
-    return allocations as unknown as Allocation[];
+    return allocations.map((alloc: any) => ({
+      id: alloc.id,
+      loanId: alloc.loan_id,
+      allocatedAmount: Number(alloc.allocated_amount),
+      expectedReturn: Number(alloc.expected_return),
+      actualReturn: Number(alloc.actual_return),
+      status: alloc.status,
+      createdAt: alloc.created_at,
+      loanPurpose: alloc.purpose,
+      loanAmountRequested: Number(alloc.amount_requested),
+      loanApprovedAmount: Number(alloc.approved_amount),
+      loanInterestRate: Number(alloc.interest_rate),
+      loanTenureMonths: alloc.tenure_months,
+      borrowerName: alloc.borrower_name,
+    })) as Allocation[];
   } catch (error) {
     console.error("Error fetching allocations:", error);
     return [];
@@ -86,33 +94,47 @@ export async function getInvestorAllocations(investorId: string): Promise<Alloca
 export async function getAvailableLoansForInvestment(): Promise<AvailableLoan[]> {
   try {
     const loans = await sql`
-      SELECT 
+      SELECT
         la.id,
-        la.loan_type,
+        la.purpose,
         la.approved_amount,
         la.interest_rate,
-        la.tenure_months,
-        la.purpose,
+        la.repayment_period AS tenure_months,
         la.status,
         la.created_at,
-        u.full_name as borrower_name,
-        a.city,
-        a.state,
-        ed.employment_status,
-        ed.monthly_income,
-        COALESCE(SUM(alloc.allocated_amount), 0) as already_funded
+        c.surname || ' ' || c.other_names AS borrower_name,
+        ca.town_city AS city,
+        ca.location AS state,
+        ed.employment_type AS employment_status,
+        ed.net_salary AS monthly_income,
+        COALESCE(SUM(ia.allocated_amount), 0) AS already_funded
       FROM loan_applications la
-      JOIN applicants a ON la.applicant_id = a.id
-      JOIN users u ON a.user_id = u.id
-      LEFT JOIN employment_details ed ON a.id = ed.applicant_id
-      LEFT JOIN loan_allocations alloc ON la.id = alloc.loan_application_id
-      WHERE la.status IN ('approved', 'disbursed')
-      GROUP BY la.id, u.full_name, a.city, a.state, ed.employment_status, ed.monthly_income
-      HAVING COALESCE(SUM(alloc.allocated_amount), 0) < la.approved_amount
+      JOIN clients c ON la.client_id = c.id
+      LEFT JOIN client_addresses ca ON c.id = ca.client_id
+      LEFT JOIN employment_details ed ON c.id = ed.client_id
+      LEFT JOIN investor_allocations ia ON la.id = ia.loan_id
+      WHERE la.status IN ('Approved', 'Disbursed')
+      GROUP BY la.id, c.surname, c.other_names, ca.town_city, ca.location, ed.employment_type, ed.net_salary
+      HAVING COALESCE(SUM(ia.allocated_amount), 0) < la.approved_amount
       ORDER BY la.created_at DESC
     `;
 
-    return loans as unknown as AvailableLoan[];
+    return loans.map((loan: any) => ({
+      id: loan.id,
+      loanType: loan.purpose, // Mapping purpose to loanType for consistency with original type
+      approvedAmount: Number(loan.approved_amount),
+      interestRate: Number(loan.interest_rate),
+      tenureMonths: loan.tenure_months,
+      purpose: loan.purpose,
+      status: loan.status,
+      createdAt: loan.created_at,
+      borrowerName: loan.borrower_name,
+      city: loan.city,
+      state: loan.state,
+      employmentStatus: loan.employment_status,
+      monthlyIncome: Number(loan.monthly_income),
+      alreadyFunded: Number(loan.already_funded),
+    })) as AvailableLoan[];
   } catch (error) {
     console.error("Error fetching available loans:", error);
     return [];
@@ -125,23 +147,19 @@ export async function investInLoan(
   amount: number
 ) {
   try {
-    // Get or create investor portfolio
-    let [portfolio] = await sql`
-      SELECT * FROM investor_portfolios WHERE investor_id = ${investorId}
-    `;
+    // Get investor details
+    const investor = await prisma.investor.findUnique({
+      where: { id: investorId },
+    });
 
-    if (!portfolio) {
-      [portfolio] = await sql`
-        INSERT INTO investor_portfolios (investor_id, total_invested, total_returns, active_investments)
-        VALUES (${investorId}, 0, 0, 0)
-        RETURNING *
-      `;
+    if (!investor) {
+      return { success: false, message: "Investor not found" };
     }
 
     // Get loan details
-    const [loan] = await sql`
-      SELECT * FROM loan_applications WHERE id = ${loanApplicationId}
-    `;
+    const loan = await prisma.loanApplication.findUnique({
+      where: { id: loanApplicationId },
+    });
 
     if (!loan) {
       return { success: false, message: "Loan not found" };
@@ -149,31 +167,34 @@ export async function investInLoan(
 
     // Calculate expected return
     const expectedReturn =
-      (amount * (loan.interest_rate / 100) * loan.tenure_months) / 12;
+      (amount * (Number(loan.interestRate) / 100) * loan.repaymentPeriod) / 12;
 
     // Create allocation
-    await sql`
-      INSERT INTO loan_allocations (
-        loan_application_id, investor_portfolio_id, allocated_amount, expected_return, status
-      )
-      VALUES (${loanApplicationId}, ${portfolio.id}, ${amount}, ${expectedReturn}, 'active')
-    `;
+    await prisma.investorAllocation.create({
+      data: {
+        investorId: investor.id,
+        loanId: loan.id,
+        allocatedAmount: amount,
+        expectedReturn: expectedReturn,
+        allocationDate: new Date(),
+      },
+    });
 
-    // Update portfolio stats
-    await sql`
-      UPDATE investor_portfolios
-      SET 
-        total_invested = total_invested + ${amount},
-        active_investments = active_investments + 1,
-        updated_at = NOW()
-      WHERE id = ${portfolio.id}
-    `;
+    // Update investor's total invested amount
+    await prisma.investor.update({
+      where: { id: investor.id },
+      data: {
+        investedAmount: {
+          increment: amount,
+        },
+      },
+    });
 
     await prisma.auditLog.create({
       data: {
-        userId: investorId,
+        userId: investor.userId as string, // Assuming investor has a userId
         action: "INVEST",
-        entity: "LoanAllocation",
+        entity: "InvestorAllocation",
         entityId: loanApplicationId,
         newValue: { amount, expectedReturn, loanApplicationId },
       },
@@ -181,7 +202,7 @@ export async function investInLoan(
 
     return {
       success: true,
-      message: `Successfully invested $${amount.toLocaleString()} in this loan.`,
+      message: `Successfully invested ${amount.toLocaleString()} in this loan.`,
     };
   } catch (error) {
     console.error("Error investing in loan:", error);

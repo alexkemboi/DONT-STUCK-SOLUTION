@@ -1,10 +1,12 @@
 "use server";
 
 import { neon } from "@neondatabase/serverless";
+
+import prisma from "@/lib/prisma";
 import type { OnboardingFormData } from "@/lib/types";
 import { auth } from "@/lib/auth";
-
-const sql = neon(process.env.DATABASE_URL!);
+import { generateRepaymentSchedule } from "@/services/repayment-schedule.service";
+import { LoanApplicationStatus, ScheduleStatus } from "@/lib/generated/prisma";
 
 export async function submitLoanApplication(data: OnboardingFormData) {
   try {
@@ -15,110 +17,195 @@ export async function submitLoanApplication(data: OnboardingFormData) {
         message: "User not authenticated. Please log in.",
       };
     }
-    // Create user
-    const [user] = await sql`
-      INSERT INTO users (email, full_name, phone, role)
-      VALUES (${data.personal.email}, ${data.personal.full_name}, ${data.personal.phone}, 'applicant')
-      ON CONFLICT (email) DO UPDATE SET
-        full_name = EXCLUDED.full_name,
-        phone = EXCLUDED.phone,
-        updated_at = NOW()
-      RETURNING id
-    `;
 
-    // Create applicant profile
-    const [applicant] = await sql`
-      INSERT INTO applicants (
-        user_id, date_of_birth, national_id, address, city, 
-        state, postal_code, country, marital_status, dependents
-      )
-      VALUES (
-        ${user.id}, ${data.personal.date_of_birth}, ${data.personal.national_id},
-        ${data.personal.address}, ${data.personal.city}, ${data.personal.state},
-        ${data.personal.postal_code}, ${data.personal.country || "US"},
-        ${data.personal.marital_status || null}, ${data.personal.dependents || 0}
-      )
-      ON CONFLICT (user_id) DO UPDATE SET
-        date_of_birth = EXCLUDED.date_of_birth,
-        national_id = EXCLUDED.national_id,
-        address = EXCLUDED.address,
-        city = EXCLUDED.city,
-        state = EXCLUDED.state,
-        postal_code = EXCLUDED.postal_code,
-        country = EXCLUDED.country,
-        marital_status = EXCLUDED.marital_status,
-        dependents = EXCLUDED.dependents,
-        updated_at = NOW()
-      RETURNING id
-    `;
+    // Find or create user
+    let user = await prisma.user.findUnique({
+      where: { email: data.personal.email },
+    });
 
-    // Create employment details
-    await sql`
-      INSERT INTO employment_details (
-        applicant_id, employment_status, employer_name, job_title,
-        monthly_income, employment_start_date, work_address, work_phone
-      )
-      VALUES (
-        ${applicant.id}, ${data.employment.employment_status},
-        ${data.employment.employer_name || null}, ${data.employment.job_title || null},
-        ${data.employment.monthly_income}, ${data.employment.employment_start_date || null},
-        ${data.employment.work_address || null}, ${data.employment.work_phone || null}
-      )
-      ON CONFLICT (applicant_id) DO UPDATE SET
-        employment_status = EXCLUDED.employment_status,
-        employer_name = EXCLUDED.employer_name,
-        job_title = EXCLUDED.job_title,
-        monthly_income = EXCLUDED.monthly_income,
-        employment_start_date = EXCLUDED.employment_start_date,
-        work_address = EXCLUDED.work_address,
-        work_phone = EXCLUDED.work_phone,
-        updated_at = NOW()
-    `;
-
-    // Create loan application
-    const [loanApplication] = await sql`
-      INSERT INTO loan_applications (
-        applicant_id, loan_type, requested_amount, tenure_months, purpose, status
-      )
-      VALUES (
-        ${applicant.id}, ${data.loan.loan_type}, ${data.loan.requested_amount},
-        ${data.loan.tenure_months}, ${data.loan.purpose}, 'submitted'
-      )
-      RETURNING id
-    `;
-
-    // Create guarantors
-    for (const guarantor of data.guarantors) {
-      await sql`
-        INSERT INTO guarantors (
-          applicant_id, full_name, relationship, phone, email, address, occupation, monthly_income
-        )
-        VALUES (
-          ${applicant.id}, ${guarantor.full_name}, ${guarantor.relationship},
-          ${guarantor.phone}, ${guarantor.email || null}, ${guarantor.address},
-          ${guarantor.occupation}, ${guarantor.monthly_income || null}
-        )
-      `;
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email: data.personal.email,
+          name: data.personal.full_name,
+          phone: data.personal.phone,
+          role: "Client",
+        },
+      });
+    } else {
+      // Update existing user
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          name: data.personal.full_name,
+          phone: data.personal.phone,
+        },
+      });
     }
 
-    // Create collaterals
-    for (const collateral of data.collaterals) {
-      await sql`
-        INSERT INTO collaterals (
-          loan_application_id, collateral_type, description, estimated_value
-        )
-        VALUES (
-          ${loanApplication.id}, ${collateral.collateral_type},
-          ${collateral.description}, ${collateral.estimated_value}
-        )
-      `;
+    // Find or create client profile
+    let client = await prisma.client.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (!client) {
+      client = await prisma.client.create({
+        data: {
+          userId: user.id,
+          title: data.personal.title,
+          surname: data.personal.full_name.split(" ").slice(0, -1).join(" "), // Assuming last word is otherNames
+          otherNames: data.personal.full_name.split(" ").pop() || "",
+          dateOfBirth: new Date(data.personal.date_of_birth),
+          maritalStatus: data.personal.marital_status,
+          nationality: data.personal.country || "Unknown",
+          dependents: data.personal.dependents || 0,
+          idPassportNo: data.personal.national_id,
+          phoneMobile: data.personal.phone,
+          emailPersonal: data.personal.email,
+        },
+      });
+    } else {
+      // Update existing client
+      client = await prisma.client.update({
+        where: { id: client.id },
+        data: {
+          title: data.personal.title,
+          surname: data.personal.full_name.split(" ").slice(0, -1).join(" "),
+          otherNames: data.personal.full_name.split(" ").pop() || "",
+          dateOfBirth: new Date(data.personal.date_of_birth),
+          maritalStatus: data.personal.marital_status,
+          nationality: data.personal.country || "Unknown",
+          dependents: data.personal.dependents || 0,
+          idPassportNo: data.personal.national_id,
+          phoneMobile: data.personal.phone,
+          emailPersonal: data.personal.email,
+        },
+      });
+    }
+
+    // Create or update client address
+    await prisma.clientAddress.upsert({
+      where: { clientId: client.id },
+      update: {
+        postalAddress: data.personal.address,
+        postalCode: data.personal.postal_code,
+        townCity: data.personal.city,
+        residentialAddress: data.personal.address, // Assuming residential is same as postal for now
+        location: data.personal.state,
+        // No direct mapping for country in ClientAddress, handled by Client.nationality
+      },
+      create: {
+        clientId: client.id,
+        postalAddress: data.personal.address,
+        postalCode: data.personal.postal_code,
+        townCity: data.personal.city,
+        residentialAddress: data.personal.address,
+        location: data.personal.state,
+      },
+    });
+
+    // Create or update employment details
+    await prisma.employmentDetail.upsert({
+      where: { clientId: client.id },
+      update: {
+        employmentType: data.employment.employment_status,
+        employerName: data.employment.employer_name || null,
+        jobTitle: data.employment.job_title || null,
+        netSalary: data.employment.monthly_income,
+        dateJoined: data.employment.employment_start_date
+          ? new Date(data.employment.employment_start_date)
+          : null,
+        branchLocation: data.employment.work_address || null,
+        telephone: data.employment.work_phone || null,
+      },
+      create: {
+        clientId: client.id,
+        employmentType: data.employment.employment_status,
+        employerName: data.employment.employer_name || null,
+        jobTitle: data.employment.job_title || null,
+        netSalary: data.employment.monthly_income,
+        dateJoined: data.employment.employment_start_date
+          ? new Date(data.employment.employment_start_date)
+          : null,
+        branchLocation: data.employment.work_address || null,
+        telephone: data.employment.work_phone || null,
+      },
+    });
+
+    // Create loan application
+    const loanApplication = await prisma.loanApplication.create({
+      data: {
+        clientId: client.id,
+        purpose: data.loan.purpose,
+        amountRequested: data.loan.requested_amount,
+        repaymentPeriod: data.loan.tenure_months,
+        status: LoanApplicationStatus.Pending, // Initial status
+        startDate: new Date(), // Assuming start date is now
+        interestRate: 20, // Default interest rate
+      },
+    });
+
+    // Create guarantors
+    for (const guarantorData of data.guarantors) {
+      await prisma.guarantor.create({
+        data: {
+          loanId: loanApplication.id,
+          fullName: guarantorData.full_name,
+          relationship: guarantorData.relationship,
+          phone: guarantorData.phone,
+          email: guarantorData.email || null,
+          idNumber: guarantorData.id_number || null, // Assuming id_number maps to idNumber
+        },
+      });
+    }
+
+    // Collaterals - This part needs schema definition. For now, skipping or mapping to LoanSecurity
+    // Assuming collateral_type 'vehicle' maps to VehicleSecurity, others to LoanSecurity
+    for (const collateralData of data.collaterals) {
+      if (collateralData.collateral_type === "Vehicle") {
+        await prisma.vehicleSecurity.create({
+          data: {
+            loanId: loanApplication.id,
+            registrationNumber: collateralData.registration_number || "N/A",
+            chassisNumber: collateralData.chassis_number || "N/A",
+            engineNumber: collateralData.engine_number || "N/A",
+            yearOfManufacture: collateralData.year_of_manufacture || 2000,
+            make: collateralData.make || "Unknown",
+            model: collateralData.model || "Unknown",
+            bodyColor: collateralData.body_color || "Unknown",
+          },
+        });
+      } else {
+        // Generic LoanSecurity for other types
+        await prisma.loanSecurity.create({
+          data: {
+            loanId: loanApplication.id,
+            // Map generic collateral fields to LoanSecurity fields if applicable
+            // For now, just creating a basic entry
+            idCopy: true, // Placeholder
+            passportPhoto: true, // Placeholder
+            appointmentLetter: true, // Placeholder
+            payslips: true, // Placeholder
+            bankStatement: true, // Placeholder
+          },
+        });
+      }
     }
 
     // Log activity
-    await sql`
-      INSERT INTO activity_logs (user_id, action, entity_type, entity_id)
-      VALUES (${user.id}, 'loan_application_submitted', 'loan_application', ${loanApplication.id})
-    `;
+    await prisma.auditLog.create({
+      data: {
+        userId: user.id,
+        action: "CREATE",
+        entity: "LoanApplication",
+        entityId: loanApplication.id,
+        newValue: {
+          clientId: client.id,
+          purpose: data.loan.purpose,
+          amountRequested: data.loan.requested_amount,
+        },
+      },
+    }).catch(() => {});
 
     return {
       success: true,
@@ -143,40 +230,56 @@ export async function getLoanApplication(applicationId: string) {
         message: "User not authenticated. Please log in.",
       };
     }
-    const [application] = await sql`
-      SELECT 
-        la.*,
-        a.date_of_birth, a.national_id, a.address, a.city, a.state, a.postal_code, a.country,
-        u.full_name, u.email, u.phone,
-        ed.employment_status, ed.employer_name, ed.job_title, ed.monthly_income
-      FROM loan_applications la
-      JOIN applicants a ON la.applicant_id = a.id
-      JOIN users u ON a.user_id = u.id
-      LEFT JOIN employment_details ed ON a.id = ed.applicant_id
-      WHERE la.id = ${applicationId}
-    `;
+
+    const application = await prisma.loanApplication.findUnique({
+      where: { id: applicationId },
+      include: {
+        client: {
+          include: {
+            user: true,
+            addresses: true,
+            employmentDetails: true,
+          },
+        },
+        guarantors: true,
+        loanSecurity: true,
+        vehicleSecurity: true,
+        repaymentSchedule: {
+          orderBy: { installmentNumber: "asc" },
+        },
+      },
+    });
 
     if (!application) {
       return null;
     }
 
-    const guarantors = await sql`
-      SELECT * FROM guarantors WHERE applicant_id = ${application.applicant_id}
-    `;
-
-    const collaterals = await sql`
-      SELECT * FROM collaterals WHERE loan_application_id = ${applicationId}
-    `;
-
-    const repayments = await sql`
-      SELECT * FROM repayments WHERE loan_application_id = ${applicationId} ORDER BY due_date ASC
-    `;
+    // Flatten the structure for easier consumption if needed, or return as is
+    const client = application.client;
+    const user = client?.user;
+    const address = client?.addresses[0]; // Assuming one address for simplicity
+    const employment = client?.employmentDetails[0]; // Assuming one employment detail
 
     return {
       ...application,
-      guarantors,
-      collaterals,
-      repayments,
+      // Flattened client/user/employment details
+      dateOfBirth: client?.dateOfBirth,
+      nationalId: client?.idPassportNo,
+      address: address?.residentialAddress,
+      city: address?.townCity,
+      state: address?.location,
+      postalCode: address?.postalCode,
+      country: client?.nationality,
+      fullName: user?.name,
+      email: user?.email,
+      phone: user?.phone,
+      employmentStatus: employment?.employmentType,
+      employerName: employment?.employerName,
+      jobTitle: employment?.jobTitle,
+      monthlyIncome: employment?.netSalary,
+      // Collaterals (combine loanSecurity and vehicleSecurity)
+      collaterals: application.loanSecurity || application.vehicleSecurity, // Adjust as needed for multiple collaterals
+      repayments: application.repaymentSchedule,
     };
   } catch (error) {
     console.error("Error fetching loan application:", error);
@@ -194,34 +297,31 @@ export async function getAllLoanApplications(status?: string) {
   }
 
   try {
-    let applications;
+    const whereClause: any = {};
     if (status && status !== "all") {
-      applications = await sql`
-        SELECT 
-          la.*,
-          u.full_name, u.email, u.phone,
-          ed.monthly_income
-        FROM loan_applications la
-        JOIN applicants a ON la.applicant_id = a.id
-        JOIN users u ON a.user_id = u.id
-        LEFT JOIN employment_details ed ON a.id = ed.applicant_id
-        WHERE la.status = ${status}
-        ORDER BY la.created_at DESC
-      `;
-    } else {
-      applications = await sql`
-        SELECT 
-          la.*,
-          u.full_name, u.email, u.phone,
-          ed.monthly_income
-        FROM loan_applications la
-        JOIN applicants a ON la.applicant_id = a.id
-        JOIN users u ON a.user_id = u.id
-        LEFT JOIN employment_details ed ON a.id = ed.applicant_id
-        ORDER BY la.created_at DESC
-      `;
+      whereClause.status = status;
     }
-    return applications;
+
+    const applications = await prisma.loanApplication.findMany({
+      where: whereClause,
+      include: {
+        client: {
+          include: {
+            user: true,
+            employmentDetails: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return applications.map((app) => ({
+      ...app,
+      fullName: app.client?.user?.name,
+      email: app.client?.user?.email,
+      phone: app.client?.user?.phoneMobile, // Assuming phoneMobile is the primary phone
+      monthlyIncome: app.client?.employmentDetails[0]?.netSalary, // Assuming one employment detail
+    }));
   } catch (error) {
     console.error("Error fetching loan applications:", error);
     return [];
@@ -230,7 +330,7 @@ export async function getAllLoanApplications(status?: string) {
 
 export async function updateLoanStatus(
   applicationId: string,
-  status: string,
+  status: LoanApplicationStatus, // Use the enum type
   reviewerId: string,
   rejectionReason?: string
 ) {
@@ -243,81 +343,54 @@ export async function updateLoanStatus(
       };
     }
 
-    const updateData: Record<string, unknown> = {
-      status,
-      reviewed_by: reviewerId,
-      reviewed_at: new Date().toISOString(),
-    };
+    const loan = await prisma.loanApplication.findUnique({
+      where: { id: applicationId },
+    });
 
-    if (status === "rejected" && rejectionReason) {
-      updateData.rejection_reason = rejectionReason;
+    if (!loan) {
+      return { success: false, message: "Loan application not found" };
     }
 
-    if (status === "approved") {
+    const updateData: any = {
+      status: status,
+      reviewedById: reviewerId,
+      reviewedAt: new Date(),
+    };
+
+    if (status === LoanApplicationStatus.Rejected) {
+      updateData.rejectionReason = rejectionReason || null;
+    }
+
+    if (status === LoanApplicationStatus.Approved) {
       // For simplicity, approved amount equals requested amount
-      await sql`
-        UPDATE loan_applications
-        SET status = ${status}, 
-            reviewed_by = ${reviewerId}, 
-            reviewed_at = NOW(),
-            approved_amount = requested_amount,
-            interest_rate = CASE 
-              WHEN loan_type = 'personal' THEN 12.5
-              WHEN loan_type = 'business' THEN 15.0
-              WHEN loan_type = 'mortgage' THEN 7.5
-              WHEN loan_type = 'auto' THEN 9.0
-              WHEN loan_type = 'education' THEN 6.5
-              ELSE 10.0
-            END,
-            updated_at = NOW()
-        WHERE id = ${applicationId}
-      `;
-    } else if (status === "rejected") {
-      await sql`
-        UPDATE loan_applications
-        SET status = ${status}, 
-            reviewed_by = ${reviewerId}, 
-            reviewed_at = NOW(),
-            rejection_reason = ${rejectionReason || null},
-            updated_at = NOW()
-        WHERE id = ${applicationId}
-      `;
-    } else if (status === "disbursed") {
-      await sql`
-        UPDATE loan_applications
-        SET status = ${status}, 
-            disbursed_at = NOW(),
-            updated_at = NOW()
-        WHERE id = ${applicationId}
-      `;
+      updateData.approvedAmount = loan.amountRequested;
+      // Set interest rate based on purpose (loan_type)
+      updateData.interestRate = 20; // Default to 20% as per acceptance criteria
+    }
+
+    const updatedLoan = await prisma.loanApplication.update({
+      where: { id: applicationId },
+      data: updateData,
+    });
+
+    if (status === LoanApplicationStatus.Disbursed) {
+      // Create LoanDisbursement entry
+      await prisma.loanDisbursement.create({
+        data: {
+          loanId: applicationId,
+          amount: updatedLoan.approvedAmount || updatedLoan.amountRequested,
+          method: "Bank", // Default method, can be made dynamic
+          disbursedAt: new Date(),
+        },
+      });
 
       // Generate repayment schedule
-      const [loan] = await sql`
-        SELECT * FROM loan_applications WHERE id = ${applicationId}
-      `;
-
-      if (loan && loan.approved_amount && loan.tenure_months) {
-        const rate = (loan.interest_rate || 10) / 100 / 12;
-        const payment =
-          (loan.approved_amount * rate * Math.pow(1 + rate, loan.tenure_months)) /
-          (Math.pow(1 + rate, loan.tenure_months) - 1);
-
-        for (let i = 1; i <= loan.tenure_months; i++) {
-          const dueDate = new Date();
-          dueDate.setMonth(dueDate.getMonth() + i);
-          await sql`
-            INSERT INTO repayments (loan_application_id, due_date, amount_due, status)
-            VALUES (${applicationId}, ${dueDate.toISOString()}, ${payment}, 'pending')
-          `;
-        }
+      const scheduleResult = await generateRepaymentSchedule(applicationId);
+      if (!scheduleResult.success) {
+        console.error("Failed to generate repayment schedule:", scheduleResult.error);
+        // Optionally revert loan status or log a critical error
+        return { success: false, message: "Failed to generate repayment schedule" };
       }
-    } else {
-      await sql`
-        UPDATE loan_applications
-        SET status = ${status}, 
-            updated_at = NOW()
-        WHERE id = ${applicationId}
-      `;
     }
 
     return { success: true };
@@ -335,31 +408,46 @@ export async function getDashboardStats() {
       message: "User not authenticated. Please log in.",
     };
   }
-  
-  try {
-    const [stats] = await sql`
-      SELECT
-        COUNT(*) as total_applications,
-        COUNT(*) FILTER (WHERE status = 'submitted' OR status = 'under_review') as pending_review,
-        COUNT(*) FILTER (WHERE status = 'approved' OR status = 'disbursed' OR status = 'repaying') as approved_loans,
-        COALESCE(SUM(approved_amount) FILTER (WHERE status = 'disbursed' OR status = 'repaying' OR status = 'completed'), 0) as total_disbursed,
-        COUNT(*) FILTER (WHERE status = 'repaying') as active_loans
-      FROM loan_applications
-    `;
 
-    const [overdueStats] = await sql`
-      SELECT COUNT(DISTINCT loan_application_id) as overdue_payments
-      FROM repayments
-      WHERE status = 'overdue' OR (status = 'pending' AND due_date < NOW())
-    `;
+  try {
+    const totalApplications = await prisma.loanApplication.count();
+    const pendingReview = await prisma.loanApplication.count({
+      where: {
+        status: { in: ["Pending", "Approved"] }, // Assuming 'Approved' means awaiting disbursement
+      },
+    });
+    const approvedLoans = await prisma.loanApplication.count({
+      where: {
+        status: { in: ["Approved", "Disbursed", "Active", "NPL", "Closed"] },
+      },
+    });
+    const totalDisbursed = await prisma.loanApplication.aggregate({
+      _sum: {
+        approvedAmount: true,
+      },
+      where: {
+        status: { in: ["Disbursed", "Active", "NPL", "Closed"] },
+      },
+    });
+    const activeLoans = await prisma.loanApplication.count({
+      where: {
+        status: "Active",
+      },
+    });
+
+    const overduePayments = await prisma.repaymentSchedule.count({
+      where: {
+        status: "Overdue",
+      },
+    });
 
     return {
-      totalApplications: Number(stats.total_applications),
-      pendingReview: Number(stats.pending_review),
-      approvedLoans: Number(stats.approved_loans),
-      totalDisbursed: Number(stats.total_disbursed),
-      activeLoans: Number(stats.active_loans),
-      overduePayments: Number(overdueStats?.overdue_payments || 0),
+      totalApplications: totalApplications,
+      pendingReview: pendingReview,
+      approvedLoans: approvedLoans,
+      totalDisbursed: Number(totalDisbursed._sum.approvedAmount || 0),
+      activeLoans: activeLoans,
+      overduePayments: overduePayments,
     };
   } catch (error) {
     console.error("Error fetching dashboard stats:", error);

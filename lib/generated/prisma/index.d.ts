@@ -26677,6 +26677,10 @@ export namespace Prisma {
     interestPortion: Decimal | null
     expectedBalance: Decimal | null
     actualAmountPaid: Decimal | null
+    actualPrincipalPaid: Decimal | null
+    actualInterestPaid: Decimal | null
+    remainingPrincipal: Decimal | null
+    remainingInterest: Decimal | null
   }
 
   export type RepaymentScheduleSumAggregateOutputType = {
@@ -26686,6 +26690,10 @@ export namespace Prisma {
     interestPortion: Decimal | null
     expectedBalance: Decimal | null
     actualAmountPaid: Decimal | null
+    actualPrincipalPaid: Decimal | null
+    actualInterestPaid: Decimal | null
+    remainingPrincipal: Decimal | null
+    remainingInterest: Decimal | null
   }
 
   export type RepaymentScheduleMinAggregateOutputType = {
@@ -26698,6 +26706,10 @@ export namespace Prisma {
     interestPortion: Decimal | null
     expectedBalance: Decimal | null
     actualAmountPaid: Decimal | null
+    actualPrincipalPaid: Decimal | null
+    actualInterestPaid: Decimal | null
+    remainingPrincipal: Decimal | null
+    remainingInterest: Decimal | null
     actualPaymentDate: Date | null
     status: $Enums.ScheduleStatus | null
     repaymentId: string | null
@@ -26715,6 +26727,10 @@ export namespace Prisma {
     interestPortion: Decimal | null
     expectedBalance: Decimal | null
     actualAmountPaid: Decimal | null
+    actualPrincipalPaid: Decimal | null
+    actualInterestPaid: Decimal | null
+    remainingPrincipal: Decimal | null
+    remainingInterest: Decimal | null
     actualPaymentDate: Date | null
     status: $Enums.ScheduleStatus | null
     repaymentId: string | null
@@ -26732,6 +26748,10 @@ export namespace Prisma {
     interestPortion: number
     expectedBalance: number
     actualAmountPaid: number
+    actualPrincipalPaid: number
+    actualInterestPaid: number
+    remainingPrincipal: number
+    remainingInterest: number
     actualPaymentDate: number
     status: number
     repaymentId: number
@@ -26748,6 +26768,10 @@ export namespace Prisma {
     interestPortion?: true
     expectedBalance?: true
     actualAmountPaid?: true
+    actualPrincipalPaid?: true
+    actualInterestPaid?: true
+    remainingPrincipal?: true
+    remainingInterest?: true
   }
 
   export type RepaymentScheduleSumAggregateInputType = {
@@ -26757,6 +26781,10 @@ export namespace Prisma {
     interestPortion?: true
     expectedBalance?: true
     actualAmountPaid?: true
+    actualPrincipalPaid?: true
+    actualInterestPaid?: true
+    remainingPrincipal?: true
+    remainingInterest?: true
   }
 
   export type RepaymentScheduleMinAggregateInputType = {
@@ -26769,6 +26797,10 @@ export namespace Prisma {
     interestPortion?: true
     expectedBalance?: true
     actualAmountPaid?: true
+    actualPrincipalPaid?: true
+    actualInterestPaid?: true
+    remainingPrincipal?: true
+    remainingInterest?: true
     actualPaymentDate?: true
     status?: true
     repaymentId?: true
@@ -26786,6 +26818,10 @@ export namespace Prisma {
     interestPortion?: true
     expectedBalance?: true
     actualAmountPaid?: true
+    actualPrincipalPaid?: true
+    actualInterestPaid?: true
+    remainingPrincipal?: true
+    remainingInterest?: true
     actualPaymentDate?: true
     status?: true
     repaymentId?: true
@@ -26803,6 +26839,10 @@ export namespace Prisma {
     interestPortion?: true
     expectedBalance?: true
     actualAmountPaid?: true
+    actualPrincipalPaid?: true
+    actualInterestPaid?: true
+    remainingPrincipal?: true
+    remainingInterest?: true
     actualPaymentDate?: true
     status?: true
     repaymentId?: true
@@ -26907,6 +26947,10 @@ export namespace Prisma {
     interestPortion: Decimal
     expectedBalance: Decimal
     actualAmountPaid: Decimal
+    actualPrincipalPaid: Decimal
+    actualInterestPaid: Decimal
+    remainingPrincipal: Decimal
+    remainingInterest: Decimal
     actualPaymentDate: Date | null
     status: $Enums.ScheduleStatus
     repaymentId: string | null
@@ -26943,6 +26987,10 @@ export namespace Prisma {
     interestPortion?: boolean
     expectedBalance?: boolean
     actualAmountPaid?: boolean
+    actualPrincipalPaid?: boolean
+    actualInterestPaid?: boolean
+    remainingPrincipal?: boolean
+    remainingInterest?: boolean
     actualPaymentDate?: boolean
     status?: boolean
     repaymentId?: boolean
@@ -26962,6 +27010,10 @@ export namespace Prisma {
     interestPortion?: boolean
     expectedBalance?: boolean
     actualAmountPaid?: boolean
+    actualPrincipalPaid?: boolean
+    actualInterestPaid?: boolean
+    remainingPrincipal?: boolean
+    remainingInterest?: boolean
     actualPaymentDate?: boolean
     status?: boolean
     repaymentId?: boolean
@@ -26981,6 +27033,10 @@ export namespace Prisma {
     interestPortion?: boolean
     expectedBalance?: boolean
     actualAmountPaid?: boolean
+    actualPrincipalPaid?: boolean
+    actualInterestPaid?: boolean
+    remainingPrincipal?: boolean
+    remainingInterest?: boolean
     actualPaymentDate?: boolean
     status?: boolean
     repaymentId?: boolean
@@ -27000,6 +27056,10 @@ export namespace Prisma {
     interestPortion?: boolean
     expectedBalance?: boolean
     actualAmountPaid?: boolean
+    actualPrincipalPaid?: boolean
+    actualInterestPaid?: boolean
+    remainingPrincipal?: boolean
+    remainingInterest?: boolean
     actualPaymentDate?: boolean
     status?: boolean
     repaymentId?: boolean
@@ -27007,7 +27067,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type RepaymentScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanId" | "installmentNumber" | "dueDate" | "scheduledPayment" | "principalPortion" | "interestPortion" | "expectedBalance" | "actualAmountPaid" | "actualPaymentDate" | "status" | "repaymentId" | "createdAt" | "updatedAt", ExtArgs["result"]["repaymentSchedule"]>
+  export type RepaymentScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanId" | "installmentNumber" | "dueDate" | "scheduledPayment" | "principalPortion" | "interestPortion" | "expectedBalance" | "actualAmountPaid" | "actualPrincipalPaid" | "actualInterestPaid" | "remainingPrincipal" | "remainingInterest" | "actualPaymentDate" | "status" | "repaymentId" | "createdAt" | "updatedAt", ExtArgs["result"]["repaymentSchedule"]>
   export type RepaymentScheduleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
     repayment?: boolean | RepaymentSchedule$repaymentArgs<ExtArgs>
@@ -27037,6 +27097,10 @@ export namespace Prisma {
       interestPortion: Prisma.Decimal
       expectedBalance: Prisma.Decimal
       actualAmountPaid: Prisma.Decimal
+      actualPrincipalPaid: Prisma.Decimal
+      actualInterestPaid: Prisma.Decimal
+      remainingPrincipal: Prisma.Decimal
+      remainingInterest: Prisma.Decimal
       actualPaymentDate: Date | null
       status: $Enums.ScheduleStatus
       repaymentId: string | null
@@ -27476,6 +27540,10 @@ export namespace Prisma {
     readonly interestPortion: FieldRef<"RepaymentSchedule", 'Decimal'>
     readonly expectedBalance: FieldRef<"RepaymentSchedule", 'Decimal'>
     readonly actualAmountPaid: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly actualPrincipalPaid: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly actualInterestPaid: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly remainingPrincipal: FieldRef<"RepaymentSchedule", 'Decimal'>
+    readonly remainingInterest: FieldRef<"RepaymentSchedule", 'Decimal'>
     readonly actualPaymentDate: FieldRef<"RepaymentSchedule", 'DateTime'>
     readonly status: FieldRef<"RepaymentSchedule", 'ScheduleStatus'>
     readonly repaymentId: FieldRef<"RepaymentSchedule", 'String'>
@@ -47045,6 +47113,10 @@ export namespace Prisma {
     interestPortion: 'interestPortion',
     expectedBalance: 'expectedBalance',
     actualAmountPaid: 'actualAmountPaid',
+    actualPrincipalPaid: 'actualPrincipalPaid',
+    actualInterestPaid: 'actualInterestPaid',
+    remainingPrincipal: 'remainingPrincipal',
+    remainingInterest: 'remainingInterest',
     actualPaymentDate: 'actualPaymentDate',
     status: 'status',
     repaymentId: 'repaymentId',
@@ -49434,6 +49506,10 @@ export namespace Prisma {
     interestPortion?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: DateTimeNullableFilter<"RepaymentSchedule"> | Date | string | null
     status?: EnumScheduleStatusFilter<"RepaymentSchedule"> | $Enums.ScheduleStatus
     repaymentId?: StringNullableFilter<"RepaymentSchedule"> | string | null
@@ -49453,6 +49529,10 @@ export namespace Prisma {
     interestPortion?: SortOrder
     expectedBalance?: SortOrder
     actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
     actualPaymentDate?: SortOrderInput | SortOrder
     status?: SortOrder
     repaymentId?: SortOrderInput | SortOrder
@@ -49476,6 +49556,10 @@ export namespace Prisma {
     interestPortion?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: DateTimeNullableFilter<"RepaymentSchedule"> | Date | string | null
     status?: EnumScheduleStatusFilter<"RepaymentSchedule"> | $Enums.ScheduleStatus
     repaymentId?: StringNullableFilter<"RepaymentSchedule"> | string | null
@@ -49495,6 +49579,10 @@ export namespace Prisma {
     interestPortion?: SortOrder
     expectedBalance?: SortOrder
     actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
     actualPaymentDate?: SortOrderInput | SortOrder
     status?: SortOrder
     repaymentId?: SortOrderInput | SortOrder
@@ -49520,6 +49608,10 @@ export namespace Prisma {
     interestPortion?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalWithAggregatesFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: DateTimeNullableWithAggregatesFilter<"RepaymentSchedule"> | Date | string | null
     status?: EnumScheduleStatusWithAggregatesFilter<"RepaymentSchedule"> | $Enums.ScheduleStatus
     repaymentId?: StringNullableWithAggregatesFilter<"RepaymentSchedule"> | string | null
@@ -52634,6 +52726,10 @@ export namespace Prisma {
     interestPortion: Decimal | DecimalJsLike | number | string
     expectedBalance: Decimal | DecimalJsLike | number | string
     actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
     actualPaymentDate?: Date | string | null
     status?: $Enums.ScheduleStatus
     createdAt?: Date | string
@@ -52652,6 +52748,10 @@ export namespace Prisma {
     interestPortion: Decimal | DecimalJsLike | number | string
     expectedBalance: Decimal | DecimalJsLike | number | string
     actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
     actualPaymentDate?: Date | string | null
     status?: $Enums.ScheduleStatus
     repaymentId?: string | null
@@ -52668,6 +52768,10 @@ export namespace Prisma {
     interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52686,6 +52790,10 @@ export namespace Prisma {
     interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
     repaymentId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52703,6 +52811,10 @@ export namespace Prisma {
     interestPortion: Decimal | DecimalJsLike | number | string
     expectedBalance: Decimal | DecimalJsLike | number | string
     actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
     actualPaymentDate?: Date | string | null
     status?: $Enums.ScheduleStatus
     repaymentId?: string | null
@@ -52719,6 +52831,10 @@ export namespace Prisma {
     interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52735,6 +52851,10 @@ export namespace Prisma {
     interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
     repaymentId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55743,6 +55863,10 @@ export namespace Prisma {
     interestPortion?: SortOrder
     expectedBalance?: SortOrder
     actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
     actualPaymentDate?: SortOrder
     status?: SortOrder
     repaymentId?: SortOrder
@@ -55757,6 +55881,10 @@ export namespace Prisma {
     interestPortion?: SortOrder
     expectedBalance?: SortOrder
     actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
   }
 
   export type RepaymentScheduleMaxOrderByAggregateInput = {
@@ -55769,6 +55897,10 @@ export namespace Prisma {
     interestPortion?: SortOrder
     expectedBalance?: SortOrder
     actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
     actualPaymentDate?: SortOrder
     status?: SortOrder
     repaymentId?: SortOrder
@@ -55786,6 +55918,10 @@ export namespace Prisma {
     interestPortion?: SortOrder
     expectedBalance?: SortOrder
     actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
     actualPaymentDate?: SortOrder
     status?: SortOrder
     repaymentId?: SortOrder
@@ -55800,6 +55936,10 @@ export namespace Prisma {
     interestPortion?: SortOrder
     expectedBalance?: SortOrder
     actualAmountPaid?: SortOrder
+    actualPrincipalPaid?: SortOrder
+    actualInterestPaid?: SortOrder
+    remainingPrincipal?: SortOrder
+    remainingInterest?: SortOrder
   }
 
   export type EnumScheduleStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -61783,6 +61923,10 @@ export namespace Prisma {
     interestPortion: Decimal | DecimalJsLike | number | string
     expectedBalance: Decimal | DecimalJsLike | number | string
     actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
     actualPaymentDate?: Date | string | null
     status?: $Enums.ScheduleStatus
     createdAt?: Date | string
@@ -61799,6 +61943,10 @@ export namespace Prisma {
     interestPortion: Decimal | DecimalJsLike | number | string
     expectedBalance: Decimal | DecimalJsLike | number | string
     actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
     actualPaymentDate?: Date | string | null
     status?: $Enums.ScheduleStatus
     repaymentId?: string | null
@@ -62346,6 +62494,10 @@ export namespace Prisma {
     interestPortion?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFilter<"RepaymentSchedule"> | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: DateTimeNullableFilter<"RepaymentSchedule"> | Date | string | null
     status?: EnumScheduleStatusFilter<"RepaymentSchedule"> | $Enums.ScheduleStatus
     repaymentId?: StringNullableFilter<"RepaymentSchedule"> | string | null
@@ -64036,6 +64188,10 @@ export namespace Prisma {
     interestPortion: Decimal | DecimalJsLike | number | string
     expectedBalance: Decimal | DecimalJsLike | number | string
     actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
     actualPaymentDate?: Date | string | null
     status?: $Enums.ScheduleStatus
     createdAt?: Date | string
@@ -64053,6 +64209,10 @@ export namespace Prisma {
     interestPortion: Decimal | DecimalJsLike | number | string
     expectedBalance: Decimal | DecimalJsLike | number | string
     actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
     actualPaymentDate?: Date | string | null
     status?: $Enums.ScheduleStatus
     createdAt?: Date | string
@@ -66953,6 +67113,10 @@ export namespace Prisma {
     interestPortion: Decimal | DecimalJsLike | number | string
     expectedBalance: Decimal | DecimalJsLike | number | string
     actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
     actualPaymentDate?: Date | string | null
     status?: $Enums.ScheduleStatus
     repaymentId?: string | null
@@ -67182,6 +67346,10 @@ export namespace Prisma {
     interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67198,6 +67366,10 @@ export namespace Prisma {
     interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
     repaymentId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67214,6 +67386,10 @@ export namespace Prisma {
     interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
     repaymentId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67339,6 +67515,10 @@ export namespace Prisma {
     interestPortion: Decimal | DecimalJsLike | number | string
     expectedBalance: Decimal | DecimalJsLike | number | string
     actualAmountPaid?: Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: Decimal | DecimalJsLike | number | string
+    remainingInterest?: Decimal | DecimalJsLike | number | string
     actualPaymentDate?: Date | string | null
     status?: $Enums.ScheduleStatus
     createdAt?: Date | string
@@ -67354,6 +67534,10 @@ export namespace Prisma {
     interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67371,6 +67555,10 @@ export namespace Prisma {
     interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67387,6 +67575,10 @@ export namespace Prisma {
     interestPortion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expectedBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualAmountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualPrincipalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    actualInterestPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingPrincipal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    remainingInterest?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     actualPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
