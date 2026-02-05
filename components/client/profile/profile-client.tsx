@@ -60,24 +60,24 @@ export function ProfileClient({
     addressSource: ClientAddress | null,
     clientSource: any | null
 }) {
-    useEffect(()=>{
-        if (!clientSource?.data) return
+    // useEffect(()=>{
+    //     if (!clientSource?.data) return
 
-        const client = {
-            ...clientSource.data,
-            dateOfBirth: clientSource.data.dateOfBirth
-                ? new Date(clientSource.data.dateOfBirth).toISOString()
-                : null
-        }
-        dispatch(setBankDetails(bankDetailsSource?.data as BankDetail))
-        dispatch(setClient(client as Client))
-        dispatch(setAddress(addressSource as ClientAddress))
-        dispatch(setReferees(refereesSource))
-        if (employmentSource?.data) {
-            dispatch(setEmployment(employmentSource.data as EmploymentDetail))
-        }
-        return
-    }, [clientSource, addressSource, refereesSource, bankDetailsSource, employmentSource])
+    //     const client = {
+    //         ...clientSource.data,
+    //         dateOfBirth: clientSource.data.dateOfBirth
+    //             ? new Date(clientSource.data.dateOfBirth).toISOString()
+    //             : null
+    //     }
+    //     dispatch(setBankDetails(bankDetailsSource?.data as BankDetail))
+    //     dispatch(setClient(client as Client))
+    //     dispatch(setAddress(addressSource as ClientAddress))
+    //     dispatch(setReferees(refereesSource))
+    //     if (employmentSource?.data) {
+    //         dispatch(setEmployment(employmentSource.data as EmploymentDetail))
+    //     }
+    //     return
+    // }, [clientSource, addressSource, refereesSource, bankDetailsSource, employmentSource])
 
     const dispatch = useAppDispatch()
     const { activeSection, isEditing, client, address, employment, bankDetails, referees } = useAppSelector((state) => state.profile)
@@ -92,8 +92,9 @@ export function ProfileClient({
     }
 
     const getInitials = () => {
-        if (!client) return 'U'
-        return `${client.surname?.charAt(0) || ''}${client.otherNames?.charAt(0) || ''}`.toUpperCase() || 'U'
+        console.log(clientSource, "cs")
+        if (!clientSource) return 'U'
+        return `${clientSource.surname?.charAt(0) || ''}${clientSource.otherNames?.charAt(0) || ''}`.toUpperCase() || 'U'
     }
 
     const formatDate = (dateStr?: string) => {
@@ -159,15 +160,15 @@ export function ProfileClient({
                                                 <div className="flex items-center gap-4">
                                                     <Avatar className="h-16 w-16">
                                                         <AvatarFallback className="bg-amber-100 text-amber-800 text-lg font-semibold">
-                                                            {getInitials()}
+                                                        {clientSource ? clientSource.surname?.charAt(0) : ''} {clientSource?.otherNames?.charAt(0).toUpperCase() || 'U'}
                                                         </AvatarFallback>
                                                     </Avatar>
                                                     <div>
                                                         <h2 className="text-lg font-semibold text-foreground">
-                                                            {client ? `${client.surname} ${client.otherNames}` : 'Your Name'}
+                                                            {clientSource ? `${clientSource?.surname} ${clientSource?.otherNames}` : 'Your Name'}
                                                         </h2>
                                                         <p className="text-sm text-muted-foreground">
-                                                            #{client?.id?.slice(-8).toUpperCase() || 'NEW USER'}
+                                                            #{clientSource?.id?.slice(-8).toUpperCase() || 'NEW USER'}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -178,8 +179,8 @@ export function ProfileClient({
 
                                             {/* About Section */}
                                             <SidebarSection title="About">
-                                                <InfoRow icon={Phone} label="Phone" value={client?.phoneMobile} />
-                                                <InfoRow icon={Mail} label="Email" value={client?.emailPersonal || client?.emailOfficial} />
+                                                <InfoRow icon={Phone} label="Phone" value={clientSource?.phoneMobile} />
+                                                <InfoRow icon={Mail} label="Email" value={clientSource?.emailPersonal || clientSource?.emailOfficial} />
                                             </SidebarSection>
 
                                             {/* Address Section */}
@@ -187,26 +188,26 @@ export function ProfileClient({
                                                 <InfoRow
                                                     icon={MapPin}
                                                     label="Address"
-                                                    value={address ? `${address.residentialAddress || ''}${address.building ? `, ${address.building}` : ''}`.trim() || 'Not provided' : 'Not provided'}
+                                                    value={addressSource ? `${addressSource.residentialAddress || ''}${addressSource.building ? `, ${addressSource.building}` : ''}`.trim() || 'Not provided' : 'Not provided'}
                                                 />
                                                 <InfoRow
                                                     icon={Building2}
                                                     label="City"
-                                                    value={address?.townCity}
+                                                    value={addressSource?.townCity}
                                                 />
                                                 <InfoRow
                                                     icon={MapPin}
                                                     label="Postcode"
-                                                    value={address?.postalCode}
+                                                    value={addressSource?.postalCode}
                                                 />
                                             </SidebarSection>
 
                                             {/* Personal Details Section */}
                                             <SidebarSection title="Personal Details">
-                                                <InfoRow icon={Calendar} label="Date of birth" value={formatDate(client?.dateOfBirth as string)} />
-                                                <InfoRow icon={User} label="National ID" value={client?.idPassportNo} />
-                                                <InfoRow icon={User} label="Nationality" value={client?.nationality} />
-                                                <InfoRow icon={User} label="Marital Status" value={client?.maritalStatus} />
+                                                <InfoRow icon={Calendar} label="Date of birth" value={formatDate(clientSource?.dateOfBirth as string)} />
+                                                <InfoRow icon={User} label="National ID" value={clientSource?.idPassportNo} />
+                                                <InfoRow icon={User} label="Nationality" value={clientSource?.nationality} />
+                                                <InfoRow icon={User} label="Marital Status" value={clientSource?.maritalStatus} />
                                             </SidebarSection>
                                         </div>
                                     </div>
@@ -242,13 +243,13 @@ export function ProfileClient({
                                                         </tr>
                                                     </thead>
                                                     <tbody className="divide-y divide-border">
-                                                        {employment ? (
+                                                        {employmentSource ? (
                                                             <tr className="text-sm">
-                                                                <td className="px-6 py-4 text-foreground font-medium">{employment.employerName}</td>
-                                                                <td className="px-6 py-4 text-foreground">{employment.jobTitle}</td>
-                                                                <td className="px-6 py-4 text-foreground">{employment.department || '-'}</td>
-                                                                <td className="px-6 py-4 text-foreground">{formatDate(employment.dateJoined as string) || '-'}</td>
-                                                                <td className="px-6 py-4 text-foreground">{employment.branchLocation || '-'}</td>
+                                                                <td className="px-6 py-4 text-foreground font-medium">{employmentSource?.employerName}</td>
+                                                                <td className="px-6 py-4 text-foreground">{employmentSource?.jobTitle}</td>
+                                                                <td className="px-6 py-4 text-foreground">{employmentSource?.department || '-'}</td>
+                                                                <td className="px-6 py-4 text-foreground">{formatDate(employmentSource?.dateJoined as string) || '-'}</td>
+                                                                <td className="px-6 py-4 text-foreground">{employmentSource?.branchLocation || '-'}</td>
                                                                 <td className="px-6 py-4">
                                                                     <button type="button" className="text-muted-foreground hover:text-foreground">
                                                                         <MoreHorizontal className="h-4 w-4" />
@@ -285,8 +286,8 @@ export function ProfileClient({
                                                     </button>
                                                 </div>
                                                 <div className="p-6 space-y-4">
-                                                    {referees.length > 0 ? (
-                                                        referees.slice(0, 3).map((referee) => (
+                                                    {refereesSource.length > 0 ? (
+                                                        refereesSource.slice(0, 3).map((referee) => (
                                                             <div key={referee.id} className="flex items-center gap-3">
                                                                 <Avatar className="h-10 w-10">
                                                                     <AvatarFallback className="bg-muted text-muted-foreground text-sm">
@@ -327,19 +328,19 @@ export function ProfileClient({
                                                     </button>
                                                 </div>
                                                 <div className="p-6 space-y-4">
-                                                    {bankDetails ? (
+                                                    {bankDetailsSource ? (
                                                         <div className="space-y-3">
                                                             <div>
-                                                                <p className="text-lg font-semibold text-foreground">{bankDetails.bankName}</p>
-                                                                <p className="text-sm text-muted-foreground">{bankDetails.branch}</p>
+                                                                <p className="text-lg font-semibold text-foreground">{bankDetailsSource?.bankName}</p>
+                                                                <p className="text-sm text-muted-foreground">{bankDetailsSource?.branch}</p>
                                                             </div>
                                                             <div>
                                                                 <p className="text-sm text-muted-foreground">Account Name</p>
-                                                                <p className="text-sm font-medium text-foreground">{bankDetails.accountName}</p>
+                                                                <p className="text-sm font-medium text-foreground">{bankDetailsSource?.accountName}</p>
                                                             </div>
                                                             <div>
                                                                 <p className="text-sm text-muted-foreground">Account Number</p>
-                                                                <p className="text-sm font-medium text-foreground">{bankDetails.accountNumber}</p>
+                                                                <p className="text-sm font-medium text-foreground">{bankDetailsSource?.accountNumber}</p>
                                                             </div>
                                                         </div>
                                                     ) : (
@@ -377,7 +378,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <PersonalInfoForm client={client as Client} isReadOnly={!isEditing} />
+                                    <PersonalInfoForm client={clientSource as Client} isReadOnly={!isEditing} />
                                 </div>
                             </motion.div>
                         </TabsContent>
@@ -404,7 +405,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <AddressForm addresses={address ? [address] : []} isReadOnly={!isEditing} />
+                                    <AddressForm addresses={addressSource ? [addressSource] : []} isReadOnly={!isEditing} />
                                 </div>
                             </motion.div>
                         </TabsContent>
@@ -431,7 +432,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <EmploymentForm employment={employment || undefined} isReadOnly={!isEditing} />
+                                    <EmploymentForm employment={employmentSource || undefined} isReadOnly={!isEditing} />
                                 </div>
                             </motion.div>
                         </TabsContent>
@@ -458,7 +459,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <RefereeForm referees={referees} isReadOnly={!isEditing} />
+                                    <RefereeForm referees={refereesSource} isReadOnly={!isEditing} />
                                 </div>
                             </motion.div>
                         </TabsContent>
@@ -485,7 +486,7 @@ export function ProfileClient({
                                             </Button>
                                         )}
                                     </div>
-                                    <BankDetailsForm bankDetails={bankDetails || undefined} isReadOnly={!isEditing} />
+                                    <BankDetailsForm bankDetails={bankDetailsSource || undefined} isReadOnly={!isEditing} />
                                 </div>
                             </motion.div>
                         </TabsContent>

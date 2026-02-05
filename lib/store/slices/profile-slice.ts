@@ -46,6 +46,7 @@ const profileSlice = createSlice({
             state.client = action.payload
         },
         setAddress: (state, action: PayloadAction<ClientAddress>) => {
+            console.log('Setting client in profile slice:', action.payload);
             state.address = action.payload
         },
         setEmployment: (state, action: PayloadAction<EmploymentDetail>) => {

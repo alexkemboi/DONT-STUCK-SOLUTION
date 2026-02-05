@@ -118,6 +118,8 @@ export async function createClientAction(data: Client): Promise<{ success: boole
             dateOfBirth: new Date(data.dateOfBirth)
         }
 
+        delete payload.id
+
         const newClient = await createClientService(payload);
 
         await prisma.auditLog.create({
@@ -129,6 +131,8 @@ export async function createClientAction(data: Client): Promise<{ success: boole
                 newValue: { surname: data.surname, otherNames: data.otherNames },
             },
         }).catch(() => {});
+
+        revalidatePath("/dss/client/profile")
 
         return {
             success: true, data: newClient.data
@@ -247,6 +251,8 @@ export async function createClientAddressAction(data:ClientAddress) {
                 ...data
             }
 
+            delete payload.id
+
             const newAddress = await createAddress(client.client?.id as string, payload);
 
             await prisma.auditLog.create({
@@ -332,6 +338,7 @@ export async function createEmploymentDetailAction(data:EmploymentDetail) {
             dateJoined: data.dateJoined ? new Date(data.dateJoined) : undefined,
             contractExpiry: data.contractExpiry ? new Date(data.contractExpiry) : undefined,
         }
+        delete payload.id
 
         const newEmployment = await createEmployment(client.client?.id as string, payload);
 
@@ -462,6 +469,8 @@ export async function createRefereeAction(data:Referee) {
         if(!client){
             throw new Error("Client not found");
         }
+
+        delete data.id
 
         const newReferee = await createReferee(client.client?.id as string, data);
 
@@ -643,6 +652,8 @@ export async function createBankAction(data:BankDetail) {
             ...data,
             clientId:client.client?.id as string
         }
+
+        delete payload.id
 
         const newBankDetail = await createBankDetail(client.client?.id as string, payload);
 

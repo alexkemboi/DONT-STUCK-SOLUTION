@@ -12,10 +12,10 @@ const page = async() => {
         getBankDetailsAction()
     ])
 
-    console.log({bankDetails});
-    console.log({referees});
-    console.log({employment});
-    console.log({addresses});
+    // console.log({bankDetails});
+    // console.log({referees});
+    // console.log({employment});
+    // console.log(addresses.data);
     console.log({client});
 
    return (
@@ -23,11 +23,11 @@ const page = async() => {
           <div className="container w-full mx-auto px-4 py-8">
             <Suspense >
                    <ProfileClient
-                       bankDetailsSource={bankDetails || null}
-                       refereesSource={referees.data || []}
-                       employmentSource={employment || null}
-                       addressSource={addresses?.data?.[0] || null}
-                       clientSource={client || null}
+                       bankDetailsSource={bankDetails?.data || null}
+                       refereesSource={referees?.data || []}
+                       employmentSource={employment?.data || {}}
+                       addressSource={addresses?.data?.[0]  || null}
+                       clientSource={client?.data  || null}
                    />
             </Suspense>
              

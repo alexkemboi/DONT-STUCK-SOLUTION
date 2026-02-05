@@ -59,6 +59,7 @@ export async function createClientService(data: CreateClientInput): Promise<Serv
     const newClient = await prisma.client.create({
       data
     });
+    console.log(newClient, "test")
     return { success: true, data: newClient };
 
   }catch(error){
