@@ -25,7 +25,14 @@ const page = async() => {
                    <ProfileClient
                        bankDetailsSource={bankDetails?.data || null}
                        refereesSource={referees?.data || []}
-                       employmentSource={employment?.data || {}}
+                       employmentSource={
+                           employment?.data
+                               ? {
+                                   ...employment.data?.data,
+                                   netSalary: employment.data?.data?.netSalary?.toNumber()
+                               }
+                               : null
+                       }
                        addressSource={addresses?.data?.[0]  || null}
                        clientSource={client?.data  || null}
                    />

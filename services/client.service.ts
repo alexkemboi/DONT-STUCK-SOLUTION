@@ -203,6 +203,7 @@ export async function createEmployment(clientId: string, data: CreateEmploymentI
     const newEmployment =  await prisma.employmentDetail.create({
       data: {
         ...data,
+        netSalary:parseFloat(data.netSalary.toLocaleString()),
         clientId:clientId as string
       }
     });
