@@ -114,11 +114,11 @@ const clientNavigation = [
     icon: FolderOpen,
     name: "My Loans",
   },
-   {
-    href: "/dss/admin/accounts",
-    icon: FolderOpen,
-    name: "General Ledger",
-  },
+  //  {
+  //   href: "/dss/admin/accounts",
+  //   icon: FolderOpen,
+  //   name: "General Ledger",
+  // },
   {
     href: "/dss/client/profile",
     icon: User,
