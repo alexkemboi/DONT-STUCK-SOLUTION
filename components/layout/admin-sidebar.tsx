@@ -15,14 +15,15 @@ import {
   BarChart2,
   CreditCard,
   FolderOpen,
-  UserCog,
+  Wallet,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setMobileSidebarOpen } from "@/lib/store/slices/ui-slice";
 import { logout } from "@/lib/store/slices/auth-slice";
 import { toast } from "sonner";
 import { authClient } from "@/lib/authclient";
-
+import Image from "next/image";
+import dss from "@/public/dss.png"
 interface UserSchema {
   id: string;
   email: string;
@@ -71,10 +72,15 @@ const adminnavigation = [
     href: "/dss/admin/reports",
     icon: BarChart2,
   },
+    {
+    name: "Accounts",
+    href: "/dss/admin/accounts",
+    icon: Wallet,
+  },
   {
     name: "Staff",
     href: "/dss/admin/staff",
-    icon: UserCog,
+    icon: BarChart2 ,
   }
   // {
   //   name: "New Reports",
@@ -153,9 +159,18 @@ export function AdminSidebar({ user }: { user: UserSchema | null}) {
         <div className="flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500">
-              <Building2 className="h-6 w-6 text-white" />
+                <div className="flex flex-col items-center justify-center gap-3">
+                               <Image
+                                  src={dss}
+                                  alt="Don't Stuck Solutions Logo"
+                                  width={204}
+                                  height={204}
+                                  priority
+                                />
+                             
+                </div>
             </div>
-            <span className="text-xl font-bold text-white">DSS Finance</span>
+            <span className="text-xl font-bold text-white">DON'T STUCK SOLUTION</span>
           </div>
           <button
             onClick={() => dispatch(setMobileSidebarOpen(false))}
