@@ -117,10 +117,10 @@ const handleLogout = async () => {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center gap-2 px-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-sm font-medium text-white">
-                  {user?.name?.charAt(0).toUpperCase() || "J"}{user?.name?.charAt(0).toUpperCase() || "D"}
+                  {user?.name?.split(" ")[0]?.charAt(0).toUpperCase() || "U"}{user?.name?.split(" ")[1]?.charAt(0).toUpperCase() || ""}
                 </div>
                 <div className="hidden md:flex md:flex-col md:items-start md:text-left">
-                  <span className="text-sm font-medium text-slate-900">{user?.name?.split(" ")[0] || "_"} {user?.name?.split(" ")[1] || "_"}</span>
+                  <span className="text-sm font-medium text-slate-900">{user?.name || "User"}</span>
                   <span className="text-xs text-slate-500">{user?.role}</span>
                 </div>
                 <ChevronDown className="hidden h-4 w-4 text-slate-400 md:block" />
@@ -129,11 +129,11 @@ const handleLogout = async () => {
             <DropdownMenuContent align="end" className="w-56">
               <div className="flex items-center gap-3 px-2 py-2">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500 text-sm font-medium text-white">
-                  {user?.name?.charAt(0).toUpperCase() || "J"}{user?.name?.charAt(0).toUpperCase() || "D"}
+                  {user?.name?.split(" ")[0]?.charAt(0).toUpperCase() || "U"}{user?.name?.split(" ")[1]?.charAt(0).toUpperCase() || ""}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-900">{user?.name?.split(" ")[0] || "_"} {user?.name?.split(" ")[1] || "_"}</p>
-                  <p className="text-xs text-slate-500">{user?.email || "john@dssfinance.com"}  </p>
+                  <p className="text-sm font-medium text-slate-900">{user?.name || "User"}</p>
+                  <p className="text-xs text-slate-500">{user?.email || ""}</p>
                 </div>
               </div>
               <DropdownMenuSeparator />

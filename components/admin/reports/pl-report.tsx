@@ -9,7 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TrendingUp, Banknote, AlertTriangle, PiggyBank } from "lucide-react";
+import { TrendingUp, Banknote, AlertTriangle, PiggyBank, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import type { ProfitLossSummary } from "@/app/actions/reports";
 
 const formatCurrency = (amount: number) =>
@@ -27,8 +29,49 @@ interface PLReportProps {
 export function PLReport({ data }: PLReportProps) {
   const netPosition = data.totalRepaid - data.totalPrincipalDisbursed;
 
+  const handleDownload = async () => {
+    try {
+      const XLSX = await import("xlsx");
+      const workbook = XLSX.utils.book_new();
+
+      // Summary sheet
+      const summary = [
+        { Metric: "Interest Income", Value: data.totalInterestIncome },
+        { Metric: "Total Disbursed (Capital Out)", Value: data.totalPrincipalDisbursed },
+        { Metric: "Total Recovered (All Repayments)", Value: data.totalRepaid },
+        { Metric: "Principal Repaid", Value: data.totalPrincipalRepaid },
+        { Metric: "Net Interest Collected", Value: data.netInterestCollected },
+        { Metric: "NPL Outstanding", Value: data.nplOutstanding },
+        { Metric: "Net Position", Value: netPosition },
+      ];
+      XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(summary), "Summary");
+
+      // Monthly breakdown sheet
+      const monthly = data.monthlyBreakdown.map((row) => ({
+        Month: row.month,
+        "Interest Collected": row.interestCollected,
+        "Principal Repaid": row.principalRepaid,
+        Disbursed: row.disbursed,
+        Net: row.interestCollected + row.principalRepaid - row.disbursed,
+      }));
+      XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(monthly), "Monthly Breakdown");
+
+      XLSX.writeFile(workbook, `ProfitLoss_${new Date().toISOString().split("T")[0]}.xlsx`);
+      toast.success("Excel file downloaded");
+    } catch {
+      toast.error("Failed to generate Excel file");
+    }
+  };
+
   return (
     <div className="space-y-6">
+      <div className="flex justify-end">
+        <Button variant="outline" size="sm" onClick={handleDownload}>
+          <Download className="mr-2 h-4 w-4" />
+          Download Excel
+        </Button>
+      </div>
+
       {/* Summary Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>

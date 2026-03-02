@@ -9,7 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Banknote, TrendingUp, Users } from "lucide-react";
+import { Banknote, TrendingUp, Users, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const formatCurrency = (amount: number) =>
   new Intl.NumberFormat("en-KE", {
@@ -45,6 +47,20 @@ export function DisbursementReport({ data }: DisbursementReportProps) {
 
   const totalDisbursed = rows.reduce((sum, r) => sum + r.Amount, 0);
   const averageLoanSize = rows.length > 0 ? totalDisbursed / rows.length : 0;
+
+  const handleDownload = async () => {
+    if (rows.length === 0) return;
+    try {
+      const XLSX = await import("xlsx");
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Disbursements");
+      XLSX.writeFile(workbook, `Disbursements_${new Date().toISOString().split("T")[0]}.xlsx`);
+      toast.success("Excel file downloaded");
+    } catch {
+      toast.error("Failed to generate Excel file");
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -97,8 +113,14 @@ export function DisbursementReport({ data }: DisbursementReportProps) {
 
       {/* Table */}
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-base">Disbursement Records</CardTitle>
+          {rows.length > 0 && (
+            <Button variant="outline" size="sm" onClick={handleDownload}>
+              <Download className="mr-2 h-4 w-4" />
+              Download Excel
+            </Button>
+          )}
         </CardHeader>
         <CardContent>
           {rows.length === 0 ? (
