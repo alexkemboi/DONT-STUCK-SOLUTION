@@ -470,6 +470,7 @@ export interface LoanApplicationFormValues {
   purpose: string
   amountRequested: number
   repaymentPeriod: number
+  paymentFrequency: "MONTHLY" | "WEEKLY"
 }
 
 // Guarantor form values for Apply Loan page (matches Prisma Guarantor model)
@@ -517,5 +518,6 @@ export interface LoanApplicationSubmitData {
   purpose: string
   amountRequested: number
   repaymentPeriod: number
+  paymentFrequency: "MONTHLY" | "WEEKLY"
   guarantors: GuarantorFormValues[]
 }

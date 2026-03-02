@@ -15,7 +15,7 @@ import {
 import { submitLoanApplicationAction } from '@/app/actions/loan'
 import { toast } from 'sonner'
 
-const ANNUAL_INTEREST_RATE = 20
+const MONTHLY_INTEREST_RATE = 20
 
 const formatCurrency = (amount: number) =>
     new Intl.NumberFormat('en-KE', {
@@ -31,17 +31,31 @@ export function ReviewSubmit() {
         useAppSelector((state) => state.loanApplication)
 
     const calculations = useMemo(() => {
-        const { amountRequested, repaymentPeriod } = loanDetails
+        const { amountRequested, repaymentPeriod, paymentFrequency } = loanDetails
         if (!amountRequested || !repaymentPeriod) return null
 
-        const monthlyRate = ANNUAL_INTEREST_RATE / 100 
-        const monthlyPayment =
-            (amountRequested * monthlyRate * Math.pow(1 + monthlyRate, repaymentPeriod)) /
-            (Math.pow(1 + monthlyRate, repaymentPeriod) - 1)
+        const isWeekly = paymentFrequency === "WEEKLY"
+        let periodRate: number
+        let periods: number
+        if (isWeekly) {
+            const annualRate = (MONTHLY_INTEREST_RATE / 100) * 12
+            periodRate = annualRate / 52
+            periods = Math.round(repaymentPeriod * 52 / 12)
+        } else {
+            periodRate = MONTHLY_INTEREST_RATE / 100
+            periods = repaymentPeriod
+        }
+
+        const installmentPayment = periodRate === 0
+            ? amountRequested / periods
+            : (amountRequested * periodRate * Math.pow(1 + periodRate, periods)) /
+              (Math.pow(1 + periodRate, periods) - 1)
 
         return {
-            monthlyPayment: Math.round(monthlyPayment),
-            totalRepayable: Math.round(monthlyPayment * repaymentPeriod),
+            installmentPayment: Math.round(installmentPayment),
+            totalRepayable: Math.round(installmentPayment * periods),
+            isWeekly,
+            periods,
         }
     }, [loanDetails])
 
@@ -52,6 +66,7 @@ export function ReviewSubmit() {
             purpose: loanDetails.purpose,
             amountRequested: loanDetails.amountRequested,
             repaymentPeriod: loanDetails.repaymentPeriod,
+            paymentFrequency: loanDetails.paymentFrequency || "MONTHLY",
             guarantors: guarantors.map(({ id, ...rest }) => rest),
         })
 
@@ -124,21 +139,30 @@ export function ReviewSubmit() {
                             <div>
                                 <p className="text-xs text-muted-foreground">Repayment Period</p>
                                 <p className="text-sm font-medium">
-                                    {loanDetails.repaymentPeriod} month
-                                    {loanDetails.repaymentPeriod !== 1 ? 's' : ''}
+                                    {calculations
+                                        ? calculations.isWeekly
+                                            ? `${calculations.periods} weeks`
+                                            : `${loanDetails.repaymentPeriod} month${loanDetails.repaymentPeriod !== 1 ? 's' : ''}`
+                                        : `${loanDetails.repaymentPeriod} month${loanDetails.repaymentPeriod !== 1 ? 's' : ''}`}
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-xs text-muted-foreground">Payment Frequency</p>
+                                <p className="text-sm font-medium">
+                                    {loanDetails.paymentFrequency === 'WEEKLY' ? 'Weekly' : 'Monthly'}
                                 </p>
                             </div>
                             <div>
                                 <p className="text-xs text-muted-foreground">Interest Rate</p>
-                                <p className="text-sm font-medium">{ANNUAL_INTEREST_RATE}% p.m.</p>
+                                <p className="text-sm font-medium">{MONTHLY_INTEREST_RATE}% p.m.</p>
                             </div>
                             {calculations && (
                                 <div>
                                     <p className="text-xs text-muted-foreground">
-                                        Est. Monthly Payment
+                                        {calculations.isWeekly ? 'Est. Weekly Payment' : 'Est. Monthly Payment'}
                                     </p>
                                     <p className="text-sm font-medium">
-                                        {formatCurrency(calculations.monthlyPayment)}
+                                        {formatCurrency(calculations.installmentPayment)}
                                     </p>
                                 </div>
                             )}

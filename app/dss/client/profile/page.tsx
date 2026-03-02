@@ -1,15 +1,14 @@
-import { getBankDetailsAction, getClientAddressAction, getClientByUserId, getLatestEmploymentAction, getRefereesAction } from '@/app/actions/client'
+import { getClientAddressAction, getClientByUserId, getLatestEmploymentAction, getRefereesAction } from '@/app/actions/client'
 import { ProfileClient } from '@/components/client/profile/profile-client'
 
 import React, { Suspense } from 'react'
 
 const page = async() => {
-    const [addresses, client, employment, referees, bankDetails] = await Promise.all([
+    const [addresses, client, employment, referees] = await Promise.all([
         getClientAddressAction(),
         getClientByUserId(),
         getLatestEmploymentAction(),
         getRefereesAction(),
-        getBankDetailsAction()
     ])
 
     // console.log({bankDetails});
@@ -23,7 +22,6 @@ const page = async() => {
           <div className="container w-full mx-auto px-4 py-8">
             <Suspense >
                    <ProfileClient
-                       bankDetailsSource={bankDetails?.data || null}
                        refereesSource={referees?.data || []}
                        employmentSource={
                            employment?.data

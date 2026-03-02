@@ -426,6 +426,14 @@ export const UserRole: {
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
+
+export const PaymentFrequency: {
+  MONTHLY: 'MONTHLY',
+  WEEKLY: 'WEEKLY'
+};
+
+export type PaymentFrequency = (typeof PaymentFrequency)[keyof typeof PaymentFrequency]
+
 }
 
 export type Title = $Enums.Title
@@ -519,6 +527,10 @@ export const NormalBalance: typeof $Enums.NormalBalance
 export type UserRole = $Enums.UserRole
 
 export const UserRole: typeof $Enums.UserRole
+
+export type PaymentFrequency = $Enums.PaymentFrequency
+
+export const PaymentFrequency: typeof $Enums.PaymentFrequency
 
 /**
  * ##  Prisma Client ʲˢ
@@ -12349,6 +12361,7 @@ export namespace Prisma {
     approvedAmount: Decimal | null
     qualificationType: $Enums.QualificationType | null
     interestRate: Decimal | null
+    paymentFrequency: $Enums.PaymentFrequency | null
     startDate: Date | null
     repaymentPeriod: number | null
     status: $Enums.LoanApplicationStatus | null
@@ -12370,6 +12383,7 @@ export namespace Prisma {
     approvedAmount: Decimal | null
     qualificationType: $Enums.QualificationType | null
     interestRate: Decimal | null
+    paymentFrequency: $Enums.PaymentFrequency | null
     startDate: Date | null
     repaymentPeriod: number | null
     status: $Enums.LoanApplicationStatus | null
@@ -12391,6 +12405,7 @@ export namespace Prisma {
     approvedAmount: number
     qualificationType: number
     interestRate: number
+    paymentFrequency: number
     startDate: number
     repaymentPeriod: number
     status: number
@@ -12428,6 +12443,7 @@ export namespace Prisma {
     approvedAmount?: true
     qualificationType?: true
     interestRate?: true
+    paymentFrequency?: true
     startDate?: true
     repaymentPeriod?: true
     status?: true
@@ -12449,6 +12465,7 @@ export namespace Prisma {
     approvedAmount?: true
     qualificationType?: true
     interestRate?: true
+    paymentFrequency?: true
     startDate?: true
     repaymentPeriod?: true
     status?: true
@@ -12470,6 +12487,7 @@ export namespace Prisma {
     approvedAmount?: true
     qualificationType?: true
     interestRate?: true
+    paymentFrequency?: true
     startDate?: true
     repaymentPeriod?: true
     status?: true
@@ -12578,6 +12596,7 @@ export namespace Prisma {
     approvedAmount: Decimal | null
     qualificationType: $Enums.QualificationType | null
     interestRate: Decimal
+    paymentFrequency: $Enums.PaymentFrequency
     startDate: Date | null
     repaymentPeriod: number
     status: $Enums.LoanApplicationStatus
@@ -12618,6 +12637,7 @@ export namespace Prisma {
     approvedAmount?: boolean
     qualificationType?: boolean
     interestRate?: boolean
+    paymentFrequency?: boolean
     startDate?: boolean
     repaymentPeriod?: boolean
     status?: boolean
@@ -12656,6 +12676,7 @@ export namespace Prisma {
     approvedAmount?: boolean
     qualificationType?: boolean
     interestRate?: boolean
+    paymentFrequency?: boolean
     startDate?: boolean
     repaymentPeriod?: boolean
     status?: boolean
@@ -12680,6 +12701,7 @@ export namespace Prisma {
     approvedAmount?: boolean
     qualificationType?: boolean
     interestRate?: boolean
+    paymentFrequency?: boolean
     startDate?: boolean
     repaymentPeriod?: boolean
     status?: boolean
@@ -12704,6 +12726,7 @@ export namespace Prisma {
     approvedAmount?: boolean
     qualificationType?: boolean
     interestRate?: boolean
+    paymentFrequency?: boolean
     startDate?: boolean
     repaymentPeriod?: boolean
     status?: boolean
@@ -12717,7 +12740,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type LoanApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "purpose" | "amountRequested" | "approvedAmount" | "qualificationType" | "interestRate" | "startDate" | "repaymentPeriod" | "status" | "appliedAt" | "reviewedAt" | "reviewedById" | "approvedAt" | "approvedById" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["loanApplication"]>
+  export type LoanApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "purpose" | "amountRequested" | "approvedAmount" | "qualificationType" | "interestRate" | "paymentFrequency" | "startDate" | "repaymentPeriod" | "status" | "appliedAt" | "reviewedAt" | "reviewedById" | "approvedAt" | "approvedById" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["loanApplication"]>
   export type LoanApplicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     documents?: boolean | LoanApplication$documentsArgs<ExtArgs>
     guarantors?: boolean | LoanApplication$guarantorsArgs<ExtArgs>
@@ -12776,6 +12799,7 @@ export namespace Prisma {
       approvedAmount: Prisma.Decimal | null
       qualificationType: $Enums.QualificationType | null
       interestRate: Prisma.Decimal
+      paymentFrequency: $Enums.PaymentFrequency
       startDate: Date | null
       repaymentPeriod: number
       status: $Enums.LoanApplicationStatus
@@ -13233,6 +13257,7 @@ export namespace Prisma {
     readonly approvedAmount: FieldRef<"LoanApplication", 'Decimal'>
     readonly qualificationType: FieldRef<"LoanApplication", 'QualificationType'>
     readonly interestRate: FieldRef<"LoanApplication", 'Decimal'>
+    readonly paymentFrequency: FieldRef<"LoanApplication", 'PaymentFrequency'>
     readonly startDate: FieldRef<"LoanApplication", 'DateTime'>
     readonly repaymentPeriod: FieldRef<"LoanApplication", 'Int'>
     readonly status: FieldRef<"LoanApplication", 'LoanApplicationStatus'>
@@ -46921,6 +46946,7 @@ export namespace Prisma {
     approvedAmount: 'approvedAmount',
     qualificationType: 'qualificationType',
     interestRate: 'interestRate',
+    paymentFrequency: 'paymentFrequency',
     startDate: 'startDate',
     repaymentPeriod: 'repaymentPeriod',
     status: 'status',
@@ -47555,6 +47581,20 @@ export namespace Prisma {
    * Reference to a field of type 'QualificationType[]'
    */
   export type ListEnumQualificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QualificationType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentFrequency'
+   */
+  export type EnumPaymentFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentFrequency'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentFrequency[]'
+   */
+  export type ListEnumPaymentFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentFrequency[]'>
     
 
 
@@ -48474,6 +48514,7 @@ export namespace Prisma {
     approvedAmount?: DecimalNullableFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string | null
     qualificationType?: EnumQualificationTypeNullableFilter<"LoanApplication"> | $Enums.QualificationType | null
     interestRate?: DecimalFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFilter<"LoanApplication"> | $Enums.PaymentFrequency
     startDate?: DateTimeNullableFilter<"LoanApplication"> | Date | string | null
     repaymentPeriod?: IntFilter<"LoanApplication"> | number
     status?: EnumLoanApplicationStatusFilter<"LoanApplication"> | $Enums.LoanApplicationStatus
@@ -48511,6 +48552,7 @@ export namespace Prisma {
     approvedAmount?: SortOrderInput | SortOrder
     qualificationType?: SortOrderInput | SortOrder
     interestRate?: SortOrder
+    paymentFrequency?: SortOrder
     startDate?: SortOrderInput | SortOrder
     repaymentPeriod?: SortOrder
     status?: SortOrder
@@ -48551,6 +48593,7 @@ export namespace Prisma {
     approvedAmount?: DecimalNullableFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string | null
     qualificationType?: EnumQualificationTypeNullableFilter<"LoanApplication"> | $Enums.QualificationType | null
     interestRate?: DecimalFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFilter<"LoanApplication"> | $Enums.PaymentFrequency
     startDate?: DateTimeNullableFilter<"LoanApplication"> | Date | string | null
     repaymentPeriod?: IntFilter<"LoanApplication"> | number
     status?: EnumLoanApplicationStatusFilter<"LoanApplication"> | $Enums.LoanApplicationStatus
@@ -48588,6 +48631,7 @@ export namespace Prisma {
     approvedAmount?: SortOrderInput | SortOrder
     qualificationType?: SortOrderInput | SortOrder
     interestRate?: SortOrder
+    paymentFrequency?: SortOrder
     startDate?: SortOrderInput | SortOrder
     repaymentPeriod?: SortOrder
     status?: SortOrder
@@ -48617,6 +48661,7 @@ export namespace Prisma {
     approvedAmount?: DecimalNullableWithAggregatesFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string | null
     qualificationType?: EnumQualificationTypeNullableWithAggregatesFilter<"LoanApplication"> | $Enums.QualificationType | null
     interestRate?: DecimalWithAggregatesFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyWithAggregatesFilter<"LoanApplication"> | $Enums.PaymentFrequency
     startDate?: DateTimeNullableWithAggregatesFilter<"LoanApplication"> | Date | string | null
     repaymentPeriod?: IntWithAggregatesFilter<"LoanApplication"> | number
     status?: EnumLoanApplicationStatusWithAggregatesFilter<"LoanApplication"> | $Enums.LoanApplicationStatus
@@ -51593,6 +51638,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -51628,6 +51674,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -51661,6 +51708,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -51696,6 +51744,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -51730,6 +51779,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -51750,6 +51800,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -51769,6 +51820,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -54918,6 +54970,13 @@ export namespace Prisma {
     not?: NestedEnumQualificationTypeNullableFilter<$PrismaModel> | $Enums.QualificationType | null
   }
 
+  export type EnumPaymentFrequencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentFrequencyFilter<$PrismaModel> | $Enums.PaymentFrequency
+  }
+
   export type EnumLoanApplicationStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.LoanApplicationStatus | EnumLoanApplicationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.LoanApplicationStatus[] | ListEnumLoanApplicationStatusFieldRefInput<$PrismaModel>
@@ -55013,6 +55072,7 @@ export namespace Prisma {
     approvedAmount?: SortOrder
     qualificationType?: SortOrder
     interestRate?: SortOrder
+    paymentFrequency?: SortOrder
     startDate?: SortOrder
     repaymentPeriod?: SortOrder
     status?: SortOrder
@@ -55041,6 +55101,7 @@ export namespace Prisma {
     approvedAmount?: SortOrder
     qualificationType?: SortOrder
     interestRate?: SortOrder
+    paymentFrequency?: SortOrder
     startDate?: SortOrder
     repaymentPeriod?: SortOrder
     status?: SortOrder
@@ -55062,6 +55123,7 @@ export namespace Prisma {
     approvedAmount?: SortOrder
     qualificationType?: SortOrder
     interestRate?: SortOrder
+    paymentFrequency?: SortOrder
     startDate?: SortOrder
     repaymentPeriod?: SortOrder
     status?: SortOrder
@@ -55106,6 +55168,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumQualificationTypeNullableFilter<$PrismaModel>
     _max?: NestedEnumQualificationTypeNullableFilter<$PrismaModel>
+  }
+
+  export type EnumPaymentFrequencyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.PaymentFrequency
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
+    _max?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
   }
 
   export type EnumLoanApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -57730,6 +57802,10 @@ export namespace Prisma {
     set?: $Enums.QualificationType | null
   }
 
+  export type EnumPaymentFrequencyFieldUpdateOperationsInput = {
+    set?: $Enums.PaymentFrequency
+  }
+
   export type EnumLoanApplicationStatusFieldUpdateOperationsInput = {
     set?: $Enums.LoanApplicationStatus
   }
@@ -59219,6 +59295,13 @@ export namespace Prisma {
     not?: NestedEnumQualificationTypeNullableFilter<$PrismaModel> | $Enums.QualificationType | null
   }
 
+  export type NestedEnumPaymentFrequencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentFrequencyFilter<$PrismaModel> | $Enums.PaymentFrequency
+  }
+
   export type NestedEnumLoanApplicationStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.LoanApplicationStatus | EnumLoanApplicationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.LoanApplicationStatus[] | ListEnumLoanApplicationStatusFieldRefInput<$PrismaModel>
@@ -59250,6 +59333,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumQualificationTypeNullableFilter<$PrismaModel>
     _max?: NestedEnumQualificationTypeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPaymentFrequencyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.PaymentFrequency
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
+    _max?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
   }
 
   export type NestedEnumLoanApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -59829,6 +59922,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -59863,6 +59957,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -59905,6 +60000,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -59939,6 +60035,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -60232,6 +60329,7 @@ export namespace Prisma {
     approvedAmount?: DecimalNullableFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string | null
     qualificationType?: EnumQualificationTypeNullableFilter<"LoanApplication"> | $Enums.QualificationType | null
     interestRate?: DecimalFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFilter<"LoanApplication"> | $Enums.PaymentFrequency
     startDate?: DateTimeNullableFilter<"LoanApplication"> | Date | string | null
     repaymentPeriod?: IntFilter<"LoanApplication"> | number
     status?: EnumLoanApplicationStatusFilter<"LoanApplication"> | $Enums.LoanApplicationStatus
@@ -60548,6 +60646,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -60581,6 +60680,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62549,6 +62649,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62583,6 +62684,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62631,6 +62733,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62665,6 +62768,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62697,6 +62801,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62731,6 +62836,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62779,6 +62885,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62813,6 +62920,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62845,6 +62953,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62879,6 +62988,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62927,6 +63037,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62961,6 +63072,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62993,6 +63105,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63027,6 +63140,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63075,6 +63189,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63109,6 +63224,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63141,6 +63257,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63175,6 +63292,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63223,6 +63341,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63257,6 +63376,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63289,6 +63409,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63323,6 +63444,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63371,6 +63493,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63405,6 +63528,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63554,6 +63678,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63588,6 +63713,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63761,6 +63887,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63795,6 +63922,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64115,6 +64243,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64149,6 +64278,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64247,6 +64377,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64281,6 +64412,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64329,6 +64461,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64363,6 +64496,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64438,6 +64572,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64472,6 +64607,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64537,6 +64673,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64571,6 +64708,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64619,6 +64757,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64653,6 +64792,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64852,6 +64992,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64886,6 +65027,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64967,6 +65109,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65001,6 +65144,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65260,6 +65404,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -65294,6 +65439,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -65377,6 +65523,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65411,6 +65558,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65568,6 +65716,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -65602,6 +65751,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -65717,6 +65867,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65751,6 +65902,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66243,6 +66395,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -66263,6 +66416,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -66408,6 +66562,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66442,6 +66597,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66475,6 +66631,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66494,6 +66651,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66528,6 +66686,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66561,6 +66720,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66654,6 +66814,7 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
+    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -66914,6 +67075,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66947,6 +67109,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66980,6 +67143,7 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus

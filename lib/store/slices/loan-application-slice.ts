@@ -15,6 +15,7 @@ interface LoanApplicationState {
     purpose: string;
     amountRequested: number;
     repaymentPeriod: number;
+    paymentFrequency: "MONTHLY" | "WEEKLY";
   };
   guarantors: GuarantorEntry[];
   isSubmitting: boolean;
@@ -29,6 +30,7 @@ const initialState: LoanApplicationState = {
     purpose: "",
     amountRequested: 0,
     repaymentPeriod: 1,
+    paymentFrequency: "MONTHLY",
   },
   guarantors: [],
   isSubmitting: false,

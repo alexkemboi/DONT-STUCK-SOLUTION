@@ -34,6 +34,7 @@ interface AmortizationScheduleProps {
   principal: number;
   monthlyInterestRate: number;
   periodMonths: number;
+  frequency?: "MONTHLY" | "WEEKLY";
   showFullSchedule?: boolean;
   compact?: boolean;
   className?: string;
@@ -61,39 +62,53 @@ export function AmortizationSchedule({
   principal,
   monthlyInterestRate,
   periodMonths,
+  frequency = "MONTHLY",
   showFullSchedule = true,
   compact = false,
   className,
 }: AmortizationScheduleProps) {
   const [expanded, setExpanded] = useState(false);
 
+  const isWeekly = frequency === "WEEKLY";
+
   const { schedule, summary } = useMemo(() => {
     if (!principal || principal <= 0 || !periodMonths || periodMonths <= 0) {
       return { schedule: [], summary: null };
     }
 
-    const monthlyRate = monthlyInterestRate / 100;
-    const monthlyPayment =
-      monthlyRate === 0
-        ? principal / periodMonths
-        : (principal * monthlyRate * Math.pow(1 + monthlyRate, periodMonths)) /
-          (Math.pow(1 + monthlyRate, periodMonths) - 1);
+    // Derive period rate and number of installments from frequency
+    let pRate: number;
+    let pCount: number;
+    if (isWeekly) {
+      const annualRate = (monthlyInterestRate / 100) * 12;
+      pRate = annualRate / 52;
+      pCount = Math.round(periodMonths * 52 / 12);
+    } else {
+      pRate = monthlyInterestRate / 100;
+      pCount = periodMonths;
+    }
+
+    const installmentPayment =
+      pRate === 0
+        ? principal / pCount
+        : (principal * pRate * Math.pow(1 + pRate, pCount)) /
+          (Math.pow(1 + pRate, pCount) - 1);
 
     const rows: ScheduleRow[] = [];
     let balance = principal;
     let cumulativeInterest = 0;
     let cumulativePrincipal = 0;
 
-    for (let month = 1; month <= periodMonths; month++) {
-      const interestPayment = balance * monthlyRate;
-      const principalPayment = monthlyPayment - interestPayment;
+    for (let i = 1; i <= pCount; i++) {
+      const interestPayment = balance * pRate;
+      const principalPayment = installmentPayment - interestPayment;
       balance = Math.max(0, balance - principalPayment);
       cumulativeInterest += interestPayment;
       cumulativePrincipal += principalPayment;
 
       rows.push({
-        month,
-        payment: monthlyPayment,
+        month: i,
+        payment: installmentPayment,
         principal: principalPayment,
         interest: interestPayment,
         balance,
@@ -108,13 +123,14 @@ export function AmortizationSchedule({
     return {
       schedule: rows,
       summary: {
-        monthlyPayment: Math.round(monthlyPayment),
+        monthlyPayment: Math.round(installmentPayment),
         totalInterest: Math.round(totalInterest),
         totalRepayable: Math.round(totalRepayable),
         effectiveRate: ((totalInterest / principal) * 100).toFixed(1),
+        periods: pCount,
       },
     };
-  }, [principal, monthlyInterestRate, periodMonths]);
+  }, [principal, monthlyInterestRate, periodMonths, isWeekly]);
 
   if (!summary) {
     return (
@@ -134,7 +150,7 @@ export function AmortizationSchedule({
       <div className={cn("grid gap-3", compact ? "grid-cols-2" : "grid-cols-2 lg:grid-cols-4")}>
         <SummaryCard
           icon={Banknote}
-          label="Monthly Payment"
+          label={isWeekly ? "Weekly Payment" : "Monthly Payment"}
           value={formatCurrency(summary.monthlyPayment)}
           color="emerald"
           compact={compact}
@@ -158,7 +174,7 @@ export function AmortizationSchedule({
           icon={PiggyBank}
           label="Total Repayable"
           value={formatCurrency(summary.totalRepayable)}
-          subtext={`Over ${periodMonths} months`}
+          subtext={isWeekly ? `Over ${summary.periods} weeks` : `Over ${periodMonths} months`}
           color="purple"
           compact={compact}
         />
@@ -172,7 +188,7 @@ export function AmortizationSchedule({
             Payment Breakdown
           </CardTitle>
           <CardDescription>
-            Principal vs Interest distribution over {periodMonths} months
+            Principal vs Interest distribution over {isWeekly ? `${summary.periods} weeks` : `${periodMonths} months`}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -204,18 +220,18 @@ export function AmortizationSchedule({
             </div>
           </div>
 
-          {/* Monthly interest breakdown */}
+          {/* Period interest breakdown */}
           <div className="rounded-lg bg-slate-50 p-4 space-y-2">
-            <p className="text-sm font-medium text-slate-700">Monthly Interest Calculation</p>
+            <p className="text-sm font-medium text-slate-700">{isWeekly ? "Weekly" : "Monthly"} Interest Calculation</p>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-slate-500">First Month Interest</p>
+                <p className="text-slate-500">First {isWeekly ? "Week" : "Month"} Interest</p>
                 <p className="font-medium text-slate-900">
                   {formatCurrency(schedule[0]?.interest || 0)}
                 </p>
               </div>
               <div>
-                <p className="text-slate-500">Last Month Interest</p>
+                <p className="text-slate-500">Last {isWeekly ? "Week" : "Month"} Interest</p>
                 <p className="font-medium text-slate-900">
                   {formatCurrency(schedule[schedule.length - 1]?.interest || 0)}
                 </p>
@@ -234,7 +250,7 @@ export function AmortizationSchedule({
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
               <Calendar className="h-4 w-4 text-slate-500" />
-              Monthly Repayment Schedule
+              {isWeekly ? "Weekly" : "Monthly"} Repayment Schedule
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -242,7 +258,7 @@ export function AmortizationSchedule({
               <Table>
                 <TableHeader>
                   <TableRow className="bg-slate-50">
-                    <TableHead className="w-16">Month</TableHead>
+                    <TableHead className="w-16">{isWeekly ? "Week" : "Month"}</TableHead>
                     <TableHead className="text-right">Payment</TableHead>
                     <TableHead className="text-right">Principal</TableHead>
                     <TableHead className="text-right">Interest</TableHead>

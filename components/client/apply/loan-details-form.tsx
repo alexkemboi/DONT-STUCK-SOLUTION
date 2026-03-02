@@ -24,6 +24,11 @@ const repaymentOptions = [
     { value: '60', label: '60 months' },
 ]
 
+const frequencyOptions = [
+    { value: 'MONTHLY', label: 'Monthly' },
+    { value: 'WEEKLY', label: 'Weekly' },
+]
+
 function FormValuesObserver() {
     const { values } = useFormikContext<LoanApplicationFormValues>()
     const dispatch = useAppDispatch()
@@ -34,6 +39,7 @@ function FormValuesObserver() {
                 purpose: values.purpose,
                 amountRequested: Number(values.amountRequested) || 0,
                 repaymentPeriod: Number(values.repaymentPeriod) || 1,
+                paymentFrequency: values.paymentFrequency || "MONTHLY",
             })
         )
     }, [values, dispatch])
@@ -49,6 +55,7 @@ export function LoanDetailsForm() {
         purpose: loanDetails.purpose,
         amountRequested: loanDetails.amountRequested || ('' as unknown as number),
         repaymentPeriod: loanDetails.repaymentPeriod,
+        paymentFrequency: loanDetails.paymentFrequency || "MONTHLY",
     }
 
     const handleSubmit = (values: LoanApplicationFormValues) => {
@@ -57,6 +64,7 @@ export function LoanDetailsForm() {
                 purpose: values.purpose,
                 amountRequested: Number(values.amountRequested),
                 repaymentPeriod: Number(values.repaymentPeriod),
+                paymentFrequency: values.paymentFrequency,
             })
         )
         dispatch(nextStep())
@@ -105,6 +113,15 @@ export function LoanDetailsForm() {
                                 label="Repayment Period"
                                 options={repaymentOptions}
                                 placeholder="Select period"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <FormSelect
+                                name="paymentFrequency"
+                                label="Payment Frequency"
+                                options={frequencyOptions}
+                                placeholder="Select frequency"
                             />
                         </div>
 

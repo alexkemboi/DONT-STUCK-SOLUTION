@@ -4,9 +4,6 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { prisma } from "./lib/prisma";
 
-import { getCookieCache } from "better-auth/cookies";
-import { getSessionFromCtx } from "better-auth/api";
-
 
 
 const publicroutes = ["/"];
@@ -26,9 +23,19 @@ const clientPrefix = "/dss/client";
 
 
 export default async function proxy(req:NextRequest) {
-    const session = await auth.api.getSession({
-        headers: await headers()
-    })
+    let session = null;
+    try {
+        session = await auth.api.getSession({
+            query:{
+                disableCookieCache: true
+            },
+            headers: await headers()
+        });
+    } catch {
+        // Invalid/malformed session cookie (e.g. old JWT format with dots),
+        // treat as unauthenticated
+        session = null;
+    }
 
     // THIS IS NOT SECURE!
     // This is the recommended approach to optimistically redirect users
@@ -37,7 +44,7 @@ export default async function proxy(req:NextRequest) {
     const { nextUrl } = req;
 
 
-    console.log(session, "sess")
+    
 
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);

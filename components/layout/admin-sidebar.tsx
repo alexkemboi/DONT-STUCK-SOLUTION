@@ -253,10 +253,10 @@ function SidebarNav({ pathname, role, user }: { pathname: string; role: UserSche
       <div className="mt-auto pb-4 space-y-2">
         <div className="flex items-center gap-3 rounded-lg bg-slate-800 px-3 py-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500 text-sm font-medium text-white">
-            {user?.name?.charAt(0).toUpperCase() || "J"}{user?.name?.charAt(0).toUpperCase() || "D"}
+            {user?.name?.charAt(0).toUpperCase() || "U"}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">{user?.name?.split(" ")[0] || "John"} {user?.name?.split(" ")[1] || "Doe"}</p>
+            <p className="text-sm font-medium text-white truncate">{user?.name || "User"}</p>
             <p className="text-xs text-slate-400 truncate">{user?.role}</p>
           </div>
         </div>

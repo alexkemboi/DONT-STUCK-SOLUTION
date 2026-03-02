@@ -209,6 +209,10 @@ export function LoanDetailView({ loan, schedule, scheduleSummary }: LoanDetailVi
                   value={`${loan.repaymentPeriod} months`}
                 />
                 <InfoItem
+                  label="Payment Frequency"
+                  value={loan.paymentFrequency === "WEEKLY" ? "Weekly" : "Monthly"}
+                />
+                <InfoItem
                   label="Qualification"
                   value={loan.qualificationType || "—"}
                 />
@@ -256,6 +260,7 @@ export function LoanDetailView({ loan, schedule, scheduleSummary }: LoanDetailVi
                   principal={loan.approvedAmount || loan.amountRequested}
                   monthlyInterestRate={loan.interestRate}
                   periodMonths={loan.repaymentPeriod}
+                  frequency={loan.paymentFrequency as "MONTHLY" | "WEEKLY"}
                   showFullSchedule={true}
                   compact={false}
                 />

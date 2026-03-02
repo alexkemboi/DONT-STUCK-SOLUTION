@@ -400,6 +400,151 @@ export async function getReportDataAction(
   }
 }
 
+// ============================================================================
+// PROFIT & LOSS SUMMARY
+// ============================================================================
+
+export interface ProfitLossSummary {
+  totalInterestIncome: number;
+  totalPrincipalDisbursed: number;
+  totalRepaid: number;
+  totalPrincipalRepaid: number;
+  netInterestCollected: number;
+  nplOutstanding: number;
+  monthlyBreakdown: {
+    month: string;
+    interestCollected: number;
+    principalRepaid: number;
+    disbursed: number;
+  }[];
+}
+
+export async function getProfitLossAction(): Promise<{
+  success: boolean;
+  data?: ProfitLossSummary;
+  error?: string;
+}> {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    // Total interest income from schedule (actual interest paid)
+    const scheduleAgg = await prisma.repaymentSchedule.aggregate({
+      _sum: { actualInterestPaid: true, actualPrincipalPaid: true },
+    });
+    const totalInterestIncome = Number(scheduleAgg._sum.actualInterestPaid || 0);
+    const totalPrincipalRepaid = Number(scheduleAgg._sum.actualPrincipalPaid || 0);
+
+    // Total disbursed
+    const disbursementAgg = await prisma.loanDisbursement.aggregate({
+      _sum: { amount: true },
+    });
+    const totalPrincipalDisbursed = Number(disbursementAgg._sum.amount || 0);
+
+    // Total repaid (all repayment records)
+    const repaymentAgg = await prisma.repayment.aggregate({
+      _sum: { amount: true },
+    });
+    const totalRepaid = Number(repaymentAgg._sum.amount || 0);
+
+    const netInterestCollected = totalInterestIncome;
+
+    // NPL outstanding
+    const nplAgg = await prisma.nonPerformingLoan.aggregate({
+      _sum: { capitalizedAmount: true },
+    });
+    const nplOutstanding = Number(nplAgg._sum.capitalizedAmount || 0);
+
+    // Monthly breakdown (last 6 months) from repayment schedules
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
+    sixMonthsAgo.setDate(1);
+    sixMonthsAgo.setHours(0, 0, 0, 0);
+
+    const recentScheduleItems = await prisma.repaymentSchedule.findMany({
+      where: {
+        actualPaymentDate: { gte: sixMonthsAgo },
+        status: "Paid",
+      },
+      select: {
+        actualPaymentDate: true,
+        actualInterestPaid: true,
+        actualPrincipalPaid: true,
+      },
+    });
+
+    const recentDisbursements = await prisma.loanDisbursement.findMany({
+      where: { disbursedAt: { gte: sixMonthsAgo } },
+      select: { disbursedAt: true, amount: true },
+    });
+
+    const monthKeys: string[] = [];
+    for (let i = 0; i < 6; i++) {
+      const d = new Date();
+      d.setMonth(d.getMonth() - (5 - i));
+      monthKeys.push(
+        d.toLocaleDateString("en-KE", { month: "short", year: "2-digit" })
+      );
+    }
+
+    const monthMap = new Map<
+      string,
+      { interestCollected: number; principalRepaid: number; disbursed: number }
+    >();
+    for (const key of monthKeys) {
+      monthMap.set(key, { interestCollected: 0, principalRepaid: 0, disbursed: 0 });
+    }
+
+    for (const item of recentScheduleItems) {
+      if (!item.actualPaymentDate) continue;
+      const key = new Date(item.actualPaymentDate).toLocaleDateString("en-KE", {
+        month: "short",
+        year: "2-digit",
+      });
+      const entry = monthMap.get(key);
+      if (entry) {
+        entry.interestCollected += Number(item.actualInterestPaid);
+        entry.principalRepaid += Number(item.actualPrincipalPaid);
+      }
+    }
+
+    for (const d of recentDisbursements) {
+      const key = new Date(d.disbursedAt).toLocaleDateString("en-KE", {
+        month: "short",
+        year: "2-digit",
+      });
+      const entry = monthMap.get(key);
+      if (entry) {
+        entry.disbursed += Number(d.amount);
+      }
+    }
+
+    const monthlyBreakdown = Array.from(monthMap.entries()).map(
+      ([month, data]) => ({ month, ...data })
+    );
+
+    return {
+      success: true,
+      data: {
+        totalInterestIncome,
+        totalPrincipalDisbursed,
+        totalRepaid,
+        totalPrincipalRepaid,
+        netInterestCollected,
+        nplOutstanding,
+        monthlyBreakdown,
+      },
+    };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
 export async function getReports() {
   const clientsWithBalances = await prisma.loanApplication.count({
     where: {

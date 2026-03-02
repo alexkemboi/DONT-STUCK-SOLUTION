@@ -7,14 +7,13 @@ import { Phone, Mail, MapPin, Building2, Calendar, CreditCard, User, Briefcase, 
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks'
-import { setActiveSection, setAddress, setBankDetails, setClient, setEmployment, setIsEditing, setReferees } from '@/lib/store/slices/profile-slice'
+import { setActiveSection, setAddress, setClient, setEmployment, setIsEditing, setReferees } from '@/lib/store/slices/profile-slice'
 import { PersonalInfoForm } from './personal-info-form'
 import { AddressForm } from './address-form'
 import { EmploymentForm } from './employment-form'
 import { RefereeForm } from './referee-form'
-import { BankDetails as BankDetailsForm } from './bank-details'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { BankDetail, Client, ClientAddress, EmploymentDetail, Referee } from "@/lib/types"
+import { Client, ClientAddress, EmploymentDetail, Referee } from "@/lib/types"
 
 const sections = [
     { id: 'overview', label: 'Overview' },
@@ -22,7 +21,6 @@ const sections = [
     { id: 'address', label: 'Address' },
     { id: 'employment', label: 'Employment' },
     { id: 'referees', label: 'Referees' },
-    { id: 'bank', label: 'Bank Details' },
 ] as const
 
 function InfoRow({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value?: string | null }) {
@@ -48,13 +46,11 @@ function SidebarSection({ title, children }: { title: string; children: React.Re
 }
 
 export function ProfileClient({
-    bankDetailsSource,
     refereesSource,
     employmentSource,
     addressSource,
     clientSource
 }:{
-    bankDetailsSource: any | null,
     refereesSource:Referee[],
     employmentSource: any | null,
     addressSource: ClientAddress | null,
@@ -268,8 +264,8 @@ export function ProfileClient({
                                             </div>
                                         </div>
 
-                                        {/* Bottom Row - Referees and Bank Details */}
-                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                        {/* Bottom Row - Referees */}
+                                        <div className="grid grid-cols-1 gap-6">
                                             {/* Referees */}
                                             <div className="bg-card rounded-lg border border-border">
                                                 <div className="flex items-center justify-between px-6 py-4 border-b border-border">
@@ -307,45 +303,6 @@ export function ProfileClient({
                                                     ) : (
                                                         <p className="text-sm text-muted-foreground text-center py-4">
                                                             No referees added yet
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            {/* Bank Details */}
-                                            <div className="bg-card rounded-lg border border-border">
-                                                <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-                                                    <h3 className="text-base font-semibold text-foreground">Bank Details</h3>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            dispatch(setActiveSection('bank'))
-                                                            dispatch(setIsEditing(true))
-                                                        }}
-                                                        className="text-sm text-red-600 hover:text-red-700 font-medium"
-                                                    >
-                                                        View all
-                                                    </button>
-                                                </div>
-                                                <div className="p-6 space-y-4">
-                                                    {bankDetailsSource ? (
-                                                        <div className="space-y-3">
-                                                            <div>
-                                                                <p className="text-lg font-semibold text-foreground">{bankDetailsSource?.bankName}</p>
-                                                                <p className="text-sm text-muted-foreground">{bankDetailsSource?.branch}</p>
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-sm text-muted-foreground">Account Name</p>
-                                                                <p className="text-sm font-medium text-foreground">{bankDetailsSource?.accountName}</p>
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-sm text-muted-foreground">Account Number</p>
-                                                                <p className="text-sm font-medium text-foreground">{bankDetailsSource?.accountNumber}</p>
-                                                            </div>
-                                                        </div>
-                                                    ) : (
-                                                        <p className="text-sm text-muted-foreground text-center py-4">
-                                                            No bank details added yet
                                                         </p>
                                                     )}
                                                 </div>
@@ -464,33 +421,6 @@ export function ProfileClient({
                             </motion.div>
                         </TabsContent>
 
-                        {/* Bank Details Tab */}
-                        <TabsContent value="bank" className="mt-0 focus-visible:outline-none">
-                            <motion.div
-                                key="bank"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                            >
-                                <div className="bg-card rounded-lg border border-border p-6">
-                                    <div className="flex items-center justify-between mb-6">
-                                        <div>
-                                            <h2 className="text-lg font-semibold text-foreground">Bank Details</h2>
-                                            <p className="text-sm text-muted-foreground mt-1">Your bank account for disbursements</p>
-                                        </div>
-                                        {!isEditing && (
-                                            <Button variant="outline" size="sm" onClick={handleEditClick}>
-                                                <Edit2 className="h-4 w-4 mr-2" />
-                                                Edit
-                                            </Button>
-                                        )}
-                                    </div>
-                                    <BankDetailsForm bankDetails={bankDetailsSource || undefined} isReadOnly={!isEditing} />
-                                </div>
-                            </motion.div>
-                        </TabsContent>
-                 
                 </Tabs>
             </div>
         </div>

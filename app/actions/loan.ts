@@ -422,6 +422,7 @@ export interface SerializedLoanDetail {
   approvedAmount: number | null;
   interestRate: number;
   repaymentPeriod: number;
+  paymentFrequency: string;
   status: string;
   qualificationType: string | null;
   appliedAt: string;
@@ -524,6 +525,7 @@ export async function getAdminLoanDetailAction(loanId: string): Promise<{
       approvedAmount: loan.approvedAmount ? Number(loan.approvedAmount) : null,
       interestRate: Number(loan.interestRate),
       repaymentPeriod: loan.repaymentPeriod,
+      paymentFrequency: loan.paymentFrequency,
       status: loan.status,
       qualificationType: loan.qualificationType || null,
       appliedAt: loan.appliedAt.toISOString(),

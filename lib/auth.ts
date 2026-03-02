@@ -19,25 +19,32 @@ export const auth = betterAuth({
             }
         }
     },
+    session: {
+        cookieCache: {
+            enabled: false,
+        }
+    },
     plugins:[
-        nextCookies(),
         customSession(async ({ user, session }) => {
-                const roles = await prisma.user.findUnique({
-                    where: {
-                        id: user.id
-                    },
-                    select: {
-                        role: true
-                    }
-                });
-                return {
-                    user: {
-                        ...user,
-                        role: roles?.role || "Client",
-                    },
-                    session
-                };
+            const roles = await prisma.user.findUnique({
+                where: {
+                    id: user.id
+                },
+                select: {
+                    role: true
+                }
+            });
+            return {
+                user: {
+                    ...user,
+                    role: roles?.role || "Client",
+                },
+                session
+            };
         }),
+        nextCookies()
+        
+        
     
     ]
 });

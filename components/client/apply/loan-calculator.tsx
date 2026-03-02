@@ -13,6 +13,7 @@ export function LoanCalculator() {
             principal={loanDetails.amountRequested || 0}
             monthlyInterestRate={MONTHLY_INTEREST_RATE}
             periodMonths={loanDetails.repaymentPeriod || 0}
+            frequency={loanDetails.paymentFrequency || "MONTHLY"}
             showFullSchedule={true}
             compact={true}
         />

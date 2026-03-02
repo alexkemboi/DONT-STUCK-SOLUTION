@@ -168,6 +168,7 @@ model LoanApplication {
   approvedAmount      Decimal?              @map("approved_amount") @db.Decimal(15, 2)
   qualificationType   QualificationType?    @map("qualification_type")
   interestRate        Decimal               @default(20) @map("interest_rate") @db.Decimal(5, 2)
+  paymentFrequency    PaymentFrequency      @default(MONTHLY) @map("payment_frequency")
   startDate           DateTime?             @map("start_date")
   repaymentPeriod     Int                   @map("repayment_period")
   status              LoanApplicationStatus @default(Pending)
@@ -861,6 +862,11 @@ enum UserRole {
   Investor
   RecoveryAgent
   Client
+}
+
+enum PaymentFrequency {
+  MONTHLY
+  WEEKLY
 }
 
 model Verification {

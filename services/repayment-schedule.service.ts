@@ -35,41 +35,54 @@ export type RepaymentScheduleWithLoan = RepaymentSchedule & {
 // ============================================================================
 
 /**
- * Calculate amortization schedule rows for a loan (internal helper)
+ * Calculate amortization schedule rows for a loan (internal helper).
+ *
+ * @param principal       - Loan principal amount
+ * @param periodRate      - Interest rate per installment period (as a decimal, already converted)
+ *                          Monthly: monthlyRate / 100
+ *                          Weekly:  (monthlyRate * 12 / 52) / 100
+ * @param periods         - Total number of installments
+ * @param startDate       - Schedule start date
+ * @param frequency       - "MONTHLY" or "WEEKLY" — controls due-date stepping
  */
 function calculateScheduleRows(
   principal: number,
-  monthlyInterestRate: number,
-  periodMonths: number,
-  startDate: Date
+  periodRate: number,
+  periods: number,
+  startDate: Date,
+  frequency: "MONTHLY" | "WEEKLY" = "MONTHLY"
 ): ScheduleRowInput[] {
-  if (principal <= 0 || periodMonths <= 0) {
+  if (principal <= 0 || periods <= 0) {
     return [];
   }
 
-  const monthlyRate = monthlyInterestRate / 100;
-  const monthlyPayment =
-    monthlyRate === 0
-      ? principal / periodMonths
-      : (principal * monthlyRate * Math.pow(1 + monthlyRate, periodMonths)) /
-        (Math.pow(1 + monthlyRate, periodMonths) - 1);
+  // PMT formula: P * r * (1+r)^n / ((1+r)^n - 1)
+  const installmentPayment =
+    periodRate === 0
+      ? principal / periods
+      : (principal * periodRate * Math.pow(1 + periodRate, periods)) /
+        (Math.pow(1 + periodRate, periods) - 1);
 
   const rows: ScheduleRowInput[] = [];
   let balance = principal;
 
-  for (let month = 1; month <= periodMonths; month++) {
-    const interestPayment = balance * monthlyRate;
-    const principalPayment = monthlyPayment - interestPayment;
+  for (let i = 1; i <= periods; i++) {
+    const interestPayment = balance * periodRate;
+    const principalPayment = installmentPayment - interestPayment;
     balance = Math.max(0, balance - principalPayment);
 
-    // Calculate due date (add months to start date)
+    // Due date: add N months (monthly) or N*7 days (weekly)
     const dueDate = new Date(startDate);
-    dueDate.setMonth(dueDate.getMonth() + month);
+    if (frequency === "WEEKLY") {
+      dueDate.setDate(dueDate.getDate() + i * 7);
+    } else {
+      dueDate.setMonth(dueDate.getMonth() + i);
+    }
 
     rows.push({
-      installmentNumber: month,
+      installmentNumber: i,
       dueDate,
-      scheduledPayment: Math.round(monthlyPayment * 100) / 100,
+      scheduledPayment: Math.round(installmentPayment * 100) / 100,
       principalPortion: Math.round(principalPayment * 100) / 100,
       interestPortion: Math.round(interestPayment * 100) / 100,
       expectedBalance: Math.round(balance * 100) / 100,
@@ -77,6 +90,28 @@ function calculateScheduleRows(
   }
 
   return rows;
+}
+
+/**
+ * Convert stored loan terms into period-rate and period-count for any frequency.
+ * DB stores interestRate as monthly percentage (e.g. 20 = 20% per month).
+ */
+function deriveScheduleParams(
+  monthlyInterestRatePct: number,
+  repaymentMonths: number,
+  frequency: "MONTHLY" | "WEEKLY"
+): { periodRate: number; periods: number } {
+  if (frequency === "WEEKLY") {
+    // annual rate = monthly% * 12; weekly rate = annual / 52
+    const annualRate = (monthlyInterestRatePct / 100) * 12;
+    const periodRate = annualRate / 52;
+    const periods = Math.round(repaymentMonths * 52 / 12);
+    return { periodRate, periods };
+  }
+  return {
+    periodRate: monthlyInterestRatePct / 100,
+    periods: repaymentMonths,
+  };
 }
 
 /**
@@ -96,6 +131,7 @@ export async function generateRepaymentSchedule(
         amountRequested: true,
         interestRate: true,
         repaymentPeriod: true,
+        paymentFrequency: true,
         startDate: true,
         disbursement: {
           select: { disbursedAt: true },
@@ -108,16 +144,22 @@ export async function generateRepaymentSchedule(
     }
 
     const principal = Number(loan.approvedAmount || loan.amountRequested);
-    const monthlyInterestRate = Number(loan.interestRate);
-    const periodMonths = loan.repaymentPeriod;
+    const frequency = loan.paymentFrequency as "MONTHLY" | "WEEKLY";
     const startDate = loan.disbursement?.disbursedAt || loan.startDate || new Date();
+
+    const { periodRate, periods } = deriveScheduleParams(
+      Number(loan.interestRate),
+      loan.repaymentPeriod,
+      frequency
+    );
 
     // Calculate schedule rows
     const scheduleRows = calculateScheduleRows(
       principal,
-      monthlyInterestRate,
-      periodMonths,
-      startDate
+      periodRate,
+      periods,
+      startDate,
+      frequency
     );
 
     if (scheduleRows.length === 0) {
@@ -238,6 +280,7 @@ export async function updateScheduleWithPayment(
             approvedAmount: true,
             amountRequested: true,
             repaymentPeriod: true,
+            paymentFrequency: true,
             startDate: true,
             disbursement: {
               select: { disbursedAt: true },
@@ -323,15 +366,23 @@ export async function updateScheduleWithPayment(
 
     // Recalculate and update subsequent schedules
     if (subsequentSchedules.length > 0 && loanOutstandingPrincipal > 0) {
-      const monthlyInterestRate = Number(schedule.loan.interestRate);
-      const remainingPeriodMonths = subsequentSchedules.length; // Number of installments left
+      const frequency = (schedule.loan.paymentFrequency ?? "MONTHLY") as "MONTHLY" | "WEEKLY";
+      const remainingInstallments = subsequentSchedules.length;
+
+      // Use frequency-aware rate conversion; remaining periods = installments left
+      const { periodRate } = deriveScheduleParams(
+        Number(schedule.loan.interestRate),
+        remainingInstallments, // passed as months but we only need the rate here
+        frequency
+      );
 
       // Recalculate the remaining schedule based on the new loanOutstandingPrincipal
       const recalculatedRows = calculateScheduleRows(
         loanOutstandingPrincipal,
-        monthlyInterestRate,
-        remainingPeriodMonths,
-        updatedSchedule.dueDate // Start date for recalculation is the due date of the current installment
+        periodRate,
+        remainingInstallments,
+        updatedSchedule.dueDate,
+        frequency
       );
 
       const updates = recalculatedRows.map((row, index) => {

@@ -17,6 +17,7 @@ export interface CreateLoanApplicationInput {
   purpose: string;
   amountRequested: number;
   repaymentPeriod: number;
+  paymentFrequency?: "MONTHLY" | "WEEKLY";
 }
 
 export interface CreateGuarantorInput {
@@ -42,6 +43,7 @@ export async function createLoanApplication(
         purpose: data.purpose,
         amountRequested: data.amountRequested,
         repaymentPeriod: data.repaymentPeriod,
+        paymentFrequency: data.paymentFrequency ?? "MONTHLY",
       },
     });
     return { success: true, data: loan };
