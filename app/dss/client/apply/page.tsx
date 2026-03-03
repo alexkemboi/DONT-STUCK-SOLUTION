@@ -14,6 +14,8 @@ const ApplyLoanPage = async () => {
                 <ApplyLoanClient
                     clientData={clientResult?.data || null}
                     existingLoans={loansResult?.data || []}
+                    profileComplete={clientResult?.profileComplete ?? false}
+                    missingFields={clientResult?.missingFields ?? []}
                 />
             </Suspense>
         </main>
