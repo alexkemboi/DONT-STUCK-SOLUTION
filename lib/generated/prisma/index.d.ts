@@ -4791,37 +4791,6 @@ export namespace Prisma {
 
 
   /**
-   * Count Type ChartOfAccountCountOutputType
-   */
-
-  export type ChartOfAccountCountOutputType = {
-    childAccounts: number
-  }
-
-  export type ChartOfAccountCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    childAccounts?: boolean | ChartOfAccountCountOutputTypeCountChildAccountsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * ChartOfAccountCountOutputType without action
-   */
-  export type ChartOfAccountCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ChartOfAccountCountOutputType
-     */
-    select?: ChartOfAccountCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ChartOfAccountCountOutputType without action
-   */
-  export type ChartOfAccountCountOutputTypeCountChildAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ChartOfAccountWhereInput
-  }
-
-
-  /**
    * Models
    */
 
@@ -39271,24 +39240,22 @@ export namespace Prisma {
     id: string | null
     accountCode: string | null
     accountName: string | null
-    accountType: $Enums.AccountType | null
+    accountType: string | null
     parentAccountId: string | null
-    normalBalance: $Enums.NormalBalance | null
+    normalBalance: string | null
     isActive: boolean | null
     createdAt: Date | null
-    updatedAt: Date | null
   }
 
   export type ChartOfAccountMaxAggregateOutputType = {
     id: string | null
     accountCode: string | null
     accountName: string | null
-    accountType: $Enums.AccountType | null
+    accountType: string | null
     parentAccountId: string | null
-    normalBalance: $Enums.NormalBalance | null
+    normalBalance: string | null
     isActive: boolean | null
     createdAt: Date | null
-    updatedAt: Date | null
   }
 
   export type ChartOfAccountCountAggregateOutputType = {
@@ -39300,7 +39267,6 @@ export namespace Prisma {
     normalBalance: number
     isActive: number
     createdAt: number
-    updatedAt: number
     _all: number
   }
 
@@ -39314,7 +39280,6 @@ export namespace Prisma {
     normalBalance?: true
     isActive?: true
     createdAt?: true
-    updatedAt?: true
   }
 
   export type ChartOfAccountMaxAggregateInputType = {
@@ -39326,7 +39291,6 @@ export namespace Prisma {
     normalBalance?: true
     isActive?: true
     createdAt?: true
-    updatedAt?: true
   }
 
   export type ChartOfAccountCountAggregateInputType = {
@@ -39338,7 +39302,6 @@ export namespace Prisma {
     normalBalance?: true
     isActive?: true
     createdAt?: true
-    updatedAt?: true
     _all?: true
   }
 
@@ -39418,12 +39381,11 @@ export namespace Prisma {
     id: string
     accountCode: string
     accountName: string
-    accountType: $Enums.AccountType
+    accountType: string
     parentAccountId: string | null
-    normalBalance: $Enums.NormalBalance
+    normalBalance: string
     isActive: boolean
     createdAt: Date
-    updatedAt: Date
     _count: ChartOfAccountCountAggregateOutputType | null
     _min: ChartOfAccountMinAggregateOutputType | null
     _max: ChartOfAccountMaxAggregateOutputType | null
@@ -39452,10 +39414,6 @@ export namespace Prisma {
     normalBalance?: boolean
     isActive?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
-    parentAccount?: boolean | ChartOfAccount$parentAccountArgs<ExtArgs>
-    childAccounts?: boolean | ChartOfAccount$childAccountsArgs<ExtArgs>
-    _count?: boolean | ChartOfAccountCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["chartOfAccount"]>
 
   export type ChartOfAccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -39467,8 +39425,6 @@ export namespace Prisma {
     normalBalance?: boolean
     isActive?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
-    parentAccount?: boolean | ChartOfAccount$parentAccountArgs<ExtArgs>
   }, ExtArgs["result"]["chartOfAccount"]>
 
   export type ChartOfAccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -39480,8 +39436,6 @@ export namespace Prisma {
     normalBalance?: boolean
     isActive?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
-    parentAccount?: boolean | ChartOfAccount$parentAccountArgs<ExtArgs>
   }, ExtArgs["result"]["chartOfAccount"]>
 
   export type ChartOfAccountSelectScalar = {
@@ -39493,38 +39447,22 @@ export namespace Prisma {
     normalBalance?: boolean
     isActive?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
   }
 
-  export type ChartOfAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accountCode" | "accountName" | "accountType" | "parentAccountId" | "normalBalance" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["chartOfAccount"]>
-  export type ChartOfAccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    parentAccount?: boolean | ChartOfAccount$parentAccountArgs<ExtArgs>
-    childAccounts?: boolean | ChartOfAccount$childAccountsArgs<ExtArgs>
-    _count?: boolean | ChartOfAccountCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type ChartOfAccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    parentAccount?: boolean | ChartOfAccount$parentAccountArgs<ExtArgs>
-  }
-  export type ChartOfAccountIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    parentAccount?: boolean | ChartOfAccount$parentAccountArgs<ExtArgs>
-  }
+  export type ChartOfAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accountCode" | "accountName" | "accountType" | "parentAccountId" | "normalBalance" | "isActive" | "createdAt", ExtArgs["result"]["chartOfAccount"]>
 
   export type $ChartOfAccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ChartOfAccount"
-    objects: {
-      parentAccount: Prisma.$ChartOfAccountPayload<ExtArgs> | null
-      childAccounts: Prisma.$ChartOfAccountPayload<ExtArgs>[]
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
       accountCode: string
       accountName: string
-      accountType: $Enums.AccountType
+      accountType: string
       parentAccountId: string | null
-      normalBalance: $Enums.NormalBalance
+      normalBalance: string
       isActive: boolean
       createdAt: Date
-      updatedAt: Date
     }, ExtArgs["result"]["chartOfAccount"]>
     composites: {}
   }
@@ -39919,8 +39857,6 @@ export namespace Prisma {
    */
   export interface Prisma__ChartOfAccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    parentAccount<T extends ChartOfAccount$parentAccountArgs<ExtArgs> = {}>(args?: Subset<T, ChartOfAccount$parentAccountArgs<ExtArgs>>): Prisma__ChartOfAccountClient<$Result.GetResult<Prisma.$ChartOfAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    childAccounts<T extends ChartOfAccount$childAccountsArgs<ExtArgs> = {}>(args?: Subset<T, ChartOfAccount$childAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChartOfAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -39953,12 +39889,11 @@ export namespace Prisma {
     readonly id: FieldRef<"ChartOfAccount", 'String'>
     readonly accountCode: FieldRef<"ChartOfAccount", 'String'>
     readonly accountName: FieldRef<"ChartOfAccount", 'String'>
-    readonly accountType: FieldRef<"ChartOfAccount", 'AccountType'>
+    readonly accountType: FieldRef<"ChartOfAccount", 'String'>
     readonly parentAccountId: FieldRef<"ChartOfAccount", 'String'>
-    readonly normalBalance: FieldRef<"ChartOfAccount", 'NormalBalance'>
+    readonly normalBalance: FieldRef<"ChartOfAccount", 'String'>
     readonly isActive: FieldRef<"ChartOfAccount", 'Boolean'>
     readonly createdAt: FieldRef<"ChartOfAccount", 'DateTime'>
-    readonly updatedAt: FieldRef<"ChartOfAccount", 'DateTime'>
   }
     
 
@@ -39975,10 +39910,6 @@ export namespace Prisma {
      * Omit specific fields from the ChartOfAccount
      */
     omit?: ChartOfAccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
     /**
      * Filter, which ChartOfAccount to fetch.
      */
@@ -39998,10 +39929,6 @@ export namespace Prisma {
      */
     omit?: ChartOfAccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
-    /**
      * Filter, which ChartOfAccount to fetch.
      */
     where: ChartOfAccountWhereUniqueInput
@@ -40019,10 +39946,6 @@ export namespace Prisma {
      * Omit specific fields from the ChartOfAccount
      */
     omit?: ChartOfAccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
     /**
      * Filter, which ChartOfAccount to fetch.
      */
@@ -40072,10 +39995,6 @@ export namespace Prisma {
      */
     omit?: ChartOfAccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
-    /**
      * Filter, which ChartOfAccount to fetch.
      */
     where?: ChartOfAccountWhereInput
@@ -40124,10 +40043,6 @@ export namespace Prisma {
      */
     omit?: ChartOfAccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
-    /**
      * Filter, which ChartOfAccounts to fetch.
      */
     where?: ChartOfAccountWhereInput
@@ -40171,10 +40086,6 @@ export namespace Prisma {
      */
     omit?: ChartOfAccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
-    /**
      * The data needed to create a ChartOfAccount.
      */
     data: XOR<ChartOfAccountCreateInput, ChartOfAccountUncheckedCreateInput>
@@ -40208,10 +40119,6 @@ export namespace Prisma {
      */
     data: ChartOfAccountCreateManyInput | ChartOfAccountCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -40226,10 +40133,6 @@ export namespace Prisma {
      * Omit specific fields from the ChartOfAccount
      */
     omit?: ChartOfAccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
     /**
      * The data needed to update a ChartOfAccount.
      */
@@ -40282,10 +40185,6 @@ export namespace Prisma {
      * Limit how many ChartOfAccounts to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -40300,10 +40199,6 @@ export namespace Prisma {
      * Omit specific fields from the ChartOfAccount
      */
     omit?: ChartOfAccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
     /**
      * The filter to search for the ChartOfAccount to update in case it exists.
      */
@@ -40331,10 +40226,6 @@ export namespace Prisma {
      */
     omit?: ChartOfAccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
-    /**
      * Filter which ChartOfAccount to delete.
      */
     where: ChartOfAccountWhereUniqueInput
@@ -40355,49 +40246,6 @@ export namespace Prisma {
   }
 
   /**
-   * ChartOfAccount.parentAccount
-   */
-  export type ChartOfAccount$parentAccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ChartOfAccount
-     */
-    select?: ChartOfAccountSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ChartOfAccount
-     */
-    omit?: ChartOfAccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
-    where?: ChartOfAccountWhereInput
-  }
-
-  /**
-   * ChartOfAccount.childAccounts
-   */
-  export type ChartOfAccount$childAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ChartOfAccount
-     */
-    select?: ChartOfAccountSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ChartOfAccount
-     */
-    omit?: ChartOfAccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
-    where?: ChartOfAccountWhereInput
-    orderBy?: ChartOfAccountOrderByWithRelationInput | ChartOfAccountOrderByWithRelationInput[]
-    cursor?: ChartOfAccountWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ChartOfAccountScalarFieldEnum | ChartOfAccountScalarFieldEnum[]
-  }
-
-  /**
    * ChartOfAccount without action
    */
   export type ChartOfAccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -40409,10 +40257,6 @@ export namespace Prisma {
      * Omit specific fields from the ChartOfAccount
      */
     omit?: ChartOfAccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChartOfAccountInclude<ExtArgs> | null
   }
 
 
@@ -47298,8 +47142,7 @@ export namespace Prisma {
     parentAccountId: 'parentAccountId',
     normalBalance: 'normalBalance',
     isActive: 'isActive',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    createdAt: 'createdAt'
   };
 
   export type ChartOfAccountScalarFieldEnum = (typeof ChartOfAccountScalarFieldEnum)[keyof typeof ChartOfAccountScalarFieldEnum]
@@ -47819,34 +47662,6 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-  /**
-   * Reference to a field of type 'AccountType'
-   */
-  export type EnumAccountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccountType'>
-    
-
-
-  /**
-   * Reference to a field of type 'AccountType[]'
-   */
-  export type ListEnumAccountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccountType[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'NormalBalance'
-   */
-  export type EnumNormalBalanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NormalBalance'>
-    
-
-
-  /**
-   * Reference to a field of type 'NormalBalance[]'
-   */
-  export type ListEnumNormalBalanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NormalBalance[]'>
     
 
 
@@ -50382,14 +50197,11 @@ export namespace Prisma {
     id?: StringFilter<"ChartOfAccount"> | string
     accountCode?: StringFilter<"ChartOfAccount"> | string
     accountName?: StringFilter<"ChartOfAccount"> | string
-    accountType?: EnumAccountTypeFilter<"ChartOfAccount"> | $Enums.AccountType
+    accountType?: StringFilter<"ChartOfAccount"> | string
     parentAccountId?: StringNullableFilter<"ChartOfAccount"> | string | null
-    normalBalance?: EnumNormalBalanceFilter<"ChartOfAccount"> | $Enums.NormalBalance
+    normalBalance?: StringFilter<"ChartOfAccount"> | string
     isActive?: BoolFilter<"ChartOfAccount"> | boolean
     createdAt?: DateTimeFilter<"ChartOfAccount"> | Date | string
-    updatedAt?: DateTimeFilter<"ChartOfAccount"> | Date | string
-    parentAccount?: XOR<ChartOfAccountNullableScalarRelationFilter, ChartOfAccountWhereInput> | null
-    childAccounts?: ChartOfAccountListRelationFilter
   }
 
   export type ChartOfAccountOrderByWithRelationInput = {
@@ -50401,9 +50213,6 @@ export namespace Prisma {
     normalBalance?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-    parentAccount?: ChartOfAccountOrderByWithRelationInput
-    childAccounts?: ChartOfAccountOrderByRelationAggregateInput
   }
 
   export type ChartOfAccountWhereUniqueInput = Prisma.AtLeast<{
@@ -50413,14 +50222,11 @@ export namespace Prisma {
     OR?: ChartOfAccountWhereInput[]
     NOT?: ChartOfAccountWhereInput | ChartOfAccountWhereInput[]
     accountName?: StringFilter<"ChartOfAccount"> | string
-    accountType?: EnumAccountTypeFilter<"ChartOfAccount"> | $Enums.AccountType
+    accountType?: StringFilter<"ChartOfAccount"> | string
     parentAccountId?: StringNullableFilter<"ChartOfAccount"> | string | null
-    normalBalance?: EnumNormalBalanceFilter<"ChartOfAccount"> | $Enums.NormalBalance
+    normalBalance?: StringFilter<"ChartOfAccount"> | string
     isActive?: BoolFilter<"ChartOfAccount"> | boolean
     createdAt?: DateTimeFilter<"ChartOfAccount"> | Date | string
-    updatedAt?: DateTimeFilter<"ChartOfAccount"> | Date | string
-    parentAccount?: XOR<ChartOfAccountNullableScalarRelationFilter, ChartOfAccountWhereInput> | null
-    childAccounts?: ChartOfAccountListRelationFilter
   }, "id" | "accountCode">
 
   export type ChartOfAccountOrderByWithAggregationInput = {
@@ -50432,7 +50238,6 @@ export namespace Prisma {
     normalBalance?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
     _count?: ChartOfAccountCountOrderByAggregateInput
     _max?: ChartOfAccountMaxOrderByAggregateInput
     _min?: ChartOfAccountMinOrderByAggregateInput
@@ -50445,12 +50250,11 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"ChartOfAccount"> | string
     accountCode?: StringWithAggregatesFilter<"ChartOfAccount"> | string
     accountName?: StringWithAggregatesFilter<"ChartOfAccount"> | string
-    accountType?: EnumAccountTypeWithAggregatesFilter<"ChartOfAccount"> | $Enums.AccountType
+    accountType?: StringWithAggregatesFilter<"ChartOfAccount"> | string
     parentAccountId?: StringNullableWithAggregatesFilter<"ChartOfAccount"> | string | null
-    normalBalance?: EnumNormalBalanceWithAggregatesFilter<"ChartOfAccount"> | $Enums.NormalBalance
+    normalBalance?: StringWithAggregatesFilter<"ChartOfAccount"> | string
     isActive?: BoolWithAggregatesFilter<"ChartOfAccount"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"ChartOfAccount"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"ChartOfAccount"> | Date | string
   }
 
   export type TransactionMatrixWhereInput = {
@@ -53668,87 +53472,77 @@ export namespace Prisma {
     id?: string
     accountCode: string
     accountName: string
-    accountType: $Enums.AccountType
-    normalBalance: $Enums.NormalBalance
+    accountType: string
+    parentAccountId?: string | null
+    normalBalance: string
     isActive?: boolean
     createdAt?: Date | string
-    updatedAt?: Date | string
-    parentAccount?: ChartOfAccountCreateNestedOneWithoutChildAccountsInput
-    childAccounts?: ChartOfAccountCreateNestedManyWithoutParentAccountInput
   }
 
   export type ChartOfAccountUncheckedCreateInput = {
     id?: string
     accountCode: string
     accountName: string
-    accountType: $Enums.AccountType
+    accountType: string
     parentAccountId?: string | null
-    normalBalance: $Enums.NormalBalance
+    normalBalance: string
     isActive?: boolean
     createdAt?: Date | string
-    updatedAt?: Date | string
-    childAccounts?: ChartOfAccountUncheckedCreateNestedManyWithoutParentAccountInput
   }
 
   export type ChartOfAccountUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     accountCode?: StringFieldUpdateOperationsInput | string
     accountName?: StringFieldUpdateOperationsInput | string
-    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
-    normalBalance?: EnumNormalBalanceFieldUpdateOperationsInput | $Enums.NormalBalance
+    accountType?: StringFieldUpdateOperationsInput | string
+    parentAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    normalBalance?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentAccount?: ChartOfAccountUpdateOneWithoutChildAccountsNestedInput
-    childAccounts?: ChartOfAccountUpdateManyWithoutParentAccountNestedInput
   }
 
   export type ChartOfAccountUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     accountCode?: StringFieldUpdateOperationsInput | string
     accountName?: StringFieldUpdateOperationsInput | string
-    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    accountType?: StringFieldUpdateOperationsInput | string
     parentAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    normalBalance?: EnumNormalBalanceFieldUpdateOperationsInput | $Enums.NormalBalance
+    normalBalance?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    childAccounts?: ChartOfAccountUncheckedUpdateManyWithoutParentAccountNestedInput
   }
 
   export type ChartOfAccountCreateManyInput = {
     id?: string
     accountCode: string
     accountName: string
-    accountType: $Enums.AccountType
+    accountType: string
     parentAccountId?: string | null
-    normalBalance: $Enums.NormalBalance
+    normalBalance: string
     isActive?: boolean
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type ChartOfAccountUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     accountCode?: StringFieldUpdateOperationsInput | string
     accountName?: StringFieldUpdateOperationsInput | string
-    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
-    normalBalance?: EnumNormalBalanceFieldUpdateOperationsInput | $Enums.NormalBalance
+    accountType?: StringFieldUpdateOperationsInput | string
+    parentAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    normalBalance?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ChartOfAccountUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     accountCode?: StringFieldUpdateOperationsInput | string
     accountName?: StringFieldUpdateOperationsInput | string
-    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    accountType?: StringFieldUpdateOperationsInput | string
     parentAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    normalBalance?: EnumNormalBalanceFieldUpdateOperationsInput | $Enums.NormalBalance
+    normalBalance?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TransactionMatrixCreateInput = {
@@ -56553,35 +56347,6 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
-  export type EnumAccountTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.AccountType | EnumAccountTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.AccountType[] | ListEnumAccountTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AccountType[] | ListEnumAccountTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAccountTypeFilter<$PrismaModel> | $Enums.AccountType
-  }
-
-  export type EnumNormalBalanceFilter<$PrismaModel = never> = {
-    equals?: $Enums.NormalBalance | EnumNormalBalanceFieldRefInput<$PrismaModel>
-    in?: $Enums.NormalBalance[] | ListEnumNormalBalanceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.NormalBalance[] | ListEnumNormalBalanceFieldRefInput<$PrismaModel>
-    not?: NestedEnumNormalBalanceFilter<$PrismaModel> | $Enums.NormalBalance
-  }
-
-  export type ChartOfAccountNullableScalarRelationFilter = {
-    is?: ChartOfAccountWhereInput | null
-    isNot?: ChartOfAccountWhereInput | null
-  }
-
-  export type ChartOfAccountListRelationFilter = {
-    every?: ChartOfAccountWhereInput
-    some?: ChartOfAccountWhereInput
-    none?: ChartOfAccountWhereInput
-  }
-
-  export type ChartOfAccountOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type ChartOfAccountCountOrderByAggregateInput = {
     id?: SortOrder
     accountCode?: SortOrder
@@ -56591,7 +56356,6 @@ export namespace Prisma {
     normalBalance?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type ChartOfAccountMaxOrderByAggregateInput = {
@@ -56603,7 +56367,6 @@ export namespace Prisma {
     normalBalance?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type ChartOfAccountMinOrderByAggregateInput = {
@@ -56615,27 +56378,6 @@ export namespace Prisma {
     normalBalance?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type EnumAccountTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AccountType | EnumAccountTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.AccountType[] | ListEnumAccountTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AccountType[] | ListEnumAccountTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAccountTypeWithAggregatesFilter<$PrismaModel> | $Enums.AccountType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAccountTypeFilter<$PrismaModel>
-    _max?: NestedEnumAccountTypeFilter<$PrismaModel>
-  }
-
-  export type EnumNormalBalanceWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.NormalBalance | EnumNormalBalanceFieldRefInput<$PrismaModel>
-    in?: $Enums.NormalBalance[] | ListEnumNormalBalanceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.NormalBalance[] | ListEnumNormalBalanceFieldRefInput<$PrismaModel>
-    not?: NestedEnumNormalBalanceWithAggregatesFilter<$PrismaModel> | $Enums.NormalBalance
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumNormalBalanceFilter<$PrismaModel>
-    _max?: NestedEnumNormalBalanceFilter<$PrismaModel>
   }
 
   export type TransactionMatrixTransactionTypeComponentCompoundUniqueInput = {
@@ -58884,72 +58626,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuditLogsInput, UserUpdateWithoutAuditLogsInput>, UserUncheckedUpdateWithoutAuditLogsInput>
   }
 
-  export type ChartOfAccountCreateNestedOneWithoutChildAccountsInput = {
-    create?: XOR<ChartOfAccountCreateWithoutChildAccountsInput, ChartOfAccountUncheckedCreateWithoutChildAccountsInput>
-    connectOrCreate?: ChartOfAccountCreateOrConnectWithoutChildAccountsInput
-    connect?: ChartOfAccountWhereUniqueInput
-  }
-
-  export type ChartOfAccountCreateNestedManyWithoutParentAccountInput = {
-    create?: XOR<ChartOfAccountCreateWithoutParentAccountInput, ChartOfAccountUncheckedCreateWithoutParentAccountInput> | ChartOfAccountCreateWithoutParentAccountInput[] | ChartOfAccountUncheckedCreateWithoutParentAccountInput[]
-    connectOrCreate?: ChartOfAccountCreateOrConnectWithoutParentAccountInput | ChartOfAccountCreateOrConnectWithoutParentAccountInput[]
-    createMany?: ChartOfAccountCreateManyParentAccountInputEnvelope
-    connect?: ChartOfAccountWhereUniqueInput | ChartOfAccountWhereUniqueInput[]
-  }
-
-  export type ChartOfAccountUncheckedCreateNestedManyWithoutParentAccountInput = {
-    create?: XOR<ChartOfAccountCreateWithoutParentAccountInput, ChartOfAccountUncheckedCreateWithoutParentAccountInput> | ChartOfAccountCreateWithoutParentAccountInput[] | ChartOfAccountUncheckedCreateWithoutParentAccountInput[]
-    connectOrCreate?: ChartOfAccountCreateOrConnectWithoutParentAccountInput | ChartOfAccountCreateOrConnectWithoutParentAccountInput[]
-    createMany?: ChartOfAccountCreateManyParentAccountInputEnvelope
-    connect?: ChartOfAccountWhereUniqueInput | ChartOfAccountWhereUniqueInput[]
-  }
-
-  export type EnumAccountTypeFieldUpdateOperationsInput = {
-    set?: $Enums.AccountType
-  }
-
-  export type EnumNormalBalanceFieldUpdateOperationsInput = {
-    set?: $Enums.NormalBalance
-  }
-
-  export type ChartOfAccountUpdateOneWithoutChildAccountsNestedInput = {
-    create?: XOR<ChartOfAccountCreateWithoutChildAccountsInput, ChartOfAccountUncheckedCreateWithoutChildAccountsInput>
-    connectOrCreate?: ChartOfAccountCreateOrConnectWithoutChildAccountsInput
-    upsert?: ChartOfAccountUpsertWithoutChildAccountsInput
-    disconnect?: ChartOfAccountWhereInput | boolean
-    delete?: ChartOfAccountWhereInput | boolean
-    connect?: ChartOfAccountWhereUniqueInput
-    update?: XOR<XOR<ChartOfAccountUpdateToOneWithWhereWithoutChildAccountsInput, ChartOfAccountUpdateWithoutChildAccountsInput>, ChartOfAccountUncheckedUpdateWithoutChildAccountsInput>
-  }
-
-  export type ChartOfAccountUpdateManyWithoutParentAccountNestedInput = {
-    create?: XOR<ChartOfAccountCreateWithoutParentAccountInput, ChartOfAccountUncheckedCreateWithoutParentAccountInput> | ChartOfAccountCreateWithoutParentAccountInput[] | ChartOfAccountUncheckedCreateWithoutParentAccountInput[]
-    connectOrCreate?: ChartOfAccountCreateOrConnectWithoutParentAccountInput | ChartOfAccountCreateOrConnectWithoutParentAccountInput[]
-    upsert?: ChartOfAccountUpsertWithWhereUniqueWithoutParentAccountInput | ChartOfAccountUpsertWithWhereUniqueWithoutParentAccountInput[]
-    createMany?: ChartOfAccountCreateManyParentAccountInputEnvelope
-    set?: ChartOfAccountWhereUniqueInput | ChartOfAccountWhereUniqueInput[]
-    disconnect?: ChartOfAccountWhereUniqueInput | ChartOfAccountWhereUniqueInput[]
-    delete?: ChartOfAccountWhereUniqueInput | ChartOfAccountWhereUniqueInput[]
-    connect?: ChartOfAccountWhereUniqueInput | ChartOfAccountWhereUniqueInput[]
-    update?: ChartOfAccountUpdateWithWhereUniqueWithoutParentAccountInput | ChartOfAccountUpdateWithWhereUniqueWithoutParentAccountInput[]
-    updateMany?: ChartOfAccountUpdateManyWithWhereWithoutParentAccountInput | ChartOfAccountUpdateManyWithWhereWithoutParentAccountInput[]
-    deleteMany?: ChartOfAccountScalarWhereInput | ChartOfAccountScalarWhereInput[]
-  }
-
-  export type ChartOfAccountUncheckedUpdateManyWithoutParentAccountNestedInput = {
-    create?: XOR<ChartOfAccountCreateWithoutParentAccountInput, ChartOfAccountUncheckedCreateWithoutParentAccountInput> | ChartOfAccountCreateWithoutParentAccountInput[] | ChartOfAccountUncheckedCreateWithoutParentAccountInput[]
-    connectOrCreate?: ChartOfAccountCreateOrConnectWithoutParentAccountInput | ChartOfAccountCreateOrConnectWithoutParentAccountInput[]
-    upsert?: ChartOfAccountUpsertWithWhereUniqueWithoutParentAccountInput | ChartOfAccountUpsertWithWhereUniqueWithoutParentAccountInput[]
-    createMany?: ChartOfAccountCreateManyParentAccountInputEnvelope
-    set?: ChartOfAccountWhereUniqueInput | ChartOfAccountWhereUniqueInput[]
-    disconnect?: ChartOfAccountWhereUniqueInput | ChartOfAccountWhereUniqueInput[]
-    delete?: ChartOfAccountWhereUniqueInput | ChartOfAccountWhereUniqueInput[]
-    connect?: ChartOfAccountWhereUniqueInput | ChartOfAccountWhereUniqueInput[]
-    update?: ChartOfAccountUpdateWithWhereUniqueWithoutParentAccountInput | ChartOfAccountUpdateWithWhereUniqueWithoutParentAccountInput[]
-    updateMany?: ChartOfAccountUpdateManyWithWhereWithoutParentAccountInput | ChartOfAccountUpdateManyWithWhereWithoutParentAccountInput[]
-    deleteMany?: ChartOfAccountScalarWhereInput | ChartOfAccountScalarWhereInput[]
-  }
-
   export type UserCreateNestedOneWithoutSessionsInput = {
     create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
@@ -59675,40 +59351,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type NestedEnumAccountTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.AccountType | EnumAccountTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.AccountType[] | ListEnumAccountTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AccountType[] | ListEnumAccountTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAccountTypeFilter<$PrismaModel> | $Enums.AccountType
-  }
-
-  export type NestedEnumNormalBalanceFilter<$PrismaModel = never> = {
-    equals?: $Enums.NormalBalance | EnumNormalBalanceFieldRefInput<$PrismaModel>
-    in?: $Enums.NormalBalance[] | ListEnumNormalBalanceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.NormalBalance[] | ListEnumNormalBalanceFieldRefInput<$PrismaModel>
-    not?: NestedEnumNormalBalanceFilter<$PrismaModel> | $Enums.NormalBalance
-  }
-
-  export type NestedEnumAccountTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AccountType | EnumAccountTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.AccountType[] | ListEnumAccountTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AccountType[] | ListEnumAccountTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAccountTypeWithAggregatesFilter<$PrismaModel> | $Enums.AccountType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAccountTypeFilter<$PrismaModel>
-    _max?: NestedEnumAccountTypeFilter<$PrismaModel>
-  }
-
-  export type NestedEnumNormalBalanceWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.NormalBalance | EnumNormalBalanceFieldRefInput<$PrismaModel>
-    in?: $Enums.NormalBalance[] | ListEnumNormalBalanceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.NormalBalance[] | ListEnumNormalBalanceFieldRefInput<$PrismaModel>
-    not?: NestedEnumNormalBalanceWithAggregatesFilter<$PrismaModel> | $Enums.NormalBalance
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumNormalBalanceFilter<$PrismaModel>
-    _max?: NestedEnumNormalBalanceFilter<$PrismaModel>
   }
 
   export type SessionCreateWithoutUserInput = {
@@ -66024,135 +65666,6 @@ export namespace Prisma {
     recoveryAgent?: RecoveryAgentUncheckedUpdateOneWithoutUserNestedInput
   }
 
-  export type ChartOfAccountCreateWithoutChildAccountsInput = {
-    id?: string
-    accountCode: string
-    accountName: string
-    accountType: $Enums.AccountType
-    normalBalance: $Enums.NormalBalance
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    parentAccount?: ChartOfAccountCreateNestedOneWithoutChildAccountsInput
-  }
-
-  export type ChartOfAccountUncheckedCreateWithoutChildAccountsInput = {
-    id?: string
-    accountCode: string
-    accountName: string
-    accountType: $Enums.AccountType
-    parentAccountId?: string | null
-    normalBalance: $Enums.NormalBalance
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ChartOfAccountCreateOrConnectWithoutChildAccountsInput = {
-    where: ChartOfAccountWhereUniqueInput
-    create: XOR<ChartOfAccountCreateWithoutChildAccountsInput, ChartOfAccountUncheckedCreateWithoutChildAccountsInput>
-  }
-
-  export type ChartOfAccountCreateWithoutParentAccountInput = {
-    id?: string
-    accountCode: string
-    accountName: string
-    accountType: $Enums.AccountType
-    normalBalance: $Enums.NormalBalance
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    childAccounts?: ChartOfAccountCreateNestedManyWithoutParentAccountInput
-  }
-
-  export type ChartOfAccountUncheckedCreateWithoutParentAccountInput = {
-    id?: string
-    accountCode: string
-    accountName: string
-    accountType: $Enums.AccountType
-    normalBalance: $Enums.NormalBalance
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    childAccounts?: ChartOfAccountUncheckedCreateNestedManyWithoutParentAccountInput
-  }
-
-  export type ChartOfAccountCreateOrConnectWithoutParentAccountInput = {
-    where: ChartOfAccountWhereUniqueInput
-    create: XOR<ChartOfAccountCreateWithoutParentAccountInput, ChartOfAccountUncheckedCreateWithoutParentAccountInput>
-  }
-
-  export type ChartOfAccountCreateManyParentAccountInputEnvelope = {
-    data: ChartOfAccountCreateManyParentAccountInput | ChartOfAccountCreateManyParentAccountInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ChartOfAccountUpsertWithoutChildAccountsInput = {
-    update: XOR<ChartOfAccountUpdateWithoutChildAccountsInput, ChartOfAccountUncheckedUpdateWithoutChildAccountsInput>
-    create: XOR<ChartOfAccountCreateWithoutChildAccountsInput, ChartOfAccountUncheckedCreateWithoutChildAccountsInput>
-    where?: ChartOfAccountWhereInput
-  }
-
-  export type ChartOfAccountUpdateToOneWithWhereWithoutChildAccountsInput = {
-    where?: ChartOfAccountWhereInput
-    data: XOR<ChartOfAccountUpdateWithoutChildAccountsInput, ChartOfAccountUncheckedUpdateWithoutChildAccountsInput>
-  }
-
-  export type ChartOfAccountUpdateWithoutChildAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountCode?: StringFieldUpdateOperationsInput | string
-    accountName?: StringFieldUpdateOperationsInput | string
-    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
-    normalBalance?: EnumNormalBalanceFieldUpdateOperationsInput | $Enums.NormalBalance
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentAccount?: ChartOfAccountUpdateOneWithoutChildAccountsNestedInput
-  }
-
-  export type ChartOfAccountUncheckedUpdateWithoutChildAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountCode?: StringFieldUpdateOperationsInput | string
-    accountName?: StringFieldUpdateOperationsInput | string
-    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
-    parentAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    normalBalance?: EnumNormalBalanceFieldUpdateOperationsInput | $Enums.NormalBalance
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ChartOfAccountUpsertWithWhereUniqueWithoutParentAccountInput = {
-    where: ChartOfAccountWhereUniqueInput
-    update: XOR<ChartOfAccountUpdateWithoutParentAccountInput, ChartOfAccountUncheckedUpdateWithoutParentAccountInput>
-    create: XOR<ChartOfAccountCreateWithoutParentAccountInput, ChartOfAccountUncheckedCreateWithoutParentAccountInput>
-  }
-
-  export type ChartOfAccountUpdateWithWhereUniqueWithoutParentAccountInput = {
-    where: ChartOfAccountWhereUniqueInput
-    data: XOR<ChartOfAccountUpdateWithoutParentAccountInput, ChartOfAccountUncheckedUpdateWithoutParentAccountInput>
-  }
-
-  export type ChartOfAccountUpdateManyWithWhereWithoutParentAccountInput = {
-    where: ChartOfAccountScalarWhereInput
-    data: XOR<ChartOfAccountUpdateManyMutationInput, ChartOfAccountUncheckedUpdateManyWithoutParentAccountInput>
-  }
-
-  export type ChartOfAccountScalarWhereInput = {
-    AND?: ChartOfAccountScalarWhereInput | ChartOfAccountScalarWhereInput[]
-    OR?: ChartOfAccountScalarWhereInput[]
-    NOT?: ChartOfAccountScalarWhereInput | ChartOfAccountScalarWhereInput[]
-    id?: StringFilter<"ChartOfAccount"> | string
-    accountCode?: StringFilter<"ChartOfAccount"> | string
-    accountName?: StringFilter<"ChartOfAccount"> | string
-    accountType?: EnumAccountTypeFilter<"ChartOfAccount"> | $Enums.AccountType
-    parentAccountId?: StringNullableFilter<"ChartOfAccount"> | string | null
-    normalBalance?: EnumNormalBalanceFilter<"ChartOfAccount"> | $Enums.NormalBalance
-    isActive?: BoolFilter<"ChartOfAccount"> | boolean
-    createdAt?: DateTimeFilter<"ChartOfAccount"> | Date | string
-    updatedAt?: DateTimeFilter<"ChartOfAccount"> | Date | string
-  }
-
   export type UserCreateWithoutSessionsInput = {
     id?: string
     email: string
@@ -67859,52 +67372,6 @@ export namespace Prisma {
     payoutDate?: DateTimeFieldUpdateOperationsInput | Date | string
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ChartOfAccountCreateManyParentAccountInput = {
-    id?: string
-    accountCode: string
-    accountName: string
-    accountType: $Enums.AccountType
-    normalBalance: $Enums.NormalBalance
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ChartOfAccountUpdateWithoutParentAccountInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountCode?: StringFieldUpdateOperationsInput | string
-    accountName?: StringFieldUpdateOperationsInput | string
-    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
-    normalBalance?: EnumNormalBalanceFieldUpdateOperationsInput | $Enums.NormalBalance
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    childAccounts?: ChartOfAccountUpdateManyWithoutParentAccountNestedInput
-  }
-
-  export type ChartOfAccountUncheckedUpdateWithoutParentAccountInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountCode?: StringFieldUpdateOperationsInput | string
-    accountName?: StringFieldUpdateOperationsInput | string
-    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
-    normalBalance?: EnumNormalBalanceFieldUpdateOperationsInput | $Enums.NormalBalance
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    childAccounts?: ChartOfAccountUncheckedUpdateManyWithoutParentAccountNestedInput
-  }
-
-  export type ChartOfAccountUncheckedUpdateManyWithoutParentAccountInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountCode?: StringFieldUpdateOperationsInput | string
-    accountName?: StringFieldUpdateOperationsInput | string
-    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
-    normalBalance?: EnumNormalBalanceFieldUpdateOperationsInput | $Enums.NormalBalance
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
