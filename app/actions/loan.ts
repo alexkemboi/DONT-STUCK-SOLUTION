@@ -44,6 +44,7 @@ export async function submitLoanApplicationAction(data: LoanApplicationSubmitDat
       purpose: data.purpose,
       amountRequested: data.amountRequested,
       repaymentPeriod: data.repaymentPeriod,
+      paymentFrequency: data.paymentFrequency,
     });
 
     if (!loanResult.success || !loanResult.data) {
@@ -131,6 +132,14 @@ export async function getClientForApplyAction() {
             id: true,
             surname: true,
             otherNames: true,
+            phoneMobile: true,
+            idPassportNo: true,
+            _count: {
+              select: {
+                employmentDetails: true,
+                addresses: true,
+              },
+            },
           },
         },
       },
@@ -140,7 +149,22 @@ export async function getClientForApplyAction() {
       return { success: false, error: "Client profile not found" };
     }
 
-    return { success: true, data: user.client };
+    const { _count, ...clientData } = user.client;
+
+    const missingFields: string[] = [];
+    if (!clientData.phoneMobile) missingFields.push("Mobile phone number");
+    if (!clientData.idPassportNo) missingFields.push("ID / Passport number");
+    if (_count.employmentDetails === 0) missingFields.push("Employment details");
+    if (_count.addresses === 0) missingFields.push("Address information");
+
+    const profileComplete = missingFields.length === 0;
+
+    return {
+      success: true,
+      data: { id: clientData.id, surname: clientData.surname, otherNames: clientData.otherNames },
+      profileComplete,
+      missingFields,
+    };
   } catch (error) {
     return { success: false, error: (error as Error).message };
   }
