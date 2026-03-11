@@ -792,12 +792,12 @@ enum ChargeType {
 enum TransactionType {
   Disbursement
   Repayment
-  Fee
+  Provision
   Penalty
   Expense
   Recovery
+  Invest
 }
-
 enum ReferenceType {
   Loan
   Client
@@ -872,3 +872,8 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
+
+
+
+
+

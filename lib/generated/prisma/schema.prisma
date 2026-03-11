@@ -792,10 +792,11 @@ enum ChargeType {
 enum TransactionType {
   Disbursement
   Repayment
-  Fee
+  Provision
   Penalty
   Expense
   Recovery
+  Invest
 }
 
 enum ReferenceType {

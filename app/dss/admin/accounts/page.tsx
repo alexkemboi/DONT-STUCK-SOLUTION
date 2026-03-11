@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AccountsDashboard, Balance } from "@/components/admin/accounts/accounts-dashboard";
+
 import AccountsTabs from "@/components/admin/accounts/accountstab";
+import {AccountsDashboard} from "@/components/admin/accounts/accounts-dashboard";
+import { Balance } from "@/components/admin/accounts/accounts-table";
 
 type Account = {
   gl_account_id: string;
@@ -96,11 +98,10 @@ export default function AccountsPage() {
       <h1 className="text-2xl font-bold text-slate-900">Accounts</h1>
       <p className="text-slate-500">Manage chart of accounts, transactions, and balances.</p>
 
-      <AccountsDashboard balances={balances} />
+      <AccountsDashboard />
       <AccountsTabs
         formattedAccounts={formattedAccounts}
-        balances={balances}
-        transactionss={mockTransactions}
+        balances={balances}       
       />
     </div>
   );

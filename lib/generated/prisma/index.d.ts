@@ -336,10 +336,11 @@ export type ChargeType = (typeof ChargeType)[keyof typeof ChargeType]
 export const TransactionType: {
   Disbursement: 'Disbursement',
   Repayment: 'Repayment',
-  Fee: 'Fee',
+  Provision: 'Provision',
   Penalty: 'Penalty',
   Expense: 'Expense',
-  Recovery: 'Recovery'
+  Recovery: 'Recovery',
+  Invest: 'Invest'
 };
 
 export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
