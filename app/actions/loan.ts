@@ -415,6 +415,8 @@ export async function disburseLoanAction(loanId: string) {
         console.error("Failed to generate repayment schedule:", scheduleResult.error);
       }
 
+      
+
       await prisma.auditLog.create({
         data: {
           userId: session.user.id as string,

@@ -9,7 +9,7 @@ import { prisma } from "./lib/prisma";
 const publicroutes = ["/"];
 
 
-const authRoutes = ["/login", "/register"]
+const authRoutes = ["/login", "/register", "/reset-password", "/forgot-password"];
 
 
 const apiAuthPrefix = "/api/auth";

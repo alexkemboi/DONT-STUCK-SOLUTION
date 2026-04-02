@@ -70,6 +70,7 @@ model Client {
   @@index([createdAt])
   @@index([kraPin])
   @@map("clients")
+  transactions Transaction[] @relation(name: "TransactionClient")
 }
 
 model ClientAddress {
@@ -377,7 +378,9 @@ model Transaction {
   createdBy       String?           @map("created_by")
   createdAt       DateTime          @default(now()) @map("created_at")
   invoicePayments InvoicePayment[]
-
+  client          Client?           @relation(fields: [clientId], references: [id], onDelete: Cascade, name: "TransactionClient", map: "transaction_client")
+  clientId        String?           @map("client_id")
+  
   @@index([transactionType])
   @@index([referenceType])
   @@index([referenceId])

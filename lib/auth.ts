@@ -3,6 +3,7 @@ import { nextCookies } from "better-auth/next-js";
 import prisma from "./prisma";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { customSession } from "better-auth/plugins";
+import { sendResetPasswordEmail } from "@/app/actions/email";
 
 
 export const auth = betterAuth({
@@ -11,6 +12,16 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true,
+        minPasswordLength: 8,
+        maxPasswordLength: 20,
+        requireEmailVerification: false,
+        sendResetPassword: async ({ user, url }) => {
+            await sendResetPasswordEmail({
+                userEmail: user.email,
+                userName: user.email, // Assuming user.email can be used as userName
+                resetLink: url,
+            });
+        },
     },
     user:{
         additionalFields:{
