@@ -1,131 +1,108 @@
-import {
-  getChartOfAccountsAction,
-  getTransactionsAction,
-  getAccountBalancesAction,
-} from "@/app/actions/accounts";
+"use client";
 
-import { Transaction, TransactionsTable } from "@/components/admin/accounts/transactions-table";
-import { Account } from "@/components/admin/accounts/accounts-table";
-import { AccountsDashboard, Balance } from "@/components/admin/accounts/accounts-dashboard";
+import { useEffect, useState } from "react";
+
 import AccountsTabs from "@/components/admin/accounts/accountstab";
-export default async function AccountsPage() {
+import {AccountsDashboard} from "@/components/admin/accounts/accounts-dashboard";
+import { Balance } from "@/components/admin/accounts/accounts-table";
 
-  const [accountsRes, txRes, balancesRes] = await Promise.all([
-    getChartOfAccountsAction(),
-    getTransactionsAction(),
-    getAccountBalancesAction(),
-  ]);
+type Account = {
+  gl_account_id: string;
+  account_code: string;
+  account_name: string;
+  account_type: string;
+  normal_balance: string;
+};
 
-  const accounts = accountsRes.data || [];
-  const transactions = txRes.data || [];
-  const rawBalances = balancesRes.data;
+export type Transaction = {
+  transaction_id: string;        // Unique ID for the transaction
+  transaction_date: string;      // ISO date string
+  transaction_code: string;      // Transaction code
+  transaction_type: string;      // e.g., Payment, Invoice, Refund
+  debit_account: string;         // Name of debit account
+  credit_account: string;        // Name of credit account
+  amount: number;                // Transaction amount
+  status: string;                // e.g., Completed, Pending
+};
 
+export default function AccountsPage() {
+  const [formattedAccounts, setFormattedAccounts] = useState<Account[]>([]);
+  const [loading, setLoading] = useState(true);
 
-
-  
-
-const balances: Balance[] = Array.isArray(rawBalances)
-  ? rawBalances.map((b: any) => ({
-      gl_account_id: b.gl_account_id || b.id || "", // make sure to provide an id
-      account_type: b.account_type,
-      balance: b.balance,
-    }))
-  : [];
-
-//   const formattedAccounts: Account[] = accounts.map(acc => ({
-//   gl_account_id: acc.id,
-//   account_code: acc.accountCode,
-//   account_name: acc.accountName,
-//   account_type: acc.accountType,
-//   normal_balance: acc.normalBalance,
-// }));
-
-
-// --- Mock Accounts ---
-const formattedAccounts: Account[] = [
+  const mockTransactions: Transaction[] = [
   {
-    gl_account_id: "1",
-    account_code: "1001",
-    account_name: "Cash",
-    account_type: "Asset",
-    normal_balance: "Debit",
+    transaction_id: "t1",
+    transaction_date: new Date().toISOString(),
+    transaction_code: "TRX-001",
+    transaction_type: "Payment",
+    debit_account: "Cash",
+    credit_account: "Revenue",
+    amount: 5000,
+    status: "Completed",
   },
   {
-    gl_account_id: "2",
-    account_code: "1002",
-    account_name: "Bank",
-    account_type: "Asset",
-    normal_balance: "Debit",
+    transaction_id: "t2",
+    transaction_date: new Date().toISOString(),
+    transaction_code: "TRX-002",
+    transaction_type: "Invoice",
+    debit_account: "Accounts Receivable",
+    credit_account: "Revenue",
+    amount: 1200,
+    status: "Pending",
   },
   {
-    gl_account_id: "3",
-    account_code: "2001",
-    account_name: "Accounts Payable",
-    account_type: "Liability",
-    normal_balance: "Credit",
-  },
-  {
-    gl_account_id: "4",
-    account_code: "3001",
-    account_name: "Equity",
-    account_type: "Liability",
-    normal_balance: "Credit",
+    transaction_id: "t3",
+    transaction_date: new Date().toISOString(),
+    transaction_code: "TRX-003",
+    transaction_type: "Refund",
+    debit_account: "Revenue",
+    credit_account: "Cash",
+    amount: 800,
+    status: "Completed",
   },
 ];
 
+  useEffect(() => {
+    async function fetchAccounts() {
+      try {
+        const res = await fetch("/api/auth/chart-of-accounts");
+        if (!res.ok) throw new Error("Failed to fetch accounts");
 
-// const transactionss: Transaction[] = Array.isArray(transactions)
-//   ? transactions.map((tx: any) => ({
-//       transaction_id: tx.id,
-//       transaction_date: tx.createdAt.toISOString(), // or tx.transactionDate if exists
-//       transaction_code: tx.transactionCode,
-//       transaction_type: tx.transactionType,
-//       debit_account: tx.debitAccount,
-//       credit_account: tx.creditAccount,
-//       amount: tx.amount,
-//       status: tx.status,
-//     }))
-//   : [
-//       // fallback mock data
-//       {
-//         transaction_id: "t1",
-//         transaction_date: new Date().toISOString(),
-//         transaction_code: "TRX-001",
-//         transaction_type: "Payment",
-//         debit_account: "Cash",
-//         credit_account: "Revenue",
-//         amount: 5000,
-//         status: "Completed",
-//       },
-//     ];
+        const data = await res.json();
+        const accounts = data.map((acc: any) => ({
+          gl_account_id: acc.id,
+          account_code: acc.accountCode,
+          account_name: acc.accountName,
+          account_type: acc.accountType,
+          normal_balance: acc.normalBalance,
+        }));
 
+        setFormattedAccounts(accounts);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-const transactionss: Transaction[] =
- [
-      // fallback mock data
-      {
-        transaction_id: "t1",
-        transaction_date: new Date().toISOString(),
-        transaction_code: "TRX-001",
-        transaction_type: "Payment",
-        debit_account: "Cash",
-        credit_account: "Revenue",
-        amount: 5000,
-        status: "Completed",
-      },
-    ];
+    fetchAccounts();
+  }, []);
+
+  const balances: Balance[] = []; // mock for now
+  const transactionss: any[] = []; // mock for now
+
+  if (loading) return <p>Loading accounts...</p>;
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Accounts</h1>
-        <p className="text-slate-500">
-          Manage chart of accounts, transactions, and balances.
-        </p>
-      </div>
+      <h1 className="text-2xl font-bold text-slate-900">Accounts</h1>
+      <p className="text-slate-500">Manage chart of accounts, transactions, and balances.</p>
 
-      <AccountsDashboard balances={balances} />
-      <AccountsTabs formattedAccounts={formattedAccounts} balances={balances} transactionss={transactionss}/>
+      <AccountsDashboard />
+      <AccountsTabs
+        formattedAccounts={formattedAccounts}
+        balances={balances}       
+      />
     </div>
   );
 }

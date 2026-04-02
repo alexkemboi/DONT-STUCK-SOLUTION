@@ -2,6 +2,10 @@
 import { formatCurrency } from "@/lib/utils";
 import { MoreVertical, Trash2, Edit, Eye } from "lucide-react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
+
+import { useState } from "react";
+
+
 // Define the types
 export type Balance = {
   gl_account_id: string;
@@ -22,14 +26,80 @@ type AccountsTableProps = {
 };
 
 export default function AccountsTable({ accounts, balances }: AccountsTableProps) {
+
   const balanceMap = Object.fromEntries(
     balances.map(b => [b.gl_account_id, b.balance])
   );
 
- // optional for dropdown
+  const parentAccounts = accounts.map(acc => ({
+    id: acc.gl_account_id,
+    accountName: acc.account_name
+  }));
 
+const [openModal, setOpenModal] = useState(false);
+ // optional for dropdown
+const [formData, setFormData] = useState({
+  account_code: "",
+  account_name: "",
+  account_type: "",
+  parent_account_id: "",
+  normal_balance: "",
+  opening_balance: 0,
+  is_active: true
+});
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+    }));
+  };
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+
+    const res = await fetch("/api/auth/chart-of-accounts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) throw new Error("Failed to save")
+      else{
+    
+    alert("Account created successfully");
+
+    setOpenModal(false);
+     
+      };
+
+
+  } catch (error) {
+    console.error(error);
+    alert("Error creating account");
+  }
+};
 return (
   <div className="overflow-x-auto rounded-lg border bg-white shadow-md">
+      {/* Top Bar */}
+  <div className="flex justify-between items-center p-5">
+    <h2 className="text-lg font-semibold text-gray-800">
+      Chart of Accounts
+    </h2>
+
+    <button
+      onClick={() => setOpenModal(true)}
+      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium shadow"
+    >
+      + Add Account
+    </button>
+  </div>
     <table className="min-w-full divide-y divide-gray-200 text-sm">
       <thead className="bg-gray-100">
         <tr>
@@ -55,14 +125,17 @@ return (
       </thead>
       <tbody className="divide-y divide-gray-100">
         {accounts.map(acc => (
-         <tr key={acc.gl_account_id} className="hover:bg-gray-50 transition-colors duration-150 group">
-  <td className="px-6 py-4 font-medium text-gray-800">{acc.account_code}</td>
-  <td className="px-6 py-4 text-gray-700">{acc.account_name}</td>
-  <td className="px-6 py-4 text-gray-700">{acc.account_type}</td>
-  <td className="px-6 py-4 text-gray-700">{acc.normal_balance}</td>
-  <td className="px-6 py-4 text-right font-semibold text-gray-900">
-    {formatCurrency(balanceMap[acc.gl_account_id] || 0)}
-  </td>
+      <tr
+      key={acc.gl_account_id}
+      className="hover:bg-gray-50 transition-colors duration-150 group"
+    >
+      <td className="px-6 py-4 font-medium text-gray-800">{acc.account_code}</td>
+      <td className="px-6 py-4 text-gray-700">{acc.account_name}</td>
+      <td className="px-6 py-4 text-gray-700">{acc.account_type}</td>
+      <td className="px-6 py-4 text-gray-700">{acc.normal_balance}</td>
+      <td className="px-6 py-4 text-right font-semibold text-gray-900">
+        {formatCurrency(balanceMap[acc.gl_account_id] || 0)}
+      </td>
 
   {/* Action column */}
   <td className="px-6 py-4 text-right flex items-center justify-end space-x-2  group-hover:opacity-100 transition-opacity duration-200">
@@ -112,6 +185,170 @@ return (
         ))}
       </tbody>
     </table>
+    {openModal && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+    
+    <div className="bg-white rounded-lg shadow-lg w-[420px] p-6">
+
+      <h2 className="text-lg font-semibold mb-4">
+        Add New Account
+      </h2>
+
+       <form onSubmit={handleSubmit} className="space-y-4">
+
+{/* Account Code */}
+<div>
+<label className="block text-sm font-medium text-gray-700">
+Account Code
+</label>
+<input
+name="account_code"
+value={formData.account_code}
+onChange={handleChange}
+className="w-full border rounded px-3 py-2 text-sm"
+placeholder="e.g 1101"
+required
+/>
+</div>
+
+{/* Account Name */}
+<div>
+<label className="block text-sm font-medium text-gray-700">
+Account Name
+</label>
+<input
+name="account_name"
+value={formData.account_name}
+onChange={handleChange}
+className="w-full border rounded px-3 py-2 text-sm"
+placeholder="Cash at Bank"
+required
+/>
+</div>
+
+{/* Account Type */}
+<div>
+<label className="block text-sm font-medium text-gray-700">
+Account Type
+</label>
+<select
+name="account_type"
+value={formData.account_type}
+onChange={handleChange}
+className="w-full border rounded px-3 py-2 text-sm"
+required
+>
+<option value="">Select Type</option>
+<option value="ASSET">Asset</option>
+<option value="LIABILITY">Liability</option>
+<option value="EQUITY">Equity</option>
+<option value="INCOME">Income</option>
+<option value="EXPENSE">Expense</option>
+</select>
+</div>
+
+{/* Parent Account */}
+<div>
+<label className="block text-sm font-medium text-gray-700">
+Parent Account
+</label>
+
+<select
+name="parent_account_id"
+value={formData.parent_account_id}
+onChange={handleChange}
+className="w-full border rounded px-3 py-2 text-sm"
+>
+<option value="">None</option>
+
+{accounts.map(acc => (
+<option key={acc.gl_account_id} value={acc.gl_account_id}>
+{acc.account_code} - {acc.account_name}
+</option>
+))}
+
+</select>
+</div>
+
+{/* Normal Balance */}
+<div>
+<label className="block text-sm font-medium text-gray-700">
+Normal Balance
+</label>
+
+<select
+name="normal_balance"
+value={formData.normal_balance}
+onChange={handleChange}
+className="w-full border rounded px-3 py-2 text-sm"
+required
+>
+<option value="">Select</option>
+<option value="DEBIT">Debit</option>
+<option value="CREDIT">Credit</option>
+</select>
+
+</div>
+
+{/* Opening Balance */}
+<div>
+<label className="block text-sm font-medium text-gray-700">
+Opening Balance
+</label>
+
+<input
+type="number"
+step="0.01"
+name="opening_balance"
+value={formData.opening_balance}
+onChange={handleChange}
+className="w-full border rounded px-3 py-2 text-sm"
+placeholder="0.00"
+/>
+
+</div>
+
+{/* Active */}
+<div className="flex items-center gap-2">
+
+<input
+type="checkbox"
+name="is_active"
+checked={formData.is_active}
+onChange={handleChange}
+/>
+
+<label className="text-sm text-gray-700">
+Active Account
+</label>
+
+</div>
+
+{/* Buttons */}
+<div className="flex justify-end gap-2 pt-3">
+
+<button
+type="button"
+onClick={() => setOpenModal(false)}
+className="px-4 py-2 border rounded text-sm"
+>
+Cancel
+</button>
+
+<button
+type="submit"
+className="bg-blue-600 text-white px-4 py-2 rounded text-sm"
+>
+Save Account
+</button>
+
+</div>
+
+</form>
+
+    </div>
+  </div>
+)}
   </div>
 );
 
