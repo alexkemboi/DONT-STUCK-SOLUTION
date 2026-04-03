@@ -61,6 +61,7 @@ model Client {
   invoices          Invoice[]
   loanApplications  LoanApplication[]
   referees          Referee[]
+  transactions      Transaction[]      @relation(name: "TransactionClient")
 
   @@index([status])
   @@index([phoneMobile])
@@ -376,6 +377,8 @@ model Transaction {
   createdBy       String?           @map("created_by")
   createdAt       DateTime          @default(now()) @map("created_at")
   invoicePayments InvoicePayment[]
+  client          Client?           @relation(fields: [clientId], references: [id], onDelete: Cascade, name: "TransactionClient", map: "transaction_client")
+  clientId        String?           @map("client_id")
 
   @@index([transactionType])
   @@index([referenceType])
