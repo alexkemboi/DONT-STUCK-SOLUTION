@@ -15,7 +15,7 @@ export function ForgotPasswordForm() {
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
-
+  const baseUrl =   process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
   const resetState = () => {
     setSuccess(null);
     setError(null);
@@ -29,35 +29,65 @@ export function ForgotPasswordForm() {
         resetState();
         setLoading(true);
         try {
-          await authClient.requestPasswordReset({
-            email: values.email,
-            redirectTo: "/reset-password",
-          }, {
-            onResponse: () => {
-              setLoading(false);
-              setSubmitting(false);
-            },
-            onRequest: () => {
-              resetState();
-              setLoading(true);
-            },
-            onSuccess: () => {
-              setSuccess("Reset password link has been sent to your email.");
+          // await authClient.requestPasswordReset({
+          //   email: values.email,
+          //   redirectTo: "/reset-password",
+          // }, {
+          //   onResponse: () => {
+          //     setLoading(false);
+          //     setSubmitting(false);
+          //   },
+          //   onRequest: () => {
+          //     resetState();
+          //     setLoading(true);
+          //   },
+          //   onSuccess: () => {
+          //     setSuccess("Reset password link has been sent to your email.");
+          //     toast({
+          //       title: "Success",
+          //       description: "Reset password link has been sent to your email.",
+          //       variant: "default",
+          //     });
+          //   },
+          //   onError: (ctx) => {
+          //     setError(ctx.error.message);
+          //     toast({
+          //       title: "Error",
+          //       description: ctx.error.message,
+          //       variant: "destructive",
+          //     });
+          //   },
+          // });
+
+
+       
+const response = await fetch(`${baseUrl}/api/auth/sendemail`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    recipientEmail: values.email,
+    message: `${baseUrl}/reset-password`,
+  }),
+});
+
+    if (response.ok) {
+         setSuccess("Reset password link has been sent to your email.");
               toast({
                 title: "Success",
                 description: "Reset password link has been sent to your email.",
                 variant: "default",
               });
-            },
-            onError: (ctx) => {
-              setError(ctx.error.message);
+    } else {
+      setError('Reset password link has not been sent to your email.');
               toast({
                 title: "Error",
-                description: ctx.error.message,
+                description: 'Reset password link has not been sent to your email.',
                 variant: "destructive",
               });
-            },
-          });
+    }
+
         } catch (err: any) {
           setError(err.message);
           toast({

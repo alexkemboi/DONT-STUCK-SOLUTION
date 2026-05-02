@@ -108,7 +108,7 @@ export async function updateClient(id: string, data: UpdateClientInput): Promise
 
 export async function getAll(params?: ClientSearchParams): Promise<ServiceResult<{ clients: Client[]; total: number }>> {
   try {
-    const { skip = 0, take = 10, search, status } = params || {};
+    const { skip = 0, take = 1000, search, status } = params || {};
     const where: Prisma.ClientWhereInput = {};
 
     if (search) {

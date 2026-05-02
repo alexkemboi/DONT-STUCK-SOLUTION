@@ -17,7 +17,7 @@ export default async function ClientsPage({
   const search = (await searchParams)?.search || "";
   const status = (await searchParams)?.status;
   const page = Number((await searchParams)?.page) || 1;
-  const limit = Number((await searchParams)?.limit) || 10;
+  const limit = Number((await searchParams)?.limit) || 1000;
   const skip = (page - 1) * limit;
 
   const { data, error } = await getClients({
