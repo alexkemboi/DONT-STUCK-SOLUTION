@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getAdminDashboardData } from "@/app/actions/dashboard";
 import {
   Users,
@@ -16,7 +17,6 @@ import { RecentActivityList } from "@/components/admin/dashboard/recent-activity
 import { LoanStatusChart } from "@/components/admin/dashboard/loan-status-chart";
 import { DisbursementChart } from "@/components/admin/dashboard/disbursement-chart";
 import { formatCurrency } from "@/lib/utils";
-
 export default async function DashboardPage() {
   const result = await getAdminDashboardData();
 

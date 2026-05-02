@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getClientAddressAction, getClientByUserId, getLatestEmploymentAction, getRefereesAction } from '@/app/actions/client'
 import { ProfileClient } from '@/components/client/profile/profile-client'
 

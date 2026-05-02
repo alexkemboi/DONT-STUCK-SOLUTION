@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getClients } from "@/app/actions/admin";
 import { ClientsTable } from "@/components/admin/clients/clients-table";
 import { Card, CardContent } from "@/components/ui/card";
