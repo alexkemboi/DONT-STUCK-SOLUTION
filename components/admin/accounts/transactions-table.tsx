@@ -165,8 +165,7 @@ export default function TransactionsPage() {
     e.preventDefault();
 
     if (
-      !formData.transaction_type ||
-      !formData.reference_type ||
+      !formData.transaction_type ||      
       !formData.debit_account ||
       !formData.credit_account ||
       !formData.payment_method
@@ -178,8 +177,8 @@ export default function TransactionsPage() {
     const newTransaction = {
       transaction_code: formData.transaction_code,
       transaction_type: formData.transaction_type,
-      reference_type: formData.reference_type,
-      reference_id: formData.reference_id || '',
+      reference_type: 'Loan',
+      reference_id:  'DSS',
       debit_account: formData.debit_account,
       credit_account: formData.credit_account,
       amount: Number(formData.amount),
@@ -276,7 +275,7 @@ const transactionTypes = ["Disbursement", "Repayment", "Provision", "Penalty", "
               ))}
             </select>
 
-              {/* Reference Type */}
+              {/* Reference Type 
               <select
                 value={formData.reference_type}
                 onChange={(e) => setFormData({ ...formData, reference_type: e.target.value })}
@@ -289,7 +288,7 @@ const transactionTypes = ["Disbursement", "Repayment", "Provision", "Penalty", "
                 <option value="Investor">Investor</option>
                 <option value="Expense">Expense</option>
                  <option value="Debtor">Debtor</option>
-              </select>
+              </select>*/}
 
               {/* Reference ID */}
               {/* <input
