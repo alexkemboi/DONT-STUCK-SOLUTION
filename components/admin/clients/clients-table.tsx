@@ -6,7 +6,7 @@ import { DataTable } from "@/components/admin/shared/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { Eye, MoreHorizontal, Trash2 } from "lucide-react";
+import { Eye, MoreHorizontal, Trash2,SquarePen} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +29,24 @@ export function ClientsTable({ clients }: ClientsTableProps) {
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+
+
+  const handleEdit =async (id: string) => {
+    const promise = deleteClient(id).then((res) => {
+      if (res.error) {
+        throw new Error(res.error);
+      }
+      router.refresh();
+      return res;
+    });
+
+    toast.promise(promise, {
+      loading: "Editing client...",
+      success: "Client Edit successfully",
+      error: "Failed to edit client",
+    });
+  };
+
 
   const handleDelete = async (id: string) => {
     const promise = deleteClient(id).then((res) => {
@@ -67,13 +85,13 @@ export function ClientsTable({ clients }: ClientsTableProps) {
         </div>
       ),
     },
-    {
-      key: "phone",
-      header: "Phone",
-      render: (client: ClientWithUser) => (
-        <span className="text-sm text-slate-600">{client?.user?.phone}</span>
-      ),
-    },
+    // {
+    //   key: "phone",
+    //   header: "Phone",
+    //   render: (client: ClientWithUser) => (
+    //     <span className="text-sm text-slate-600">{client?.user?.phone}</span>
+    //   ),
+    // },
     {
       key: "idNumber",
       header: "ID Number",
@@ -116,11 +134,11 @@ export function ClientsTable({ clients }: ClientsTableProps) {
           {formatCurrency(0)}
         </span>
       ),
-      className: "text-right",
+      className: "text-center",
     },
     {
       key: "joinedAt",
-      header: "Joined",
+      header: "CreatedAt",
       render: (client: ClientWithUser) => (
         <span className="text-sm text-slate-500">{formatDate(client.createdAt)}</span>
       ),
@@ -146,6 +164,12 @@ export function ClientsTable({ clients }: ClientsTableProps) {
               <Trash2 className="mr-2 h-4 w-4" />
               Deactivate
             </DropdownMenuItem>
+
+             <DropdownMenuItem onClick={() => handleEdit(client.id)}>
+              <SquarePen className="mr-2 h-4 w-4" />
+              Edit
+            </DropdownMenuItem>
+
           </DropdownMenuContent>
         </DropdownMenu>
       ),

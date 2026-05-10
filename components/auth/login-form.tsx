@@ -163,7 +163,7 @@ export function LoginForm() {
                 <Label htmlFor="password">Password</Label>
                 <Link
                   href="/forgot-password"
-                  className="text-sm font-medium text-emerald-600 hover:text-emerald-500"
+                  className="text-sm font-medium text-red-950 hover:text-[#FFCC00]"
                 >
                   Forgot password?
                 </Link>
@@ -209,7 +209,7 @@ export function LoginForm() {
                   onCheckedChange={(checked) =>
                     setFieldValue("acceptTerms", checked)
                   }
-                  className="mt-0.5 data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500"
+                  className="mt-0.5 data-[state=checked]:bg-[#FFCC00] data-[state=checked]:border-[#FFCC00]"
                 />
                 <div className="flex-1">
                   <Label
@@ -219,14 +219,14 @@ export function LoginForm() {
                     I agree to the{" "}
                     <Link
                       href="/terms"
-                      className="font-medium text-emerald-600 hover:text-emerald-500 underline"
+                      className="font-medium text-red-950 hover:text-[#FFCC00] underline"
                     >
                       Terms of Service
                     </Link>{" "}
                     and{" "}
                     <Link
                       href="/privacy"
-                      className="font-medium text-emerald-600 hover:text-emerald-500 underline"
+                      className="font-medium text-red-950 hover:text-[#FFCC00] underline"
                     >
                       Privacy Policy
                     </Link>
@@ -244,7 +244,7 @@ export function LoginForm() {
             <Button
               type="submit"
               disabled={isSubmitting || isLoading}
-              className="w-full h-11 bg-emerald-500 hover:bg-emerald-600 text-white"
+              className="w-full h-11 bg-[#FFCC00] hover:bg-red-950 text-red-950 hover:text-[#FFCC00]"
             >
               {isSubmitting || isLoading ? (
                 <>
@@ -265,7 +265,7 @@ export function LoginForm() {
       <div>
         <Button
           type="submit"
-          className="w-full h-11 border-2 border-emerald-500 hover:bg-emerald-600 bg-white text-emerald-500 hover:text-white transition-all duration-200"
+          className="w-full h-11 border-2 border-[#FFCC00] hover:bg-red-950 bg-white text-[#FFCC00] hover:text-[#FFCC00] transition-all duration-200"
         >
           <Link href="/register">
             <span className="flex items-center justify-center">
@@ -293,7 +293,7 @@ export function LoginForm() {
           Contact support at{" "}
           <a
             href="mailto:support@dssfinance.com"
-            className="font-medium text-emerald-600 hover:text-emerald-500"
+            className="font-medium text-red-950 hover:text-[#FFCC00]"
           >
             support@dssfinance.com
           </a>

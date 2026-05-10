@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { formatCurrency } from "@/lib/utils";
+import { toast } from "sonner";
 
 export type Transaction = {
   transaction_id: string;
@@ -138,7 +139,12 @@ export default function TransactionsPage() {
     fetchTransactions();
   }, []);
 
-  const generateCode = () => `TRX-${new Date().getFullYear()}-${String(transactions.length + 1).padStart(3, "0")}`;
+ const generateCode = () => {
+  const now = Date.now();
+  const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+
+  return `TRX-${now}-${random}`;
+};
 
   const openNewTransaction = () => {
     setFormData({
@@ -185,13 +191,25 @@ export default function TransactionsPage() {
     };
 
     try {
-      const res = await fetch("/api/auth/transactions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newTransaction),
-      });
+const promise = fetch("/api/auth/transactions", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(newTransaction),
+});
 
-      if (!res.ok) throw new Error("Failed to save transaction");
+toast.promise(promise, {
+  loading: "Saving transaction...",
+  success: "Transaction saved successfully",
+  error: "Failed to save transaction",
+});
+
+const res = await promise;
+
+if (!res.ok) {
+  throw new Error("Failed to save transaction");
+}
 
       const saved = await res.json();
       setTransactions([...transactions, saved]);
