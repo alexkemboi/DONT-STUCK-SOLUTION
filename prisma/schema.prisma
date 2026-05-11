@@ -801,7 +801,7 @@ enum TransactionType {
   Expense
   Recovery
   Invest
-  Payment
+
 }
 enum ReferenceType {
   Loan

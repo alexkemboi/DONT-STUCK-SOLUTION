@@ -50,9 +50,9 @@ const router = useRouter();
 const handleLogout = async () => {
     dispatch(logout());
     
-    // toast.success("Logged out successfully", {
-    //   description: "You have been signed out of your account.",
-    // });
+    toast.success("Logged out successfully", {
+      description: "You have been signed out of your account.",
+    });
     await authClient.signOut()
     router.push("/login")
    
