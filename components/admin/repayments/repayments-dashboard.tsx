@@ -280,14 +280,14 @@ toast.success(
       ),
     },
     {
-  key: "reference",
-  header: "Reference",
+  key: "actions",
+  header: "Actions",
   render: (r: SerializedRepayment) => (
     <div className="flex items-center justify-between gap-2">
 
-      <span className="text-sm text-slate-500 font-mono">
+      {/* <span className="text-sm text-slate-500 font-mono">
         {r.reference || "—"}
-      </span>
+      </span> */}
 
       <DropdownMenu>
 

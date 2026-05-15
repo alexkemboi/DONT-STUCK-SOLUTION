@@ -311,67 +311,71 @@ return (
         {formatCurrency(balanceMap[acc.gl_account_id] || 0)}
       </td>
 
-  {/* Action column */}
-  <td className="px-6 py-4 text-right flex items-center justify-end space-x-2  group-hover:opacity-100 transition-opacity duration-200">
-    <button
-  onClick={() => handleView(acc)}
-  className="p-1 rounded hover:bg-gray-100"
-  title="View"
->
-  <Eye className="w-4 h-4 text-gray-600" />
-</button>
+ {/* Action column */}
+<td className="px-6 py-4 text-right">
 
-<button
-  onClick={() => handleEdit(acc)}
-  className="p-1 rounded hover:bg-gray-100"
-  title="Edit"
->
-  <Edit className="w-4 h-4 text-blue-600" />
-</button>
+  <Menu as="div" className="relative inline-block text-left">
 
-<button
-  disabled={acc.account_code === "1000"}
-  onClick={() => {
-    setSelectedAccount(acc);
-    setOpenDeleteModal(true);
-  }}
-  className="p-1 rounded hover:bg-gray-100 disabled:opacity-40"
-  title="Delete"
->
-  <Trash2 className="w-4 h-4 text-red-600" />
-</button>
+    <MenuButton className="p-2 rounded-md hover:bg-gray-100 transition-colors">
+      <MoreVertical className="w-4 h-4 text-gray-500" />
+    </MenuButton>
 
-    {/* Kebab menu */}
-    {/* <Menu as="div" className="relative">
-      <MenuButton className="p-1 rounded hover:bg-gray-100">
-        <MoreVertical className="w-4 h-4 text-gray-500" />
-      </MenuButton>
-      <MenuItems className="absolute right-0 mt-1 w-40 bg-white border rounded shadow-lg py-1 z-10">
-        <MenuItem>
-          {({ active }) => (
-            <button
-              className={`w-full text-left px-4 py-2 text-sm ${
-                active ? "bg-gray-100" : ""
-              }`}
-            >
-              Download
-            </button>
-          )}
-        </MenuItem>
-        <MenuItem>
-          {({ active }) => (
-            <button
-              className={`w-full text-left px-4 py-2 text-sm ${
-                active ? "bg-gray-100" : ""
-              }`}
-            >
-              Archive
-            </button>
-          )}
-        </MenuItem>
-      </MenuItems>
-    </Menu> */}
-  </td>
+    <MenuItems className="absolute right-0 mt-2 w-44 origin-top-right rounded-lg bg-white border border-gray-200 shadow-lg focus:outline-none z-50 py-1">
+
+      {/* View */}
+      <MenuItem>
+        {({ active }) => (
+          <button
+            onClick={() => handleView(acc)}
+            className={`${
+              active ? "bg-gray-100" : ""
+            } flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700`}
+          >
+            <Eye className="w-4 h-4 text-gray-600" />
+            View Details
+          </button>
+        )}
+      </MenuItem>
+
+      {/* Edit */}
+      <MenuItem>
+        {({ active }) => (
+          <button
+            onClick={() => handleEdit(acc)}
+            className={`${
+              active ? "bg-gray-100" : ""
+            } flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-600`}
+          >
+            <Edit className="w-4 h-4" />
+            Edit Account
+          </button>
+        )}
+      </MenuItem>
+
+      {/* Delete */}
+      <MenuItem>
+        {({ active }) => (
+          <button
+            disabled={acc.account_code === "1000"}
+            onClick={() => {
+              setSelectedAccount(acc);
+              setOpenDeleteModal(true);
+            }}
+            className={`${
+              active ? "bg-gray-100" : ""
+            } flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 disabled:opacity-40`}
+          >
+            <Trash2 className="w-4 h-4" />
+            Delete Account
+          </button>
+        )}
+      </MenuItem>
+
+    </MenuItems>
+
+  </Menu>
+
+</td>
 </tr>
 
         ))}
