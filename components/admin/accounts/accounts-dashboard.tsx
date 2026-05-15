@@ -52,15 +52,39 @@ const summary: TransactionSummary[] = types.map((t) => ({
   return (
     <div className="grid gap-4 sm:grid-cols-3 md:grid-cols-4">
       {summary.map((s) => (
-        <Card key={s.type}>
-          <CardContent className="flex gap-4 p-4 items-center">
-            <Wallet />
-            <div>
-              <p className="text-sm text-slate-500">{s.type}</p>
-              <p className="text-xl font-bold">{formatCurrency(s.total)}</p>
-            </div>
-          </CardContent>
-        </Card>
+        // <Card key={s.type}>
+        //   <CardContent className="flex gap-4 p-4 items-center">
+        //     <Wallet />
+        //     <div>
+        //       <p className="text-sm text-slate-500">{s.type}</p>
+        //       <p className="text-xl font-bold">{formatCurrency(s.total)}</p>
+        //     </div>
+        //   </CardContent>
+        // </Card>
+
+        <Card
+  key={s.type}
+  className="border-0 bg-gradient-to-br from-[#400000] to-[#5a0000] shadow-lg rounded-2xl overflow-hidden"
+>
+  <CardContent className="flex items-center gap-4 p-5">
+    
+    {/* Icon Container */}
+    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FFCC00]/15 border border-[#FFD700]/30">
+      <Wallet className="h-7 w-7 text-[#FFD700]" />
+    </div>
+
+    {/* Content */}
+    <div className="flex flex-col">
+      <p className="text-sm font-medium tracking-wide text-[#EDEDED]/80">
+        {s.type}
+      </p>
+
+      <p className="text-2xl font-bold text-[#FFCC00]">
+        {formatCurrency(s.total)}
+      </p>
+    </div>
+  </CardContent>
+</Card>
       ))}
     </div>
   );

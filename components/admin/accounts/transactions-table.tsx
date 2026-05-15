@@ -110,16 +110,8 @@ export default function TransactionsPage() {
     async function fetchAccounts() {
       try {
         const res = await fetch("/api/auth/chart-of-accounts");
-        const data = await res.json();
-        setAccounts(
-          data.map((acc: any) => ({
-            gl_account_id: acc.id,
-            account_code: acc.accountCode,
-            account_name: acc.accountName,
-            account_type: acc.accountType,
-            normal_balance: acc.normalBalance,
-          }))
-        );
+        const data = await res.json();    
+        setAccounts(data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -310,7 +302,7 @@ const transactionTypes = ["Disbursement", "Repayment", "Provision", "Penalty", "
                 {loadingAccounts
                   ? <option>Loading...</option>
                   : accounts.map(acc => (
-                    <option key={acc.gl_account_id} value={acc.account_code}>
+                    <option key={acc.gl_account_id || acc.account_code} value={acc.account_code}>
                       {acc.account_name} ({acc.account_code})
                     </option>
                   ))}
@@ -325,7 +317,7 @@ const transactionTypes = ["Disbursement", "Repayment", "Provision", "Penalty", "
               >
                 <option value="">Select Credit Account</option>
                 {accounts.map(acc => (
-                  <option key={acc.gl_account_id} value={acc.account_code}>
+                  <option key={acc.gl_account_id || acc.account_code} value={acc.account_code}>
                     {acc.account_name} ({acc.account_code})
                   </option>
                 ))}

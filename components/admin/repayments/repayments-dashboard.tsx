@@ -22,10 +22,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Plus, Calendar, AlertCircle } from "lucide-react";
+import {
+  Loader2,
+  Plus,
+  Calendar,
+  AlertCircle,
+  MoreVertical,
+  Pencil,
+} from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import {
   recordRepaymentAction,
+  updateRepaymentAction,
   type SerializedRepayment,
 } from "@/app/actions/repayment";
 import { getNextInstallmentAction, type SerializedSchedule } from "@/app/actions/schedule";
@@ -74,6 +89,8 @@ export function RepaymentsDashboard({
   const [methodFilter, setMethodFilter] = useState("all");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [editingRepayment, setEditingRepayment] =
+  useState<SerializedRepayment | null>(null);
 
   // Form state
   const [formLoanId, setFormLoanId] = useState("");
@@ -126,6 +143,35 @@ export function RepaymentsDashboard({
     setNextInstallment(null);
   };
 
+
+  const handleEditRepayment = (
+  repayment: SerializedRepayment
+) => {
+
+  setEditingRepayment(repayment);
+
+  setFormLoanId(repayment.loanId || "");
+
+  setFormAmount(repayment.amount.toString());
+
+  setFormMethod(
+    repayment.paymentMethod as PaymentMethod
+  );
+
+  setFormDate(
+    repayment.paymentDate.split("T")[0]
+  );
+
+  setFormCategory(
+    repayment.category as RepaymentCategory
+  );
+
+  setFormReference(repayment.reference || "");
+
+  setDialogOpen(true);
+};
+
+
   const handleSubmit = async () => {
     if (!formLoanId || !formAmount || !formMethod || !formDate || !formCategory) {
       toast.error("Please fill in all required fields");
@@ -139,7 +185,18 @@ export function RepaymentsDashboard({
     }
 
     setSubmitting(true);
-    const result = await recordRepaymentAction({
+   const result = editingRepayment
+
+  ? await updateRepaymentAction({
+      repaymentId: editingRepayment.id,
+      amount,
+      paymentMethod: formMethod as PaymentMethod,
+      paymentDate: formDate,
+      category: formCategory as RepaymentCategory,
+      reference: formReference || undefined,
+    })
+
+  : await recordRepaymentAction({
       loanId: formLoanId,
       amount,
       paymentMethod: formMethod as PaymentMethod,
@@ -149,8 +206,14 @@ export function RepaymentsDashboard({
     });
 
     if (result.success) {
-      toast.success("Repayment recorded", {
-        description: `${formatCurrency(amount)} payment recorded successfully.`,
+toast.success(
+  editingRepayment
+    ? "Repayment updated"
+    : "Repayment recorded",
+{
+        description: editingRepayment
+  ? `${formatCurrency(amount)} payment updated successfully.`
+  : `${formatCurrency(amount)} payment recorded successfully.`,
       });
       setDialogOpen(false);
       resetForm();
@@ -216,6 +279,44 @@ export function RepaymentsDashboard({
         </span>
       ),
     },
+    {
+  key: "reference",
+  header: "Reference",
+  render: (r: SerializedRepayment) => (
+    <div className="flex items-center justify-between gap-2">
+
+      <span className="text-sm text-slate-500 font-mono">
+        {r.reference || "—"}
+      </span>
+
+      <DropdownMenu>
+
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+          >
+            <MoreVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="end">
+
+          <DropdownMenuItem
+            onClick={() => handleEditRepayment(r)}
+          >
+            <Pencil className="mr-2 h-4 w-4" />
+            Edit Repayment
+          </DropdownMenuItem>
+
+        </DropdownMenuContent>
+
+      </DropdownMenu>
+
+    </div>
+  ),
+},
   ];
 
   const selectedLoan = loans.find((l) => l.id === formLoanId);
@@ -244,9 +345,15 @@ export function RepaymentsDashboard({
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Record Repayment</DialogTitle>
+        <DialogTitle>
+  {editingRepayment
+    ? "Edit Repayment"
+    : "Record Repayments"}
+</DialogTitle>
             <DialogDescription>
-              Record a manual loan repayment from a client.
+      {editingRepayment
+  ? "Update repayment details."
+  : "Record a manual loan repayment from a client."}
             </DialogDescription>
           </DialogHeader>
 
@@ -378,6 +485,7 @@ export function RepaymentsDashboard({
               onClick={() => {
                 setDialogOpen(false);
                 resetForm();
+                setEditingRepayment(null);
               }}
               disabled={submitting}
             >
@@ -395,7 +503,9 @@ export function RepaymentsDashboard({
               ) : (
                 <>
                   <Plus className="mr-2 h-4 w-4" />
-                  Record Payment
+              {editingRepayment
+  ? "Update Payment"
+  : "Record Payment"}
                 </>
               )}
             </Button>

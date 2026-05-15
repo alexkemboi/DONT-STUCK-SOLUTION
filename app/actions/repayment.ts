@@ -213,3 +213,53 @@ export async function getDisbursedLoansForRepaymentAction() {
     return { success: false, data: [], error: (error as Error).message };
   }
 }
+
+
+export async function updateRepaymentAction({
+  repaymentId,
+  amount,
+  paymentMethod,
+  paymentDate,
+  category,
+  reference,
+}: {
+  repaymentId: string;
+  amount: number;
+  paymentMethod: PaymentMethod;
+  paymentDate: string;
+  category: RepaymentCategory;
+  reference?: string;
+}) {
+  try {
+
+    const repayment = await prisma.repayment.update({
+      where: {
+        id: repaymentId,
+      },
+
+      data: {
+        amount,
+        paymentMethod,
+        paymentDate: new Date(paymentDate),
+        category,
+        reference,
+      },
+    });
+
+    revalidatePath("/admin/repayments");
+
+    return {
+      success: true,
+      data: repayment,
+    };
+
+  } catch (error) {
+
+    console.error(error);
+
+    return {
+      success: false,
+      error: "Failed to update repayment",
+    };
+  }
+}
