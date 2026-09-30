@@ -1,4 +1,4 @@
-import { betterAuth } from "better-auth";
+import { betterAuth, success } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
 import prisma from "./prisma";
 import { prismaAdapter } from "better-auth/adapters/prisma";
@@ -16,11 +16,21 @@ export const auth = betterAuth({
         maxPasswordLength: 20,
         requireEmailVerification: false,
         sendResetPassword: async ({ user, url }) => {
-            await sendResetPasswordEmail({
-                userEmail: user.email,
-                userName: user.email, // Assuming user.email can be used as userName
-                resetLink: url,
-            });
+            // check if user email exists
+            const userfromdb = await prisma.user.findUnique({
+                where:{
+                    email:user.email
+                }
+            })
+            console.log(userfromdb)
+            if(userfromdb){
+                await sendResetPasswordEmail({
+                    userEmail: user.email,
+                    userName: user.email, // Assuming user.email can be used as userName
+                    resetLink: url,
+                });
+            }
+            // If user doesn't exist, we do nothing to prevent user enumeration
         },
     },
     user:{

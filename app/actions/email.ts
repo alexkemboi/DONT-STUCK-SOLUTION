@@ -26,7 +26,8 @@ export async function sendResetPasswordEmail({
       react: ResetPasswordEmail({ userName, resetLink }),
     });
     return { success: true };
-  } catch (error) {
+  } catch (error:any) {
+    console.log(error?.message)
     console.error("Error sending reset password email:", error);
     return { success: false, error: (error as Error).message };
   }

@@ -156,7 +156,7 @@ export function DataTable<T extends { id: string }>({
       <div className="flex items-center justify-between text-sm text-slate-500">
         <span>Showing {data.length} results</span>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" >
+          <Button variant="outline" size="sm"  >
             Previous
           </Button>
           <Button variant="outline" size="sm" >
