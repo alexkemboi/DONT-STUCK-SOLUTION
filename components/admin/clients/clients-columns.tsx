@@ -2,7 +2,7 @@
 
 import type { Column } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
-import { ArrowUpDown, Eye, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
+import { ArrowUpDown, Eye, FileText, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -45,12 +45,14 @@ export interface ClientsColumnActions {
   onView: (client: ClientWithUser) => void;
   onDeactivate: (client: ClientWithUser) => void;
   onEdit: (client: ClientWithUser) => void;
+  onGenerateStatement: (client: ClientWithUser) => void;
 }
 
 export function createClientsColumns({
   onView,
   onDeactivate,
   onEdit,
+  onGenerateStatement,
 }: ClientsColumnActions) {
   return columnHelper.columns([
     columnHelper.accessor((row) => `${row.surname} ${row.otherNames}`, {
@@ -128,6 +130,10 @@ export function createClientsColumns({
               <DropdownMenuItem onClick={() => onEdit(client)}>
                 <SquarePen className="mr-2 h-4 w-4" />
                 Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onGenerateStatement(client)}>
+                <FileText className="mr-2 h-4 w-4" />
+                Generate Statement
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -6,7 +6,7 @@ import { prisma } from "./lib/prisma";
 
 
 
-const publicroutes = ["/", "/datatable-preview-temp"];
+const publicroutes = ["/"];
 
 
 const authRoutes = ["/login", "/register", "/reset-password", "/forgot-password"];

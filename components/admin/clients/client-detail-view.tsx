@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Edit2, Check, FileText } from "lucide-react";
+import { Edit2, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PersonalInfoForm } from "@/components/client/profile/personal-info-form";
@@ -41,31 +40,23 @@ export function ClientDetailView({
         <h1 className="text-2xl font-bold text-slate-900">
           {client.surname} {client.otherNames}
         </h1>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" asChild>
-            <Link href={`/dss/admin/clients/${client.id}/statement`}>
-              <FileText className="h-4 w-4 mr-2" />
-              Generate Statement
-            </Link>
-          </Button>
-          <Button
-            variant={isEditing ? "default" : "outline"}
-            size="sm"
-            onClick={() => setIsEditing(!isEditing)}
-          >
-            {isEditing ? (
-              <>
-                <Check className="h-4 w-4 mr-2" />
-                Done Editing
-              </>
-            ) : (
-              <>
-                <Edit2 className="h-4 w-4 mr-2" />
-                Edit Client
-              </>
-            )}
-          </Button>
-        </div>
+        <Button
+          variant={isEditing ? "default" : "outline"}
+          size="sm"
+          onClick={() => setIsEditing(!isEditing)}
+        >
+          {isEditing ? (
+            <>
+              <Check className="h-4 w-4 mr-2" />
+              Done Editing
+            </>
+          ) : (
+            <>
+              <Edit2 className="h-4 w-4 mr-2" />
+              Edit Client
+            </>
+          )}
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">

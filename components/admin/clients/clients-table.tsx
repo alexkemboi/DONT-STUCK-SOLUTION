@@ -73,6 +73,8 @@ export function ClientsTable({ clients }: ClientsTableProps) {
         onView: (client) => router.push(`/dss/admin/clients/${client.id}`),
         onDeactivate: (client) => handleDelete(client.id),
         onEdit: (client) => handleEdit(client.id),
+        onGenerateStatement: (client) =>
+          router.push(`/dss/admin/clients/${client.id}/statement`),
       }),
     [router]
   );
