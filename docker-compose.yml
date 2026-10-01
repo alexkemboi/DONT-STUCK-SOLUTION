@@ -1,0 +1,9 @@
+services:
+  dss:
+    build:
+      context: .
+      dockerfile: DockerFile
+    env_file:
+      - .env
+    ports:
+      - "4567:4567"
