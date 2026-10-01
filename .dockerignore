@@ -4,7 +4,16 @@ node_modules
 dist
 .git
 .gitignore
-Dockerfile
+DockerFile
 docker-compose.yml
 npm-debug.log
 .env*
+node_modules
+.next
+.git
+.env
+.env.*
+npm-debug.log*
+pnpm-debug.log*
+Dockerfile*
+docker-compose*.yml
