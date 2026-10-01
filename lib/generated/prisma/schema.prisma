@@ -18,7 +18,6 @@ model User {
   image         String?
   emailVerified Boolean?          @default(false) @map("emailVerified")
   name          String            @map("name")
-  sessions      Session[]
   accounts      Account[]
   auditLogs     AuditLog[]
   client        Client?
@@ -26,6 +25,7 @@ model User {
   approvedLoans LoanApplication[] @relation("ApprovedBy")
   reviewedLoans LoanApplication[] @relation("ReviewedBy")
   recoveryAgent RecoveryAgent?
+  sessions      Session[]
 
   @@index([role])
   @@index([isActive])
@@ -61,7 +61,7 @@ model Client {
   invoices          Invoice[]
   loanApplications  LoanApplication[]
   referees          Referee[]
-  transactions      Transaction[]      @relation(name: "TransactionClient")
+  transactions      Transaction[]      @relation("TransactionClient")
 
   @@index([status])
   @@index([phoneMobile])
@@ -150,9 +150,9 @@ model BankDetail {
   accountName      String   @map("account_name")
   accountNumber    String   @map("account_number")
   proofDocument    String?  @map("proof_document")
-  proofDocumentUrl String?  @map("proof_document_url")
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
+  proofDocumentUrl String?  @map("proof_document_url")
   client           Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
   @@index([clientId])
@@ -169,7 +169,6 @@ model LoanApplication {
   approvedAmount      Decimal?              @map("approved_amount") @db.Decimal(15, 2)
   qualificationType   QualificationType?    @map("qualification_type")
   interestRate        Decimal               @default(20) @map("interest_rate") @db.Decimal(5, 2)
-  paymentFrequency    PaymentFrequency      @default(MONTHLY) @map("payment_frequency")
   startDate           DateTime?             @map("start_date")
   repaymentPeriod     Int                   @map("repayment_period")
   status              LoanApplicationStatus @default(Pending)
@@ -181,6 +180,8 @@ model LoanApplication {
   rejectionReason     String?               @map("rejection_reason")
   createdAt           DateTime              @default(now()) @map("created_at")
   updatedAt           DateTime              @updatedAt @map("updated_at")
+  paymentFrequency    PaymentFrequency      @default(MONTHLY) @map("payment_frequency")
+  loanNumber          Int                   @unique @default(autoincrement()) @map("loan_number")
   documents           Document[]
   guarantors          Guarantor[]
   investorAllocations InvestorAllocation[]
@@ -194,8 +195,8 @@ model LoanApplication {
   security            LoanSecurity?
   npl                 NonPerformingLoan?
   recoveryRecords     RecoveryRecord[]
-  repayments          Repayment[]
   repaymentSchedule   RepaymentSchedule[]
+  repayments          Repayment[]
   vehicleSecurity     VehicleSecurity?
 
   @@index([clientId])
@@ -376,9 +377,9 @@ model Transaction {
   status          TransactionStatus @default(Pending)
   createdBy       String?           @map("created_by")
   createdAt       DateTime          @default(now()) @map("created_at")
-  invoicePayments InvoicePayment[]
-  client          Client?           @relation(fields: [clientId], references: [id], onDelete: Cascade, name: "TransactionClient", map: "transaction_client")
   clientId        String?           @map("client_id")
+  invoicePayments InvoicePayment[]
+  client          Client?           @relation("TransactionClient", fields: [clientId], references: [id], onDelete: Cascade, map: "transaction_client")
 
   @@index([transactionType])
   @@index([referenceType])
@@ -398,8 +399,8 @@ model Repayment {
   category      RepaymentCategory
   reference     String?
   createdAt     DateTime            @default(now()) @map("created_at")
-  loan          LoanApplication     @relation(fields: [loanId], references: [id])
   scheduleItems RepaymentSchedule[] @relation("RepaymentToSchedule")
+  loan          LoanApplication     @relation(fields: [loanId], references: [id])
 
   @@index([loanId])
   @@index([paymentDate])
@@ -634,6 +635,22 @@ model TransactionMatrix {
   @@map("transaction_matrix")
 }
 
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  tagline   String?
+  email     String?
+  phone     String?
+  address   String?
+  city      String?
+  country   String?
+  logoUrl   String?  @map("logo_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("companies")
+}
+
 model SystemConfig {
   id        String   @id @default(cuid())
   key       String   @unique
@@ -651,29 +668,26 @@ model Session {
   userId    String   @map("userId")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
-  token     String
+  token     String   @unique
   ipAddress String?
   userAgent String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
   @@index([userId])
   @@map("session")
 }
 
 model Account {
-  id            String  @id @default(cuid())
-  userId        String  @map("user_id")
-  refresh_token String?
-  access_token  String?
-  expires_at    Int?
-  token_type    String?
-  scope         String?
-  id_token      String?
-  session_state String?
-  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id                    String    @id @default(cuid())
+  userId                String    @map("user_id")
+  refresh_token         String?
+  access_token          String?
+  expires_at            Int?
+  token_type            String?
+  scope                 String?
+  id_token              String?
+  session_state         String?
   accountId             String
   providerId            String
   accessToken           String?
@@ -684,6 +698,7 @@ model Account {
   password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([providerId, accountId])
   @@index([userId])
@@ -697,6 +712,18 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verification_tokens")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }
 
 enum Title {
@@ -863,16 +890,4 @@ enum UserRole {
 enum PaymentFrequency {
   MONTHLY
   WEEKLY
-}
-
-model Verification {
-  id         String   @id
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@index([identifier])
-  @@map("verification")
 }

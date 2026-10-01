@@ -169,6 +169,11 @@ export type ChartOfAccount = $Result.DefaultSelection<Prisma.$ChartOfAccountPayl
  */
 export type TransactionMatrix = $Result.DefaultSelection<Prisma.$TransactionMatrixPayload>
 /**
+ * Model Company
+ * 
+ */
+export type Company = $Result.DefaultSelection<Prisma.$CompanyPayload>
+/**
  * Model SystemConfig
  * 
  */
@@ -961,6 +966,16 @@ export class PrismaClient<
   get transactionMatrix(): Prisma.TransactionMatrixDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.company`: Exposes CRUD operations for the **Company** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Companies
+    * const companies = await prisma.company.findMany()
+    * ```
+    */
+  get company(): Prisma.CompanyDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.systemConfig`: Exposes CRUD operations for the **SystemConfig** model.
     * Example usage:
     * ```ts
@@ -1474,6 +1489,7 @@ export namespace Prisma {
     AuditLog: 'AuditLog',
     ChartOfAccount: 'ChartOfAccount',
     TransactionMatrix: 'TransactionMatrix',
+    Company: 'Company',
     SystemConfig: 'SystemConfig',
     Session: 'Session',
     Account: 'Account',
@@ -1494,7 +1510,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "clientAddress" | "employmentDetail" | "referee" | "bankDetail" | "loanApplication" | "loanQualification" | "loanSecurity" | "vehicleSecurity" | "guarantor" | "loanDisbursement" | "loanFinancial" | "invoice" | "invoiceItem" | "invoicePayment" | "transaction" | "repayment" | "repaymentSchedule" | "nonPerformingLoan" | "recoveryAgent" | "recoveryRecord" | "investor" | "investorAllocation" | "investorPayout" | "document" | "expense" | "smsLog" | "auditLog" | "chartOfAccount" | "transactionMatrix" | "systemConfig" | "session" | "account" | "verificationToken" | "verification"
+      modelProps: "user" | "client" | "clientAddress" | "employmentDetail" | "referee" | "bankDetail" | "loanApplication" | "loanQualification" | "loanSecurity" | "vehicleSecurity" | "guarantor" | "loanDisbursement" | "loanFinancial" | "invoice" | "invoiceItem" | "invoicePayment" | "transaction" | "repayment" | "repaymentSchedule" | "nonPerformingLoan" | "recoveryAgent" | "recoveryRecord" | "investor" | "investorAllocation" | "investorPayout" | "document" | "expense" | "smsLog" | "auditLog" | "chartOfAccount" | "transactionMatrix" | "company" | "systemConfig" | "session" | "account" | "verificationToken" | "verification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3792,6 +3808,80 @@ export namespace Prisma {
           }
         }
       }
+      Company: {
+        payload: Prisma.$CompanyPayload<ExtArgs>
+        fields: Prisma.CompanyFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompanyFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompanyFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          findFirst: {
+            args: Prisma.CompanyFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompanyFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          findMany: {
+            args: Prisma.CompanyFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+          }
+          create: {
+            args: Prisma.CompanyCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          createMany: {
+            args: Prisma.CompanyCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompanyCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+          }
+          delete: {
+            args: Prisma.CompanyDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          update: {
+            args: Prisma.CompanyUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompanyDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompanyUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompanyUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompanyUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          aggregate: {
+            args: Prisma.CompanyAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompany>
+          }
+          groupBy: {
+            args: Prisma.CompanyGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompanyGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompanyCountArgs<ExtArgs>
+            result: $Utils.Optional<CompanyCountAggregateOutputType> | number
+          }
+        }
+      }
       SystemConfig: {
         payload: Prisma.$SystemConfigPayload<ExtArgs>
         fields: Prisma.SystemConfigFieldRefs
@@ -4301,6 +4391,7 @@ export namespace Prisma {
     auditLog?: AuditLogOmit
     chartOfAccount?: ChartOfAccountOmit
     transactionMatrix?: TransactionMatrixOmit
+    company?: CompanyOmit
     systemConfig?: SystemConfigOmit
     session?: SessionOmit
     account?: AccountOmit
@@ -4386,19 +4477,19 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    sessions: number
     accounts: number
     auditLogs: number
     approvedLoans: number
     reviewedLoans: number
+    sessions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
     approvedLoans?: boolean | UserCountOutputTypeCountApprovedLoansArgs
     reviewedLoans?: boolean | UserCountOutputTypeCountReviewedLoansArgs
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   }
 
   // Custom InputTypes
@@ -4410,13 +4501,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SessionWhereInput
   }
 
   /**
@@ -4445,6 +4529,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountReviewedLoansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LoanApplicationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
   }
 
 
@@ -4552,8 +4643,8 @@ export namespace Prisma {
     investorAllocations: number
     invoices: number
     recoveryRecords: number
-    repayments: number
     repaymentSchedule: number
+    repayments: number
   }
 
   export type LoanApplicationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4562,8 +4653,8 @@ export namespace Prisma {
     investorAllocations?: boolean | LoanApplicationCountOutputTypeCountInvestorAllocationsArgs
     invoices?: boolean | LoanApplicationCountOutputTypeCountInvoicesArgs
     recoveryRecords?: boolean | LoanApplicationCountOutputTypeCountRecoveryRecordsArgs
-    repayments?: boolean | LoanApplicationCountOutputTypeCountRepaymentsArgs
     repaymentSchedule?: boolean | LoanApplicationCountOutputTypeCountRepaymentScheduleArgs
+    repayments?: boolean | LoanApplicationCountOutputTypeCountRepaymentsArgs
   }
 
   // Custom InputTypes
@@ -4615,15 +4706,15 @@ export namespace Prisma {
   /**
    * LoanApplicationCountOutputType without action
    */
-  export type LoanApplicationCountOutputTypeCountRepaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RepaymentWhereInput
+  export type LoanApplicationCountOutputTypeCountRepaymentScheduleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RepaymentScheduleWhereInput
   }
 
   /**
    * LoanApplicationCountOutputType without action
    */
-  export type LoanApplicationCountOutputTypeCountRepaymentScheduleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RepaymentScheduleWhereInput
+  export type LoanApplicationCountOutputTypeCountRepaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RepaymentWhereInput
   }
 
 
@@ -5008,7 +5099,6 @@ export namespace Prisma {
     image?: boolean
     emailVerified?: boolean
     name?: boolean
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     client?: boolean | User$clientArgs<ExtArgs>
@@ -5016,6 +5106,7 @@ export namespace Prisma {
     approvedLoans?: boolean | User$approvedLoansArgs<ExtArgs>
     reviewedLoans?: boolean | User$reviewedLoansArgs<ExtArgs>
     recoveryAgent?: boolean | User$recoveryAgentArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5060,7 +5151,6 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "role" | "phone" | "isActive" | "createdAt" | "updatedAt" | "image" | "emailVerified" | "name", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     client?: boolean | User$clientArgs<ExtArgs>
@@ -5068,6 +5158,7 @@ export namespace Prisma {
     approvedLoans?: boolean | User$approvedLoansArgs<ExtArgs>
     reviewedLoans?: boolean | User$reviewedLoansArgs<ExtArgs>
     recoveryAgent?: boolean | User$recoveryAgentArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5076,7 +5167,6 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      sessions: Prisma.$SessionPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
       client: Prisma.$ClientPayload<ExtArgs> | null
@@ -5084,6 +5174,7 @@ export namespace Prisma {
       approvedLoans: Prisma.$LoanApplicationPayload<ExtArgs>[]
       reviewedLoans: Prisma.$LoanApplicationPayload<ExtArgs>[]
       recoveryAgent: Prisma.$RecoveryAgentPayload<ExtArgs> | null
+      sessions: Prisma.$SessionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5490,7 +5581,6 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     client<T extends User$clientArgs<ExtArgs> = {}>(args?: Subset<T, User$clientArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -5498,6 +5588,7 @@ export namespace Prisma {
     approvedLoans<T extends User$approvedLoansArgs<ExtArgs> = {}>(args?: Subset<T, User$approvedLoansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoanApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviewedLoans<T extends User$reviewedLoansArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewedLoansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoanApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     recoveryAgent<T extends User$recoveryAgentArgs<ExtArgs> = {}>(args?: Subset<T, User$recoveryAgentArgs<ExtArgs>>): Prisma__RecoveryAgentClient<$Result.GetResult<Prisma.$RecoveryAgentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5925,30 +6016,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.sessions
-   */
-  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Session
-     */
-    select?: SessionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Session
-     */
-    omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    where?: SessionWhereInput
-    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
-    cursor?: SessionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
-  }
-
-  /**
    * User.accounts
    */
   export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6099,6 +6166,30 @@ export namespace Prisma {
      */
     include?: RecoveryAgentInclude<ExtArgs> | null
     where?: RecoveryAgentWhereInput
+  }
+
+  /**
+   * User.sessions
+   */
+  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    cursor?: SessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
   /**
@@ -11229,9 +11320,9 @@ export namespace Prisma {
     accountName: string | null
     accountNumber: string | null
     proofDocument: string | null
-    proofDocumentUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    proofDocumentUrl: string | null
   }
 
   export type BankDetailMaxAggregateOutputType = {
@@ -11242,9 +11333,9 @@ export namespace Prisma {
     accountName: string | null
     accountNumber: string | null
     proofDocument: string | null
-    proofDocumentUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    proofDocumentUrl: string | null
   }
 
   export type BankDetailCountAggregateOutputType = {
@@ -11255,9 +11346,9 @@ export namespace Prisma {
     accountName: number
     accountNumber: number
     proofDocument: number
-    proofDocumentUrl: number
     createdAt: number
     updatedAt: number
+    proofDocumentUrl: number
     _all: number
   }
 
@@ -11270,9 +11361,9 @@ export namespace Prisma {
     accountName?: true
     accountNumber?: true
     proofDocument?: true
-    proofDocumentUrl?: true
     createdAt?: true
     updatedAt?: true
+    proofDocumentUrl?: true
   }
 
   export type BankDetailMaxAggregateInputType = {
@@ -11283,9 +11374,9 @@ export namespace Prisma {
     accountName?: true
     accountNumber?: true
     proofDocument?: true
-    proofDocumentUrl?: true
     createdAt?: true
     updatedAt?: true
+    proofDocumentUrl?: true
   }
 
   export type BankDetailCountAggregateInputType = {
@@ -11296,9 +11387,9 @@ export namespace Prisma {
     accountName?: true
     accountNumber?: true
     proofDocument?: true
-    proofDocumentUrl?: true
     createdAt?: true
     updatedAt?: true
+    proofDocumentUrl?: true
     _all?: true
   }
 
@@ -11382,9 +11473,9 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument: string | null
-    proofDocumentUrl: string | null
     createdAt: Date
     updatedAt: Date
+    proofDocumentUrl: string | null
     _count: BankDetailCountAggregateOutputType | null
     _min: BankDetailMinAggregateOutputType | null
     _max: BankDetailMaxAggregateOutputType | null
@@ -11412,9 +11503,9 @@ export namespace Prisma {
     accountName?: boolean
     accountNumber?: boolean
     proofDocument?: boolean
-    proofDocumentUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    proofDocumentUrl?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bankDetail"]>
 
@@ -11426,9 +11517,9 @@ export namespace Prisma {
     accountName?: boolean
     accountNumber?: boolean
     proofDocument?: boolean
-    proofDocumentUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    proofDocumentUrl?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bankDetail"]>
 
@@ -11440,9 +11531,9 @@ export namespace Prisma {
     accountName?: boolean
     accountNumber?: boolean
     proofDocument?: boolean
-    proofDocumentUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    proofDocumentUrl?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bankDetail"]>
 
@@ -11454,12 +11545,12 @@ export namespace Prisma {
     accountName?: boolean
     accountNumber?: boolean
     proofDocument?: boolean
-    proofDocumentUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    proofDocumentUrl?: boolean
   }
 
-  export type BankDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "bankName" | "branch" | "accountName" | "accountNumber" | "proofDocument" | "proofDocumentUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["bankDetail"]>
+  export type BankDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "bankName" | "branch" | "accountName" | "accountNumber" | "proofDocument" | "createdAt" | "updatedAt" | "proofDocumentUrl", ExtArgs["result"]["bankDetail"]>
   export type BankDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }
@@ -11483,9 +11574,9 @@ export namespace Prisma {
       accountName: string
       accountNumber: string
       proofDocument: string | null
-      proofDocumentUrl: string | null
       createdAt: Date
       updatedAt: Date
+      proofDocumentUrl: string | null
     }, ExtArgs["result"]["bankDetail"]>
     composites: {}
   }
@@ -11917,9 +12008,9 @@ export namespace Prisma {
     readonly accountName: FieldRef<"BankDetail", 'String'>
     readonly accountNumber: FieldRef<"BankDetail", 'String'>
     readonly proofDocument: FieldRef<"BankDetail", 'String'>
-    readonly proofDocumentUrl: FieldRef<"BankDetail", 'String'>
     readonly createdAt: FieldRef<"BankDetail", 'DateTime'>
     readonly updatedAt: FieldRef<"BankDetail", 'DateTime'>
+    readonly proofDocumentUrl: FieldRef<"BankDetail", 'String'>
   }
     
 
@@ -12351,6 +12442,7 @@ export namespace Prisma {
     approvedAmount: Decimal | null
     interestRate: Decimal | null
     repaymentPeriod: number | null
+    loanNumber: number | null
   }
 
   export type LoanApplicationSumAggregateOutputType = {
@@ -12358,6 +12450,7 @@ export namespace Prisma {
     approvedAmount: Decimal | null
     interestRate: Decimal | null
     repaymentPeriod: number | null
+    loanNumber: number | null
   }
 
   export type LoanApplicationMinAggregateOutputType = {
@@ -12368,7 +12461,6 @@ export namespace Prisma {
     approvedAmount: Decimal | null
     qualificationType: $Enums.QualificationType | null
     interestRate: Decimal | null
-    paymentFrequency: $Enums.PaymentFrequency | null
     startDate: Date | null
     repaymentPeriod: number | null
     status: $Enums.LoanApplicationStatus | null
@@ -12380,6 +12472,8 @@ export namespace Prisma {
     rejectionReason: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    paymentFrequency: $Enums.PaymentFrequency | null
+    loanNumber: number | null
   }
 
   export type LoanApplicationMaxAggregateOutputType = {
@@ -12390,7 +12484,6 @@ export namespace Prisma {
     approvedAmount: Decimal | null
     qualificationType: $Enums.QualificationType | null
     interestRate: Decimal | null
-    paymentFrequency: $Enums.PaymentFrequency | null
     startDate: Date | null
     repaymentPeriod: number | null
     status: $Enums.LoanApplicationStatus | null
@@ -12402,6 +12495,8 @@ export namespace Prisma {
     rejectionReason: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    paymentFrequency: $Enums.PaymentFrequency | null
+    loanNumber: number | null
   }
 
   export type LoanApplicationCountAggregateOutputType = {
@@ -12412,7 +12507,6 @@ export namespace Prisma {
     approvedAmount: number
     qualificationType: number
     interestRate: number
-    paymentFrequency: number
     startDate: number
     repaymentPeriod: number
     status: number
@@ -12424,6 +12518,8 @@ export namespace Prisma {
     rejectionReason: number
     createdAt: number
     updatedAt: number
+    paymentFrequency: number
+    loanNumber: number
     _all: number
   }
 
@@ -12433,6 +12529,7 @@ export namespace Prisma {
     approvedAmount?: true
     interestRate?: true
     repaymentPeriod?: true
+    loanNumber?: true
   }
 
   export type LoanApplicationSumAggregateInputType = {
@@ -12440,6 +12537,7 @@ export namespace Prisma {
     approvedAmount?: true
     interestRate?: true
     repaymentPeriod?: true
+    loanNumber?: true
   }
 
   export type LoanApplicationMinAggregateInputType = {
@@ -12450,7 +12548,6 @@ export namespace Prisma {
     approvedAmount?: true
     qualificationType?: true
     interestRate?: true
-    paymentFrequency?: true
     startDate?: true
     repaymentPeriod?: true
     status?: true
@@ -12462,6 +12559,8 @@ export namespace Prisma {
     rejectionReason?: true
     createdAt?: true
     updatedAt?: true
+    paymentFrequency?: true
+    loanNumber?: true
   }
 
   export type LoanApplicationMaxAggregateInputType = {
@@ -12472,7 +12571,6 @@ export namespace Prisma {
     approvedAmount?: true
     qualificationType?: true
     interestRate?: true
-    paymentFrequency?: true
     startDate?: true
     repaymentPeriod?: true
     status?: true
@@ -12484,6 +12582,8 @@ export namespace Prisma {
     rejectionReason?: true
     createdAt?: true
     updatedAt?: true
+    paymentFrequency?: true
+    loanNumber?: true
   }
 
   export type LoanApplicationCountAggregateInputType = {
@@ -12494,7 +12594,6 @@ export namespace Prisma {
     approvedAmount?: true
     qualificationType?: true
     interestRate?: true
-    paymentFrequency?: true
     startDate?: true
     repaymentPeriod?: true
     status?: true
@@ -12506,6 +12605,8 @@ export namespace Prisma {
     rejectionReason?: true
     createdAt?: true
     updatedAt?: true
+    paymentFrequency?: true
+    loanNumber?: true
     _all?: true
   }
 
@@ -12603,7 +12704,6 @@ export namespace Prisma {
     approvedAmount: Decimal | null
     qualificationType: $Enums.QualificationType | null
     interestRate: Decimal
-    paymentFrequency: $Enums.PaymentFrequency
     startDate: Date | null
     repaymentPeriod: number
     status: $Enums.LoanApplicationStatus
@@ -12615,6 +12715,8 @@ export namespace Prisma {
     rejectionReason: string | null
     createdAt: Date
     updatedAt: Date
+    paymentFrequency: $Enums.PaymentFrequency
+    loanNumber: number
     _count: LoanApplicationCountAggregateOutputType | null
     _avg: LoanApplicationAvgAggregateOutputType | null
     _sum: LoanApplicationSumAggregateOutputType | null
@@ -12644,7 +12746,6 @@ export namespace Prisma {
     approvedAmount?: boolean
     qualificationType?: boolean
     interestRate?: boolean
-    paymentFrequency?: boolean
     startDate?: boolean
     repaymentPeriod?: boolean
     status?: boolean
@@ -12656,6 +12757,8 @@ export namespace Prisma {
     rejectionReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    paymentFrequency?: boolean
+    loanNumber?: boolean
     documents?: boolean | LoanApplication$documentsArgs<ExtArgs>
     guarantors?: boolean | LoanApplication$guarantorsArgs<ExtArgs>
     investorAllocations?: boolean | LoanApplication$investorAllocationsArgs<ExtArgs>
@@ -12669,8 +12772,8 @@ export namespace Prisma {
     security?: boolean | LoanApplication$securityArgs<ExtArgs>
     npl?: boolean | LoanApplication$nplArgs<ExtArgs>
     recoveryRecords?: boolean | LoanApplication$recoveryRecordsArgs<ExtArgs>
-    repayments?: boolean | LoanApplication$repaymentsArgs<ExtArgs>
     repaymentSchedule?: boolean | LoanApplication$repaymentScheduleArgs<ExtArgs>
+    repayments?: boolean | LoanApplication$repaymentsArgs<ExtArgs>
     vehicleSecurity?: boolean | LoanApplication$vehicleSecurityArgs<ExtArgs>
     _count?: boolean | LoanApplicationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["loanApplication"]>
@@ -12683,7 +12786,6 @@ export namespace Prisma {
     approvedAmount?: boolean
     qualificationType?: boolean
     interestRate?: boolean
-    paymentFrequency?: boolean
     startDate?: boolean
     repaymentPeriod?: boolean
     status?: boolean
@@ -12695,6 +12797,8 @@ export namespace Prisma {
     rejectionReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    paymentFrequency?: boolean
+    loanNumber?: boolean
     approvedBy?: boolean | LoanApplication$approvedByArgs<ExtArgs>
     client?: boolean | ClientDefaultArgs<ExtArgs>
     reviewedBy?: boolean | LoanApplication$reviewedByArgs<ExtArgs>
@@ -12708,7 +12812,6 @@ export namespace Prisma {
     approvedAmount?: boolean
     qualificationType?: boolean
     interestRate?: boolean
-    paymentFrequency?: boolean
     startDate?: boolean
     repaymentPeriod?: boolean
     status?: boolean
@@ -12720,6 +12823,8 @@ export namespace Prisma {
     rejectionReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    paymentFrequency?: boolean
+    loanNumber?: boolean
     approvedBy?: boolean | LoanApplication$approvedByArgs<ExtArgs>
     client?: boolean | ClientDefaultArgs<ExtArgs>
     reviewedBy?: boolean | LoanApplication$reviewedByArgs<ExtArgs>
@@ -12733,7 +12838,6 @@ export namespace Prisma {
     approvedAmount?: boolean
     qualificationType?: boolean
     interestRate?: boolean
-    paymentFrequency?: boolean
     startDate?: boolean
     repaymentPeriod?: boolean
     status?: boolean
@@ -12745,9 +12849,11 @@ export namespace Prisma {
     rejectionReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    paymentFrequency?: boolean
+    loanNumber?: boolean
   }
 
-  export type LoanApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "purpose" | "amountRequested" | "approvedAmount" | "qualificationType" | "interestRate" | "paymentFrequency" | "startDate" | "repaymentPeriod" | "status" | "appliedAt" | "reviewedAt" | "reviewedById" | "approvedAt" | "approvedById" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["loanApplication"]>
+  export type LoanApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "purpose" | "amountRequested" | "approvedAmount" | "qualificationType" | "interestRate" | "startDate" | "repaymentPeriod" | "status" | "appliedAt" | "reviewedAt" | "reviewedById" | "approvedAt" | "approvedById" | "rejectionReason" | "createdAt" | "updatedAt" | "paymentFrequency" | "loanNumber", ExtArgs["result"]["loanApplication"]>
   export type LoanApplicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     documents?: boolean | LoanApplication$documentsArgs<ExtArgs>
     guarantors?: boolean | LoanApplication$guarantorsArgs<ExtArgs>
@@ -12762,8 +12868,8 @@ export namespace Prisma {
     security?: boolean | LoanApplication$securityArgs<ExtArgs>
     npl?: boolean | LoanApplication$nplArgs<ExtArgs>
     recoveryRecords?: boolean | LoanApplication$recoveryRecordsArgs<ExtArgs>
-    repayments?: boolean | LoanApplication$repaymentsArgs<ExtArgs>
     repaymentSchedule?: boolean | LoanApplication$repaymentScheduleArgs<ExtArgs>
+    repayments?: boolean | LoanApplication$repaymentsArgs<ExtArgs>
     vehicleSecurity?: boolean | LoanApplication$vehicleSecurityArgs<ExtArgs>
     _count?: boolean | LoanApplicationCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -12794,8 +12900,8 @@ export namespace Prisma {
       security: Prisma.$LoanSecurityPayload<ExtArgs> | null
       npl: Prisma.$NonPerformingLoanPayload<ExtArgs> | null
       recoveryRecords: Prisma.$RecoveryRecordPayload<ExtArgs>[]
-      repayments: Prisma.$RepaymentPayload<ExtArgs>[]
       repaymentSchedule: Prisma.$RepaymentSchedulePayload<ExtArgs>[]
+      repayments: Prisma.$RepaymentPayload<ExtArgs>[]
       vehicleSecurity: Prisma.$VehicleSecurityPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -12806,7 +12912,6 @@ export namespace Prisma {
       approvedAmount: Prisma.Decimal | null
       qualificationType: $Enums.QualificationType | null
       interestRate: Prisma.Decimal
-      paymentFrequency: $Enums.PaymentFrequency
       startDate: Date | null
       repaymentPeriod: number
       status: $Enums.LoanApplicationStatus
@@ -12818,6 +12923,8 @@ export namespace Prisma {
       rejectionReason: string | null
       createdAt: Date
       updatedAt: Date
+      paymentFrequency: $Enums.PaymentFrequency
+      loanNumber: number
     }, ExtArgs["result"]["loanApplication"]>
     composites: {}
   }
@@ -13225,8 +13332,8 @@ export namespace Prisma {
     security<T extends LoanApplication$securityArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$securityArgs<ExtArgs>>): Prisma__LoanSecurityClient<$Result.GetResult<Prisma.$LoanSecurityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     npl<T extends LoanApplication$nplArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$nplArgs<ExtArgs>>): Prisma__NonPerformingLoanClient<$Result.GetResult<Prisma.$NonPerformingLoanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     recoveryRecords<T extends LoanApplication$recoveryRecordsArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$recoveryRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecoveryRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    repayments<T extends LoanApplication$repaymentsArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$repaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     repaymentSchedule<T extends LoanApplication$repaymentScheduleArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$repaymentScheduleArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    repayments<T extends LoanApplication$repaymentsArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$repaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     vehicleSecurity<T extends LoanApplication$vehicleSecurityArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplication$vehicleSecurityArgs<ExtArgs>>): Prisma__VehicleSecurityClient<$Result.GetResult<Prisma.$VehicleSecurityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -13264,7 +13371,6 @@ export namespace Prisma {
     readonly approvedAmount: FieldRef<"LoanApplication", 'Decimal'>
     readonly qualificationType: FieldRef<"LoanApplication", 'QualificationType'>
     readonly interestRate: FieldRef<"LoanApplication", 'Decimal'>
-    readonly paymentFrequency: FieldRef<"LoanApplication", 'PaymentFrequency'>
     readonly startDate: FieldRef<"LoanApplication", 'DateTime'>
     readonly repaymentPeriod: FieldRef<"LoanApplication", 'Int'>
     readonly status: FieldRef<"LoanApplication", 'LoanApplicationStatus'>
@@ -13276,6 +13382,8 @@ export namespace Prisma {
     readonly rejectionReason: FieldRef<"LoanApplication", 'String'>
     readonly createdAt: FieldRef<"LoanApplication", 'DateTime'>
     readonly updatedAt: FieldRef<"LoanApplication", 'DateTime'>
+    readonly paymentFrequency: FieldRef<"LoanApplication", 'PaymentFrequency'>
+    readonly loanNumber: FieldRef<"LoanApplication", 'Int'>
   }
     
 
@@ -13925,30 +14033,6 @@ export namespace Prisma {
   }
 
   /**
-   * LoanApplication.repayments
-   */
-  export type LoanApplication$repaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Repayment
-     */
-    select?: RepaymentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Repayment
-     */
-    omit?: RepaymentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RepaymentInclude<ExtArgs> | null
-    where?: RepaymentWhereInput
-    orderBy?: RepaymentOrderByWithRelationInput | RepaymentOrderByWithRelationInput[]
-    cursor?: RepaymentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RepaymentScalarFieldEnum | RepaymentScalarFieldEnum[]
-  }
-
-  /**
    * LoanApplication.repaymentSchedule
    */
   export type LoanApplication$repaymentScheduleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13970,6 +14054,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RepaymentScheduleScalarFieldEnum | RepaymentScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * LoanApplication.repayments
+   */
+  export type LoanApplication$repaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repayment
+     */
+    select?: RepaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repayment
+     */
+    omit?: RepaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepaymentInclude<ExtArgs> | null
+    where?: RepaymentWhereInput
+    orderBy?: RepaymentOrderByWithRelationInput | RepaymentOrderByWithRelationInput[]
+    cursor?: RepaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RepaymentScalarFieldEnum | RepaymentScalarFieldEnum[]
   }
 
   /**
@@ -25801,8 +25909,8 @@ export namespace Prisma {
     category?: boolean
     reference?: boolean
     createdAt?: boolean
-    loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
     scheduleItems?: boolean | Repayment$scheduleItemsArgs<ExtArgs>
+    loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
     _count?: boolean | RepaymentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["repayment"]>
 
@@ -25843,8 +25951,8 @@ export namespace Prisma {
 
   export type RepaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanId" | "amount" | "paymentMethod" | "paymentDate" | "category" | "reference" | "createdAt", ExtArgs["result"]["repayment"]>
   export type RepaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
     scheduleItems?: boolean | Repayment$scheduleItemsArgs<ExtArgs>
+    loan?: boolean | LoanApplicationDefaultArgs<ExtArgs>
     _count?: boolean | RepaymentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RepaymentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -25857,8 +25965,8 @@ export namespace Prisma {
   export type $RepaymentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Repayment"
     objects: {
-      loan: Prisma.$LoanApplicationPayload<ExtArgs>
       scheduleItems: Prisma.$RepaymentSchedulePayload<ExtArgs>[]
+      loan: Prisma.$LoanApplicationPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -26263,8 +26371,8 @@ export namespace Prisma {
    */
   export interface Prisma__RepaymentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    loan<T extends LoanApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplicationDefaultArgs<ExtArgs>>): Prisma__LoanApplicationClient<$Result.GetResult<Prisma.$LoanApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     scheduleItems<T extends Repayment$scheduleItemsArgs<ExtArgs> = {}>(args?: Subset<T, Repayment$scheduleItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepaymentSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    loan<T extends LoanApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LoanApplicationDefaultArgs<ExtArgs>>): Prisma__LoanApplicationClient<$Result.GetResult<Prisma.$LoanApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -41383,6 +41491,1079 @@ export namespace Prisma {
 
 
   /**
+   * Model Company
+   */
+
+  export type AggregateCompany = {
+    _count: CompanyCountAggregateOutputType | null
+    _min: CompanyMinAggregateOutputType | null
+    _max: CompanyMaxAggregateOutputType | null
+  }
+
+  export type CompanyMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    tagline: string | null
+    email: string | null
+    phone: string | null
+    address: string | null
+    city: string | null
+    country: string | null
+    logoUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompanyMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    tagline: string | null
+    email: string | null
+    phone: string | null
+    address: string | null
+    city: string | null
+    country: string | null
+    logoUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompanyCountAggregateOutputType = {
+    id: number
+    name: number
+    tagline: number
+    email: number
+    phone: number
+    address: number
+    city: number
+    country: number
+    logoUrl: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CompanyMinAggregateInputType = {
+    id?: true
+    name?: true
+    tagline?: true
+    email?: true
+    phone?: true
+    address?: true
+    city?: true
+    country?: true
+    logoUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompanyMaxAggregateInputType = {
+    id?: true
+    name?: true
+    tagline?: true
+    email?: true
+    phone?: true
+    address?: true
+    city?: true
+    country?: true
+    logoUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompanyCountAggregateInputType = {
+    id?: true
+    name?: true
+    tagline?: true
+    email?: true
+    phone?: true
+    address?: true
+    city?: true
+    country?: true
+    logoUrl?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CompanyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Company to aggregate.
+     */
+    where?: CompanyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Companies to fetch.
+     */
+    orderBy?: CompanyOrderByWithRelationInput | CompanyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompanyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Companies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Companies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Companies
+    **/
+    _count?: true | CompanyCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompanyMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompanyMaxAggregateInputType
+  }
+
+  export type GetCompanyAggregateType<T extends CompanyAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompany]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompany[P]>
+      : GetScalarType<T[P], AggregateCompany[P]>
+  }
+
+
+
+
+  export type CompanyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyWhereInput
+    orderBy?: CompanyOrderByWithAggregationInput | CompanyOrderByWithAggregationInput[]
+    by: CompanyScalarFieldEnum[] | CompanyScalarFieldEnum
+    having?: CompanyScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompanyCountAggregateInputType | true
+    _min?: CompanyMinAggregateInputType
+    _max?: CompanyMaxAggregateInputType
+  }
+
+  export type CompanyGroupByOutputType = {
+    id: string
+    name: string
+    tagline: string | null
+    email: string | null
+    phone: string | null
+    address: string | null
+    city: string | null
+    country: string | null
+    logoUrl: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CompanyCountAggregateOutputType | null
+    _min: CompanyMinAggregateOutputType | null
+    _max: CompanyMaxAggregateOutputType | null
+  }
+
+  type GetCompanyGroupByPayload<T extends CompanyGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompanyGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompanyGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompanyGroupByOutputType[P]>
+            : GetScalarType<T[P], CompanyGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompanySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    tagline?: boolean
+    email?: boolean
+    phone?: boolean
+    address?: boolean
+    city?: boolean
+    country?: boolean
+    logoUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["company"]>
+
+  export type CompanySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    tagline?: boolean
+    email?: boolean
+    phone?: boolean
+    address?: boolean
+    city?: boolean
+    country?: boolean
+    logoUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["company"]>
+
+  export type CompanySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    tagline?: boolean
+    email?: boolean
+    phone?: boolean
+    address?: boolean
+    city?: boolean
+    country?: boolean
+    logoUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["company"]>
+
+  export type CompanySelectScalar = {
+    id?: boolean
+    name?: boolean
+    tagline?: boolean
+    email?: boolean
+    phone?: boolean
+    address?: boolean
+    city?: boolean
+    country?: boolean
+    logoUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "tagline" | "email" | "phone" | "address" | "city" | "country" | "logoUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
+
+  export type $CompanyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Company"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      tagline: string | null
+      email: string | null
+      phone: string | null
+      address: string | null
+      city: string | null
+      country: string | null
+      logoUrl: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["company"]>
+    composites: {}
+  }
+
+  type CompanyGetPayload<S extends boolean | null | undefined | CompanyDefaultArgs> = $Result.GetResult<Prisma.$CompanyPayload, S>
+
+  type CompanyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompanyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompanyCountAggregateInputType | true
+    }
+
+  export interface CompanyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Company'], meta: { name: 'Company' } }
+    /**
+     * Find zero or one Company that matches the filter.
+     * @param {CompanyFindUniqueArgs} args - Arguments to find a Company
+     * @example
+     * // Get one Company
+     * const company = await prisma.company.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompanyFindUniqueArgs>(args: SelectSubset<T, CompanyFindUniqueArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Company that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompanyFindUniqueOrThrowArgs} args - Arguments to find a Company
+     * @example
+     * // Get one Company
+     * const company = await prisma.company.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompanyFindUniqueOrThrowArgs>(args: SelectSubset<T, CompanyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Company that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyFindFirstArgs} args - Arguments to find a Company
+     * @example
+     * // Get one Company
+     * const company = await prisma.company.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompanyFindFirstArgs>(args?: SelectSubset<T, CompanyFindFirstArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Company that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyFindFirstOrThrowArgs} args - Arguments to find a Company
+     * @example
+     * // Get one Company
+     * const company = await prisma.company.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompanyFindFirstOrThrowArgs>(args?: SelectSubset<T, CompanyFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Companies that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Companies
+     * const companies = await prisma.company.findMany()
+     * 
+     * // Get first 10 Companies
+     * const companies = await prisma.company.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const companyWithIdOnly = await prisma.company.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CompanyFindManyArgs>(args?: SelectSubset<T, CompanyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Company.
+     * @param {CompanyCreateArgs} args - Arguments to create a Company.
+     * @example
+     * // Create one Company
+     * const Company = await prisma.company.create({
+     *   data: {
+     *     // ... data to create a Company
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompanyCreateArgs>(args: SelectSubset<T, CompanyCreateArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Companies.
+     * @param {CompanyCreateManyArgs} args - Arguments to create many Companies.
+     * @example
+     * // Create many Companies
+     * const company = await prisma.company.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompanyCreateManyArgs>(args?: SelectSubset<T, CompanyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Companies and returns the data saved in the database.
+     * @param {CompanyCreateManyAndReturnArgs} args - Arguments to create many Companies.
+     * @example
+     * // Create many Companies
+     * const company = await prisma.company.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Companies and only return the `id`
+     * const companyWithIdOnly = await prisma.company.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompanyCreateManyAndReturnArgs>(args?: SelectSubset<T, CompanyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Company.
+     * @param {CompanyDeleteArgs} args - Arguments to delete one Company.
+     * @example
+     * // Delete one Company
+     * const Company = await prisma.company.delete({
+     *   where: {
+     *     // ... filter to delete one Company
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompanyDeleteArgs>(args: SelectSubset<T, CompanyDeleteArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Company.
+     * @param {CompanyUpdateArgs} args - Arguments to update one Company.
+     * @example
+     * // Update one Company
+     * const company = await prisma.company.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompanyUpdateArgs>(args: SelectSubset<T, CompanyUpdateArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Companies.
+     * @param {CompanyDeleteManyArgs} args - Arguments to filter Companies to delete.
+     * @example
+     * // Delete a few Companies
+     * const { count } = await prisma.company.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompanyDeleteManyArgs>(args?: SelectSubset<T, CompanyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Companies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Companies
+     * const company = await prisma.company.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompanyUpdateManyArgs>(args: SelectSubset<T, CompanyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Companies and returns the data updated in the database.
+     * @param {CompanyUpdateManyAndReturnArgs} args - Arguments to update many Companies.
+     * @example
+     * // Update many Companies
+     * const company = await prisma.company.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Companies and only return the `id`
+     * const companyWithIdOnly = await prisma.company.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompanyUpdateManyAndReturnArgs>(args: SelectSubset<T, CompanyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Company.
+     * @param {CompanyUpsertArgs} args - Arguments to update or create a Company.
+     * @example
+     * // Update or create a Company
+     * const company = await prisma.company.upsert({
+     *   create: {
+     *     // ... data to create a Company
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Company we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompanyUpsertArgs>(args: SelectSubset<T, CompanyUpsertArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Companies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyCountArgs} args - Arguments to filter Companies to count.
+     * @example
+     * // Count the number of Companies
+     * const count = await prisma.company.count({
+     *   where: {
+     *     // ... the filter for the Companies we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompanyCountArgs>(
+      args?: Subset<T, CompanyCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompanyCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Company.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompanyAggregateArgs>(args: Subset<T, CompanyAggregateArgs>): Prisma.PrismaPromise<GetCompanyAggregateType<T>>
+
+    /**
+     * Group by Company.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompanyGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompanyGroupByArgs['orderBy'] }
+        : { orderBy?: CompanyGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompanyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompanyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Company model
+   */
+  readonly fields: CompanyFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Company.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Company model
+   */
+  interface CompanyFieldRefs {
+    readonly id: FieldRef<"Company", 'String'>
+    readonly name: FieldRef<"Company", 'String'>
+    readonly tagline: FieldRef<"Company", 'String'>
+    readonly email: FieldRef<"Company", 'String'>
+    readonly phone: FieldRef<"Company", 'String'>
+    readonly address: FieldRef<"Company", 'String'>
+    readonly city: FieldRef<"Company", 'String'>
+    readonly country: FieldRef<"Company", 'String'>
+    readonly logoUrl: FieldRef<"Company", 'String'>
+    readonly createdAt: FieldRef<"Company", 'DateTime'>
+    readonly updatedAt: FieldRef<"Company", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Company findUnique
+   */
+  export type CompanyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Filter, which Company to fetch.
+     */
+    where: CompanyWhereUniqueInput
+  }
+
+  /**
+   * Company findUniqueOrThrow
+   */
+  export type CompanyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Filter, which Company to fetch.
+     */
+    where: CompanyWhereUniqueInput
+  }
+
+  /**
+   * Company findFirst
+   */
+  export type CompanyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Filter, which Company to fetch.
+     */
+    where?: CompanyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Companies to fetch.
+     */
+    orderBy?: CompanyOrderByWithRelationInput | CompanyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Companies.
+     */
+    cursor?: CompanyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Companies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Companies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Companies.
+     */
+    distinct?: CompanyScalarFieldEnum | CompanyScalarFieldEnum[]
+  }
+
+  /**
+   * Company findFirstOrThrow
+   */
+  export type CompanyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Filter, which Company to fetch.
+     */
+    where?: CompanyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Companies to fetch.
+     */
+    orderBy?: CompanyOrderByWithRelationInput | CompanyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Companies.
+     */
+    cursor?: CompanyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Companies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Companies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Companies.
+     */
+    distinct?: CompanyScalarFieldEnum | CompanyScalarFieldEnum[]
+  }
+
+  /**
+   * Company findMany
+   */
+  export type CompanyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Filter, which Companies to fetch.
+     */
+    where?: CompanyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Companies to fetch.
+     */
+    orderBy?: CompanyOrderByWithRelationInput | CompanyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Companies.
+     */
+    cursor?: CompanyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Companies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Companies.
+     */
+    skip?: number
+    distinct?: CompanyScalarFieldEnum | CompanyScalarFieldEnum[]
+  }
+
+  /**
+   * Company create
+   */
+  export type CompanyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Company.
+     */
+    data: XOR<CompanyCreateInput, CompanyUncheckedCreateInput>
+  }
+
+  /**
+   * Company createMany
+   */
+  export type CompanyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Companies.
+     */
+    data: CompanyCreateManyInput | CompanyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Company createManyAndReturn
+   */
+  export type CompanyCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * The data used to create many Companies.
+     */
+    data: CompanyCreateManyInput | CompanyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Company update
+   */
+  export type CompanyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Company.
+     */
+    data: XOR<CompanyUpdateInput, CompanyUncheckedUpdateInput>
+    /**
+     * Choose, which Company to update.
+     */
+    where: CompanyWhereUniqueInput
+  }
+
+  /**
+   * Company updateMany
+   */
+  export type CompanyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Companies.
+     */
+    data: XOR<CompanyUpdateManyMutationInput, CompanyUncheckedUpdateManyInput>
+    /**
+     * Filter which Companies to update
+     */
+    where?: CompanyWhereInput
+    /**
+     * Limit how many Companies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Company updateManyAndReturn
+   */
+  export type CompanyUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * The data used to update Companies.
+     */
+    data: XOR<CompanyUpdateManyMutationInput, CompanyUncheckedUpdateManyInput>
+    /**
+     * Filter which Companies to update
+     */
+    where?: CompanyWhereInput
+    /**
+     * Limit how many Companies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Company upsert
+   */
+  export type CompanyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Company to update in case it exists.
+     */
+    where: CompanyWhereUniqueInput
+    /**
+     * In case the Company found by the `where` argument doesn't exist, create a new Company with this data.
+     */
+    create: XOR<CompanyCreateInput, CompanyUncheckedCreateInput>
+    /**
+     * In case the Company was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompanyUpdateInput, CompanyUncheckedUpdateInput>
+  }
+
+  /**
+   * Company delete
+   */
+  export type CompanyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Filter which Company to delete.
+     */
+    where: CompanyWhereUniqueInput
+  }
+
+  /**
+   * Company deleteMany
+   */
+  export type CompanyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Companies to delete
+     */
+    where?: CompanyWhereInput
+    /**
+     * Limit how many Companies to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Company without action
+   */
+  export type CompanyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model SystemConfig
    */
 
@@ -46862,9 +48043,9 @@ export namespace Prisma {
     accountName: 'accountName',
     accountNumber: 'accountNumber',
     proofDocument: 'proofDocument',
-    proofDocumentUrl: 'proofDocumentUrl',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    proofDocumentUrl: 'proofDocumentUrl'
   };
 
   export type BankDetailScalarFieldEnum = (typeof BankDetailScalarFieldEnum)[keyof typeof BankDetailScalarFieldEnum]
@@ -46878,7 +48059,6 @@ export namespace Prisma {
     approvedAmount: 'approvedAmount',
     qualificationType: 'qualificationType',
     interestRate: 'interestRate',
-    paymentFrequency: 'paymentFrequency',
     startDate: 'startDate',
     repaymentPeriod: 'repaymentPeriod',
     status: 'status',
@@ -46889,7 +48069,9 @@ export namespace Prisma {
     approvedById: 'approvedById',
     rejectionReason: 'rejectionReason',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    paymentFrequency: 'paymentFrequency',
+    loanNumber: 'loanNumber'
   };
 
   export type LoanApplicationScalarFieldEnum = (typeof LoanApplicationScalarFieldEnum)[keyof typeof LoanApplicationScalarFieldEnum]
@@ -47251,6 +48433,23 @@ export namespace Prisma {
   export type TransactionMatrixScalarFieldEnum = (typeof TransactionMatrixScalarFieldEnum)[keyof typeof TransactionMatrixScalarFieldEnum]
 
 
+  export const CompanyScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    tagline: 'tagline',
+    email: 'email',
+    phone: 'phone',
+    address: 'address',
+    city: 'city',
+    country: 'country',
+    logoUrl: 'logoUrl',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
+
+
   export const SystemConfigScalarFieldEnum: {
     id: 'id',
     key: 'key',
@@ -47517,20 +48716,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'PaymentFrequency'
-   */
-  export type EnumPaymentFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentFrequency'>
-    
-
-
-  /**
-   * Reference to a field of type 'PaymentFrequency[]'
-   */
-  export type ListEnumPaymentFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentFrequency[]'>
-    
-
-
-  /**
    * Reference to a field of type 'LoanApplicationStatus'
    */
   export type EnumLoanApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoanApplicationStatus'>
@@ -47541,6 +48726,20 @@ export namespace Prisma {
    * Reference to a field of type 'LoanApplicationStatus[]'
    */
   export type ListEnumLoanApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoanApplicationStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentFrequency'
+   */
+  export type EnumPaymentFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentFrequency'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentFrequency[]'
+   */
+  export type ListEnumPaymentFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentFrequency[]'>
     
 
 
@@ -47785,7 +48984,6 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     emailVerified?: BoolNullableFilter<"User"> | boolean | null
     name?: StringFilter<"User"> | string
-    sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     auditLogs?: AuditLogListRelationFilter
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
@@ -47793,6 +48991,7 @@ export namespace Prisma {
     approvedLoans?: LoanApplicationListRelationFilter
     reviewedLoans?: LoanApplicationListRelationFilter
     recoveryAgent?: XOR<RecoveryAgentNullableScalarRelationFilter, RecoveryAgentWhereInput> | null
+    sessions?: SessionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -47806,7 +49005,6 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     emailVerified?: SortOrderInput | SortOrder
     name?: SortOrder
-    sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
     auditLogs?: AuditLogOrderByRelationAggregateInput
     client?: ClientOrderByWithRelationInput
@@ -47814,6 +49012,7 @@ export namespace Prisma {
     approvedLoans?: LoanApplicationOrderByRelationAggregateInput
     reviewedLoans?: LoanApplicationOrderByRelationAggregateInput
     recoveryAgent?: RecoveryAgentOrderByWithRelationInput
+    sessions?: SessionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -47830,7 +49029,6 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     emailVerified?: BoolNullableFilter<"User"> | boolean | null
     name?: StringFilter<"User"> | string
-    sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     auditLogs?: AuditLogListRelationFilter
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
@@ -47838,6 +49036,7 @@ export namespace Prisma {
     approvedLoans?: LoanApplicationListRelationFilter
     reviewedLoans?: LoanApplicationListRelationFilter
     recoveryAgent?: XOR<RecoveryAgentNullableScalarRelationFilter, RecoveryAgentWhereInput> | null
+    sessions?: SessionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -48341,9 +49540,9 @@ export namespace Prisma {
     accountName?: StringFilter<"BankDetail"> | string
     accountNumber?: StringFilter<"BankDetail"> | string
     proofDocument?: StringNullableFilter<"BankDetail"> | string | null
-    proofDocumentUrl?: StringNullableFilter<"BankDetail"> | string | null
     createdAt?: DateTimeFilter<"BankDetail"> | Date | string
     updatedAt?: DateTimeFilter<"BankDetail"> | Date | string
+    proofDocumentUrl?: StringNullableFilter<"BankDetail"> | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
   }
 
@@ -48355,9 +49554,9 @@ export namespace Prisma {
     accountName?: SortOrder
     accountNumber?: SortOrder
     proofDocument?: SortOrderInput | SortOrder
-    proofDocumentUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    proofDocumentUrl?: SortOrderInput | SortOrder
     client?: ClientOrderByWithRelationInput
   }
 
@@ -48372,9 +49571,9 @@ export namespace Prisma {
     accountName?: StringFilter<"BankDetail"> | string
     accountNumber?: StringFilter<"BankDetail"> | string
     proofDocument?: StringNullableFilter<"BankDetail"> | string | null
-    proofDocumentUrl?: StringNullableFilter<"BankDetail"> | string | null
     createdAt?: DateTimeFilter<"BankDetail"> | Date | string
     updatedAt?: DateTimeFilter<"BankDetail"> | Date | string
+    proofDocumentUrl?: StringNullableFilter<"BankDetail"> | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
   }, "id">
 
@@ -48386,9 +49585,9 @@ export namespace Prisma {
     accountName?: SortOrder
     accountNumber?: SortOrder
     proofDocument?: SortOrderInput | SortOrder
-    proofDocumentUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    proofDocumentUrl?: SortOrderInput | SortOrder
     _count?: BankDetailCountOrderByAggregateInput
     _max?: BankDetailMaxOrderByAggregateInput
     _min?: BankDetailMinOrderByAggregateInput
@@ -48405,9 +49604,9 @@ export namespace Prisma {
     accountName?: StringWithAggregatesFilter<"BankDetail"> | string
     accountNumber?: StringWithAggregatesFilter<"BankDetail"> | string
     proofDocument?: StringNullableWithAggregatesFilter<"BankDetail"> | string | null
-    proofDocumentUrl?: StringNullableWithAggregatesFilter<"BankDetail"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BankDetail"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"BankDetail"> | Date | string
+    proofDocumentUrl?: StringNullableWithAggregatesFilter<"BankDetail"> | string | null
   }
 
   export type LoanApplicationWhereInput = {
@@ -48421,7 +49620,6 @@ export namespace Prisma {
     approvedAmount?: DecimalNullableFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string | null
     qualificationType?: EnumQualificationTypeNullableFilter<"LoanApplication"> | $Enums.QualificationType | null
     interestRate?: DecimalFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFilter<"LoanApplication"> | $Enums.PaymentFrequency
     startDate?: DateTimeNullableFilter<"LoanApplication"> | Date | string | null
     repaymentPeriod?: IntFilter<"LoanApplication"> | number
     status?: EnumLoanApplicationStatusFilter<"LoanApplication"> | $Enums.LoanApplicationStatus
@@ -48433,6 +49631,8 @@ export namespace Prisma {
     rejectionReason?: StringNullableFilter<"LoanApplication"> | string | null
     createdAt?: DateTimeFilter<"LoanApplication"> | Date | string
     updatedAt?: DateTimeFilter<"LoanApplication"> | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFilter<"LoanApplication"> | $Enums.PaymentFrequency
+    loanNumber?: IntFilter<"LoanApplication"> | number
     documents?: DocumentListRelationFilter
     guarantors?: GuarantorListRelationFilter
     investorAllocations?: InvestorAllocationListRelationFilter
@@ -48446,8 +49646,8 @@ export namespace Prisma {
     security?: XOR<LoanSecurityNullableScalarRelationFilter, LoanSecurityWhereInput> | null
     npl?: XOR<NonPerformingLoanNullableScalarRelationFilter, NonPerformingLoanWhereInput> | null
     recoveryRecords?: RecoveryRecordListRelationFilter
-    repayments?: RepaymentListRelationFilter
     repaymentSchedule?: RepaymentScheduleListRelationFilter
+    repayments?: RepaymentListRelationFilter
     vehicleSecurity?: XOR<VehicleSecurityNullableScalarRelationFilter, VehicleSecurityWhereInput> | null
   }
 
@@ -48459,7 +49659,6 @@ export namespace Prisma {
     approvedAmount?: SortOrderInput | SortOrder
     qualificationType?: SortOrderInput | SortOrder
     interestRate?: SortOrder
-    paymentFrequency?: SortOrder
     startDate?: SortOrderInput | SortOrder
     repaymentPeriod?: SortOrder
     status?: SortOrder
@@ -48471,6 +49670,8 @@ export namespace Prisma {
     rejectionReason?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    paymentFrequency?: SortOrder
+    loanNumber?: SortOrder
     documents?: DocumentOrderByRelationAggregateInput
     guarantors?: GuarantorOrderByRelationAggregateInput
     investorAllocations?: InvestorAllocationOrderByRelationAggregateInput
@@ -48484,13 +49685,14 @@ export namespace Prisma {
     security?: LoanSecurityOrderByWithRelationInput
     npl?: NonPerformingLoanOrderByWithRelationInput
     recoveryRecords?: RecoveryRecordOrderByRelationAggregateInput
-    repayments?: RepaymentOrderByRelationAggregateInput
     repaymentSchedule?: RepaymentScheduleOrderByRelationAggregateInput
+    repayments?: RepaymentOrderByRelationAggregateInput
     vehicleSecurity?: VehicleSecurityOrderByWithRelationInput
   }
 
   export type LoanApplicationWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    loanNumber?: number
     AND?: LoanApplicationWhereInput | LoanApplicationWhereInput[]
     OR?: LoanApplicationWhereInput[]
     NOT?: LoanApplicationWhereInput | LoanApplicationWhereInput[]
@@ -48500,7 +49702,6 @@ export namespace Prisma {
     approvedAmount?: DecimalNullableFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string | null
     qualificationType?: EnumQualificationTypeNullableFilter<"LoanApplication"> | $Enums.QualificationType | null
     interestRate?: DecimalFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFilter<"LoanApplication"> | $Enums.PaymentFrequency
     startDate?: DateTimeNullableFilter<"LoanApplication"> | Date | string | null
     repaymentPeriod?: IntFilter<"LoanApplication"> | number
     status?: EnumLoanApplicationStatusFilter<"LoanApplication"> | $Enums.LoanApplicationStatus
@@ -48512,6 +49713,7 @@ export namespace Prisma {
     rejectionReason?: StringNullableFilter<"LoanApplication"> | string | null
     createdAt?: DateTimeFilter<"LoanApplication"> | Date | string
     updatedAt?: DateTimeFilter<"LoanApplication"> | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFilter<"LoanApplication"> | $Enums.PaymentFrequency
     documents?: DocumentListRelationFilter
     guarantors?: GuarantorListRelationFilter
     investorAllocations?: InvestorAllocationListRelationFilter
@@ -48525,10 +49727,10 @@ export namespace Prisma {
     security?: XOR<LoanSecurityNullableScalarRelationFilter, LoanSecurityWhereInput> | null
     npl?: XOR<NonPerformingLoanNullableScalarRelationFilter, NonPerformingLoanWhereInput> | null
     recoveryRecords?: RecoveryRecordListRelationFilter
-    repayments?: RepaymentListRelationFilter
     repaymentSchedule?: RepaymentScheduleListRelationFilter
+    repayments?: RepaymentListRelationFilter
     vehicleSecurity?: XOR<VehicleSecurityNullableScalarRelationFilter, VehicleSecurityWhereInput> | null
-  }, "id">
+  }, "id" | "loanNumber">
 
   export type LoanApplicationOrderByWithAggregationInput = {
     id?: SortOrder
@@ -48538,7 +49740,6 @@ export namespace Prisma {
     approvedAmount?: SortOrderInput | SortOrder
     qualificationType?: SortOrderInput | SortOrder
     interestRate?: SortOrder
-    paymentFrequency?: SortOrder
     startDate?: SortOrderInput | SortOrder
     repaymentPeriod?: SortOrder
     status?: SortOrder
@@ -48550,6 +49751,8 @@ export namespace Prisma {
     rejectionReason?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    paymentFrequency?: SortOrder
+    loanNumber?: SortOrder
     _count?: LoanApplicationCountOrderByAggregateInput
     _avg?: LoanApplicationAvgOrderByAggregateInput
     _max?: LoanApplicationMaxOrderByAggregateInput
@@ -48568,7 +49771,6 @@ export namespace Prisma {
     approvedAmount?: DecimalNullableWithAggregatesFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string | null
     qualificationType?: EnumQualificationTypeNullableWithAggregatesFilter<"LoanApplication"> | $Enums.QualificationType | null
     interestRate?: DecimalWithAggregatesFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyWithAggregatesFilter<"LoanApplication"> | $Enums.PaymentFrequency
     startDate?: DateTimeNullableWithAggregatesFilter<"LoanApplication"> | Date | string | null
     repaymentPeriod?: IntWithAggregatesFilter<"LoanApplication"> | number
     status?: EnumLoanApplicationStatusWithAggregatesFilter<"LoanApplication"> | $Enums.LoanApplicationStatus
@@ -48580,6 +49782,8 @@ export namespace Prisma {
     rejectionReason?: StringNullableWithAggregatesFilter<"LoanApplication"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"LoanApplication"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"LoanApplication"> | Date | string
+    paymentFrequency?: EnumPaymentFrequencyWithAggregatesFilter<"LoanApplication"> | $Enums.PaymentFrequency
+    loanNumber?: IntWithAggregatesFilter<"LoanApplication"> | number
   }
 
   export type LoanQualificationWhereInput = {
@@ -49390,8 +50594,8 @@ export namespace Prisma {
     category?: EnumRepaymentCategoryFilter<"Repayment"> | $Enums.RepaymentCategory
     reference?: StringNullableFilter<"Repayment"> | string | null
     createdAt?: DateTimeFilter<"Repayment"> | Date | string
-    loan?: XOR<LoanApplicationScalarRelationFilter, LoanApplicationWhereInput>
     scheduleItems?: RepaymentScheduleListRelationFilter
+    loan?: XOR<LoanApplicationScalarRelationFilter, LoanApplicationWhereInput>
   }
 
   export type RepaymentOrderByWithRelationInput = {
@@ -49403,8 +50607,8 @@ export namespace Prisma {
     category?: SortOrder
     reference?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    loan?: LoanApplicationOrderByWithRelationInput
     scheduleItems?: RepaymentScheduleOrderByRelationAggregateInput
+    loan?: LoanApplicationOrderByWithRelationInput
   }
 
   export type RepaymentWhereUniqueInput = Prisma.AtLeast<{
@@ -49419,8 +50623,8 @@ export namespace Prisma {
     category?: EnumRepaymentCategoryFilter<"Repayment"> | $Enums.RepaymentCategory
     reference?: StringNullableFilter<"Repayment"> | string | null
     createdAt?: DateTimeFilter<"Repayment"> | Date | string
-    loan?: XOR<LoanApplicationScalarRelationFilter, LoanApplicationWhereInput>
     scheduleItems?: RepaymentScheduleListRelationFilter
+    loan?: XOR<LoanApplicationScalarRelationFilter, LoanApplicationWhereInput>
   }, "id">
 
   export type RepaymentOrderByWithAggregationInput = {
@@ -50425,6 +51629,88 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"TransactionMatrix"> | Date | string
   }
 
+  export type CompanyWhereInput = {
+    AND?: CompanyWhereInput | CompanyWhereInput[]
+    OR?: CompanyWhereInput[]
+    NOT?: CompanyWhereInput | CompanyWhereInput[]
+    id?: StringFilter<"Company"> | string
+    name?: StringFilter<"Company"> | string
+    tagline?: StringNullableFilter<"Company"> | string | null
+    email?: StringNullableFilter<"Company"> | string | null
+    phone?: StringNullableFilter<"Company"> | string | null
+    address?: StringNullableFilter<"Company"> | string | null
+    city?: StringNullableFilter<"Company"> | string | null
+    country?: StringNullableFilter<"Company"> | string | null
+    logoUrl?: StringNullableFilter<"Company"> | string | null
+    createdAt?: DateTimeFilter<"Company"> | Date | string
+    updatedAt?: DateTimeFilter<"Company"> | Date | string
+  }
+
+  export type CompanyOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    tagline?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    logoUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanyWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CompanyWhereInput | CompanyWhereInput[]
+    OR?: CompanyWhereInput[]
+    NOT?: CompanyWhereInput | CompanyWhereInput[]
+    name?: StringFilter<"Company"> | string
+    tagline?: StringNullableFilter<"Company"> | string | null
+    email?: StringNullableFilter<"Company"> | string | null
+    phone?: StringNullableFilter<"Company"> | string | null
+    address?: StringNullableFilter<"Company"> | string | null
+    city?: StringNullableFilter<"Company"> | string | null
+    country?: StringNullableFilter<"Company"> | string | null
+    logoUrl?: StringNullableFilter<"Company"> | string | null
+    createdAt?: DateTimeFilter<"Company"> | Date | string
+    updatedAt?: DateTimeFilter<"Company"> | Date | string
+  }, "id">
+
+  export type CompanyOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    tagline?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    logoUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CompanyCountOrderByAggregateInput
+    _max?: CompanyMaxOrderByAggregateInput
+    _min?: CompanyMinOrderByAggregateInput
+  }
+
+  export type CompanyScalarWhereWithAggregatesInput = {
+    AND?: CompanyScalarWhereWithAggregatesInput | CompanyScalarWhereWithAggregatesInput[]
+    OR?: CompanyScalarWhereWithAggregatesInput[]
+    NOT?: CompanyScalarWhereWithAggregatesInput | CompanyScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Company"> | string
+    name?: StringWithAggregatesFilter<"Company"> | string
+    tagline?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    email?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    address?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    city?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    country?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    logoUrl?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Company"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Company"> | Date | string
+  }
+
   export type SystemConfigWhereInput = {
     AND?: SystemConfigWhereInput | SystemConfigWhereInput[]
     OR?: SystemConfigWhereInput[]
@@ -50791,7 +52077,6 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
@@ -50799,6 +52084,7 @@ export namespace Prisma {
     approvedLoans?: LoanApplicationCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -50812,7 +52098,6 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
@@ -50820,6 +52105,7 @@ export namespace Prisma {
     approvedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -50833,7 +52119,6 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
@@ -50841,6 +52126,7 @@ export namespace Prisma {
     approvedLoans?: LoanApplicationUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -50854,7 +52140,6 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
@@ -50862,6 +52147,7 @@ export namespace Prisma {
     approvedLoans?: LoanApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -51456,9 +52742,9 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
-    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofDocumentUrl?: string | null
     client: ClientCreateNestedOneWithoutBankDetailsInput
   }
 
@@ -51470,9 +52756,9 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
-    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofDocumentUrl?: string | null
   }
 
   export type BankDetailUpdateInput = {
@@ -51482,9 +52768,9 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
-    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutBankDetailsNestedInput
   }
 
@@ -51496,9 +52782,9 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
-    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BankDetailCreateManyInput = {
@@ -51509,9 +52795,9 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
-    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofDocumentUrl?: string | null
   }
 
   export type BankDetailUpdateManyMutationInput = {
@@ -51521,9 +52807,9 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
-    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BankDetailUncheckedUpdateManyInput = {
@@ -51534,9 +52820,9 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
-    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type LoanApplicationCreateInput = {
@@ -51546,7 +52832,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -51556,6 +52841,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -51569,8 +52856,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -51582,7 +52869,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -51594,6 +52880,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -51604,8 +52892,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -51616,7 +52904,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -51626,6 +52913,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -51639,8 +52927,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -51652,7 +52940,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -51664,6 +52951,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -51674,8 +52963,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -51687,7 +52976,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -51699,6 +52987,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
   }
 
   export type LoanApplicationUpdateManyMutationInput = {
@@ -51708,7 +52998,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -51718,6 +53007,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   }
 
   export type LoanApplicationUncheckedUpdateManyInput = {
@@ -51728,7 +53018,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -51740,6 +53029,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
   }
 
   export type LoanQualificationCreateInput = {
@@ -52611,8 +53902,8 @@ export namespace Prisma {
     category: $Enums.RepaymentCategory
     reference?: string | null
     createdAt?: Date | string
-    loan: LoanApplicationCreateNestedOneWithoutRepaymentsInput
     scheduleItems?: RepaymentScheduleCreateNestedManyWithoutRepaymentInput
+    loan: LoanApplicationCreateNestedOneWithoutRepaymentsInput
   }
 
   export type RepaymentUncheckedCreateInput = {
@@ -52635,8 +53926,8 @@ export namespace Prisma {
     category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loan?: LoanApplicationUpdateOneRequiredWithoutRepaymentsNestedInput
     scheduleItems?: RepaymentScheduleUpdateManyWithoutRepaymentNestedInput
+    loan?: LoanApplicationUpdateOneRequiredWithoutRepaymentsNestedInput
   }
 
   export type RepaymentUncheckedUpdateInput = {
@@ -53732,6 +55023,104 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CompanyCreateInput = {
+    id?: string
+    name: string
+    tagline?: string | null
+    email?: string | null
+    phone?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    logoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanyUncheckedCreateInput = {
+    id?: string
+    name: string
+    tagline?: string | null
+    email?: string | null
+    phone?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    logoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanyUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tagline?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tagline?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyCreateManyInput = {
+    id?: string
+    name: string
+    tagline?: string | null
+    email?: string | null
+    phone?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    logoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanyUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tagline?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tagline?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SystemConfigCreateInput = {
     id?: string
     key: string
@@ -54187,12 +55576,6 @@ export namespace Prisma {
     not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
-  export type SessionListRelationFilter = {
-    every?: SessionWhereInput
-    some?: SessionWhereInput
-    none?: SessionWhereInput
-  }
-
   export type AccountListRelationFilter = {
     every?: AccountWhereInput
     some?: AccountWhereInput
@@ -54226,13 +55609,15 @@ export namespace Prisma {
     isNot?: RecoveryAgentWhereInput | null
   }
 
+  export type SessionListRelationFilter = {
+    every?: SessionWhereInput
+    some?: SessionWhereInput
+    none?: SessionWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
-  }
-
-  export type SessionOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type AccountOrderByRelationAggregateInput = {
@@ -54244,6 +55629,10 @@ export namespace Prisma {
   }
 
   export type LoanApplicationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -54835,9 +56224,9 @@ export namespace Prisma {
     accountName?: SortOrder
     accountNumber?: SortOrder
     proofDocument?: SortOrder
-    proofDocumentUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    proofDocumentUrl?: SortOrder
   }
 
   export type BankDetailMaxOrderByAggregateInput = {
@@ -54848,9 +56237,9 @@ export namespace Prisma {
     accountName?: SortOrder
     accountNumber?: SortOrder
     proofDocument?: SortOrder
-    proofDocumentUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    proofDocumentUrl?: SortOrder
   }
 
   export type BankDetailMinOrderByAggregateInput = {
@@ -54861,9 +56250,9 @@ export namespace Prisma {
     accountName?: SortOrder
     accountNumber?: SortOrder
     proofDocument?: SortOrder
-    proofDocumentUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    proofDocumentUrl?: SortOrder
   }
 
   export type DecimalNullableFilter<$PrismaModel = never> = {
@@ -54884,18 +56273,18 @@ export namespace Prisma {
     not?: NestedEnumQualificationTypeNullableFilter<$PrismaModel> | $Enums.QualificationType | null
   }
 
-  export type EnumPaymentFrequencyFilter<$PrismaModel = never> = {
-    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    not?: NestedEnumPaymentFrequencyFilter<$PrismaModel> | $Enums.PaymentFrequency
-  }
-
   export type EnumLoanApplicationStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.LoanApplicationStatus | EnumLoanApplicationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.LoanApplicationStatus[] | ListEnumLoanApplicationStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.LoanApplicationStatus[] | ListEnumLoanApplicationStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumLoanApplicationStatusFilter<$PrismaModel> | $Enums.LoanApplicationStatus
+  }
+
+  export type EnumPaymentFrequencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentFrequencyFilter<$PrismaModel> | $Enums.PaymentFrequency
   }
 
   export type GuarantorListRelationFilter = {
@@ -54941,16 +56330,16 @@ export namespace Prisma {
     none?: RecoveryRecordWhereInput
   }
 
-  export type RepaymentListRelationFilter = {
-    every?: RepaymentWhereInput
-    some?: RepaymentWhereInput
-    none?: RepaymentWhereInput
-  }
-
   export type RepaymentScheduleListRelationFilter = {
     every?: RepaymentScheduleWhereInput
     some?: RepaymentScheduleWhereInput
     none?: RepaymentScheduleWhereInput
+  }
+
+  export type RepaymentListRelationFilter = {
+    every?: RepaymentWhereInput
+    some?: RepaymentWhereInput
+    none?: RepaymentWhereInput
   }
 
   export type VehicleSecurityNullableScalarRelationFilter = {
@@ -54970,11 +56359,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type RepaymentOrderByRelationAggregateInput = {
+  export type RepaymentScheduleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type RepaymentScheduleOrderByRelationAggregateInput = {
+  export type RepaymentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -54986,7 +56375,6 @@ export namespace Prisma {
     approvedAmount?: SortOrder
     qualificationType?: SortOrder
     interestRate?: SortOrder
-    paymentFrequency?: SortOrder
     startDate?: SortOrder
     repaymentPeriod?: SortOrder
     status?: SortOrder
@@ -54998,6 +56386,8 @@ export namespace Prisma {
     rejectionReason?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    paymentFrequency?: SortOrder
+    loanNumber?: SortOrder
   }
 
   export type LoanApplicationAvgOrderByAggregateInput = {
@@ -55005,6 +56395,7 @@ export namespace Prisma {
     approvedAmount?: SortOrder
     interestRate?: SortOrder
     repaymentPeriod?: SortOrder
+    loanNumber?: SortOrder
   }
 
   export type LoanApplicationMaxOrderByAggregateInput = {
@@ -55015,7 +56406,6 @@ export namespace Prisma {
     approvedAmount?: SortOrder
     qualificationType?: SortOrder
     interestRate?: SortOrder
-    paymentFrequency?: SortOrder
     startDate?: SortOrder
     repaymentPeriod?: SortOrder
     status?: SortOrder
@@ -55027,6 +56417,8 @@ export namespace Prisma {
     rejectionReason?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    paymentFrequency?: SortOrder
+    loanNumber?: SortOrder
   }
 
   export type LoanApplicationMinOrderByAggregateInput = {
@@ -55037,7 +56429,6 @@ export namespace Prisma {
     approvedAmount?: SortOrder
     qualificationType?: SortOrder
     interestRate?: SortOrder
-    paymentFrequency?: SortOrder
     startDate?: SortOrder
     repaymentPeriod?: SortOrder
     status?: SortOrder
@@ -55049,6 +56440,8 @@ export namespace Prisma {
     rejectionReason?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    paymentFrequency?: SortOrder
+    loanNumber?: SortOrder
   }
 
   export type LoanApplicationSumOrderByAggregateInput = {
@@ -55056,6 +56449,7 @@ export namespace Prisma {
     approvedAmount?: SortOrder
     interestRate?: SortOrder
     repaymentPeriod?: SortOrder
+    loanNumber?: SortOrder
   }
 
   export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -55084,16 +56478,6 @@ export namespace Prisma {
     _max?: NestedEnumQualificationTypeNullableFilter<$PrismaModel>
   }
 
-  export type EnumPaymentFrequencyWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    not?: NestedEnumPaymentFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.PaymentFrequency
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
-    _max?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
-  }
-
   export type EnumLoanApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.LoanApplicationStatus | EnumLoanApplicationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.LoanApplicationStatus[] | ListEnumLoanApplicationStatusFieldRefInput<$PrismaModel>
@@ -55102,6 +56486,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLoanApplicationStatusFilter<$PrismaModel>
     _max?: NestedEnumLoanApplicationStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPaymentFrequencyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.PaymentFrequency
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
+    _max?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
   }
 
   export type EnumQualificationTypeFilter<$PrismaModel = never> = {
@@ -56541,6 +57935,48 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type CompanyCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    tagline?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    country?: SortOrder
+    logoUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanyMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    tagline?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    country?: SortOrder
+    logoUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanyMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    tagline?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    country?: SortOrder
+    logoUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type SystemConfigCountOrderByAggregateInput = {
     id?: SortOrder
     key?: SortOrder
@@ -56735,13 +58171,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type SessionCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-  }
-
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -56788,7 +58217,7 @@ export namespace Prisma {
     connect?: RecoveryAgentWhereUniqueInput
   }
 
-  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
+  export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
     createMany?: SessionCreateManyUserInputEnvelope
@@ -56841,6 +58270,13 @@ export namespace Prisma {
     connect?: RecoveryAgentWhereUniqueInput
   }
 
+  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -56863,20 +58299,6 @@ export namespace Prisma {
 
   export type NullableBoolFieldUpdateOperationsInput = {
     set?: boolean | null
-  }
-
-  export type SessionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type AccountUpdateManyWithoutUserNestedInput = {
@@ -56965,7 +58387,7 @@ export namespace Prisma {
     update?: XOR<XOR<RecoveryAgentUpdateToOneWithWhereWithoutUserInput, RecoveryAgentUpdateWithoutUserInput>, RecoveryAgentUncheckedUpdateWithoutUserInput>
   }
 
-  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
+  export type SessionUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
     upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
@@ -57063,6 +58485,20 @@ export namespace Prisma {
     delete?: RecoveryAgentWhereInput | boolean
     connect?: RecoveryAgentWhereUniqueInput
     update?: XOR<XOR<RecoveryAgentUpdateToOneWithWhereWithoutUserInput, RecoveryAgentUpdateWithoutUserInput>, RecoveryAgentUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type BankDetailCreateNestedManyWithoutClientInput = {
@@ -57592,18 +59028,18 @@ export namespace Prisma {
     connect?: RecoveryRecordWhereUniqueInput | RecoveryRecordWhereUniqueInput[]
   }
 
-  export type RepaymentCreateNestedManyWithoutLoanInput = {
-    create?: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput> | RepaymentCreateWithoutLoanInput[] | RepaymentUncheckedCreateWithoutLoanInput[]
-    connectOrCreate?: RepaymentCreateOrConnectWithoutLoanInput | RepaymentCreateOrConnectWithoutLoanInput[]
-    createMany?: RepaymentCreateManyLoanInputEnvelope
-    connect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
-  }
-
   export type RepaymentScheduleCreateNestedManyWithoutLoanInput = {
     create?: XOR<RepaymentScheduleCreateWithoutLoanInput, RepaymentScheduleUncheckedCreateWithoutLoanInput> | RepaymentScheduleCreateWithoutLoanInput[] | RepaymentScheduleUncheckedCreateWithoutLoanInput[]
     connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutLoanInput | RepaymentScheduleCreateOrConnectWithoutLoanInput[]
     createMany?: RepaymentScheduleCreateManyLoanInputEnvelope
     connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+  }
+
+  export type RepaymentCreateNestedManyWithoutLoanInput = {
+    create?: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput> | RepaymentCreateWithoutLoanInput[] | RepaymentUncheckedCreateWithoutLoanInput[]
+    connectOrCreate?: RepaymentCreateOrConnectWithoutLoanInput | RepaymentCreateOrConnectWithoutLoanInput[]
+    createMany?: RepaymentCreateManyLoanInputEnvelope
+    connect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
   }
 
   export type VehicleSecurityCreateNestedOneWithoutLoanInput = {
@@ -57677,18 +59113,18 @@ export namespace Prisma {
     connect?: RecoveryRecordWhereUniqueInput | RecoveryRecordWhereUniqueInput[]
   }
 
-  export type RepaymentUncheckedCreateNestedManyWithoutLoanInput = {
-    create?: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput> | RepaymentCreateWithoutLoanInput[] | RepaymentUncheckedCreateWithoutLoanInput[]
-    connectOrCreate?: RepaymentCreateOrConnectWithoutLoanInput | RepaymentCreateOrConnectWithoutLoanInput[]
-    createMany?: RepaymentCreateManyLoanInputEnvelope
-    connect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
-  }
-
   export type RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput = {
     create?: XOR<RepaymentScheduleCreateWithoutLoanInput, RepaymentScheduleUncheckedCreateWithoutLoanInput> | RepaymentScheduleCreateWithoutLoanInput[] | RepaymentScheduleUncheckedCreateWithoutLoanInput[]
     connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutLoanInput | RepaymentScheduleCreateOrConnectWithoutLoanInput[]
     createMany?: RepaymentScheduleCreateManyLoanInputEnvelope
     connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+  }
+
+  export type RepaymentUncheckedCreateNestedManyWithoutLoanInput = {
+    create?: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput> | RepaymentCreateWithoutLoanInput[] | RepaymentUncheckedCreateWithoutLoanInput[]
+    connectOrCreate?: RepaymentCreateOrConnectWithoutLoanInput | RepaymentCreateOrConnectWithoutLoanInput[]
+    createMany?: RepaymentCreateManyLoanInputEnvelope
+    connect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
   }
 
   export type VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput = {
@@ -57709,12 +59145,12 @@ export namespace Prisma {
     set?: $Enums.QualificationType | null
   }
 
-  export type EnumPaymentFrequencyFieldUpdateOperationsInput = {
-    set?: $Enums.PaymentFrequency
-  }
-
   export type EnumLoanApplicationStatusFieldUpdateOperationsInput = {
     set?: $Enums.LoanApplicationStatus
+  }
+
+  export type EnumPaymentFrequencyFieldUpdateOperationsInput = {
+    set?: $Enums.PaymentFrequency
   }
 
   export type DocumentUpdateManyWithoutLoanNestedInput = {
@@ -57865,20 +59301,6 @@ export namespace Prisma {
     deleteMany?: RecoveryRecordScalarWhereInput | RecoveryRecordScalarWhereInput[]
   }
 
-  export type RepaymentUpdateManyWithoutLoanNestedInput = {
-    create?: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput> | RepaymentCreateWithoutLoanInput[] | RepaymentUncheckedCreateWithoutLoanInput[]
-    connectOrCreate?: RepaymentCreateOrConnectWithoutLoanInput | RepaymentCreateOrConnectWithoutLoanInput[]
-    upsert?: RepaymentUpsertWithWhereUniqueWithoutLoanInput | RepaymentUpsertWithWhereUniqueWithoutLoanInput[]
-    createMany?: RepaymentCreateManyLoanInputEnvelope
-    set?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
-    disconnect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
-    delete?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
-    connect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
-    update?: RepaymentUpdateWithWhereUniqueWithoutLoanInput | RepaymentUpdateWithWhereUniqueWithoutLoanInput[]
-    updateMany?: RepaymentUpdateManyWithWhereWithoutLoanInput | RepaymentUpdateManyWithWhereWithoutLoanInput[]
-    deleteMany?: RepaymentScalarWhereInput | RepaymentScalarWhereInput[]
-  }
-
   export type RepaymentScheduleUpdateManyWithoutLoanNestedInput = {
     create?: XOR<RepaymentScheduleCreateWithoutLoanInput, RepaymentScheduleUncheckedCreateWithoutLoanInput> | RepaymentScheduleCreateWithoutLoanInput[] | RepaymentScheduleUncheckedCreateWithoutLoanInput[]
     connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutLoanInput | RepaymentScheduleCreateOrConnectWithoutLoanInput[]
@@ -57891,6 +59313,20 @@ export namespace Prisma {
     update?: RepaymentScheduleUpdateWithWhereUniqueWithoutLoanInput | RepaymentScheduleUpdateWithWhereUniqueWithoutLoanInput[]
     updateMany?: RepaymentScheduleUpdateManyWithWhereWithoutLoanInput | RepaymentScheduleUpdateManyWithWhereWithoutLoanInput[]
     deleteMany?: RepaymentScheduleScalarWhereInput | RepaymentScheduleScalarWhereInput[]
+  }
+
+  export type RepaymentUpdateManyWithoutLoanNestedInput = {
+    create?: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput> | RepaymentCreateWithoutLoanInput[] | RepaymentUncheckedCreateWithoutLoanInput[]
+    connectOrCreate?: RepaymentCreateOrConnectWithoutLoanInput | RepaymentCreateOrConnectWithoutLoanInput[]
+    upsert?: RepaymentUpsertWithWhereUniqueWithoutLoanInput | RepaymentUpsertWithWhereUniqueWithoutLoanInput[]
+    createMany?: RepaymentCreateManyLoanInputEnvelope
+    set?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
+    disconnect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
+    delete?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
+    connect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
+    update?: RepaymentUpdateWithWhereUniqueWithoutLoanInput | RepaymentUpdateWithWhereUniqueWithoutLoanInput[]
+    updateMany?: RepaymentUpdateManyWithWhereWithoutLoanInput | RepaymentUpdateManyWithWhereWithoutLoanInput[]
+    deleteMany?: RepaymentScalarWhereInput | RepaymentScalarWhereInput[]
   }
 
   export type VehicleSecurityUpdateOneWithoutLoanNestedInput = {
@@ -58023,20 +59459,6 @@ export namespace Prisma {
     deleteMany?: RecoveryRecordScalarWhereInput | RecoveryRecordScalarWhereInput[]
   }
 
-  export type RepaymentUncheckedUpdateManyWithoutLoanNestedInput = {
-    create?: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput> | RepaymentCreateWithoutLoanInput[] | RepaymentUncheckedCreateWithoutLoanInput[]
-    connectOrCreate?: RepaymentCreateOrConnectWithoutLoanInput | RepaymentCreateOrConnectWithoutLoanInput[]
-    upsert?: RepaymentUpsertWithWhereUniqueWithoutLoanInput | RepaymentUpsertWithWhereUniqueWithoutLoanInput[]
-    createMany?: RepaymentCreateManyLoanInputEnvelope
-    set?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
-    disconnect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
-    delete?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
-    connect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
-    update?: RepaymentUpdateWithWhereUniqueWithoutLoanInput | RepaymentUpdateWithWhereUniqueWithoutLoanInput[]
-    updateMany?: RepaymentUpdateManyWithWhereWithoutLoanInput | RepaymentUpdateManyWithWhereWithoutLoanInput[]
-    deleteMany?: RepaymentScalarWhereInput | RepaymentScalarWhereInput[]
-  }
-
   export type RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput = {
     create?: XOR<RepaymentScheduleCreateWithoutLoanInput, RepaymentScheduleUncheckedCreateWithoutLoanInput> | RepaymentScheduleCreateWithoutLoanInput[] | RepaymentScheduleUncheckedCreateWithoutLoanInput[]
     connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutLoanInput | RepaymentScheduleCreateOrConnectWithoutLoanInput[]
@@ -58049,6 +59471,20 @@ export namespace Prisma {
     update?: RepaymentScheduleUpdateWithWhereUniqueWithoutLoanInput | RepaymentScheduleUpdateWithWhereUniqueWithoutLoanInput[]
     updateMany?: RepaymentScheduleUpdateManyWithWhereWithoutLoanInput | RepaymentScheduleUpdateManyWithWhereWithoutLoanInput[]
     deleteMany?: RepaymentScheduleScalarWhereInput | RepaymentScheduleScalarWhereInput[]
+  }
+
+  export type RepaymentUncheckedUpdateManyWithoutLoanNestedInput = {
+    create?: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput> | RepaymentCreateWithoutLoanInput[] | RepaymentUncheckedCreateWithoutLoanInput[]
+    connectOrCreate?: RepaymentCreateOrConnectWithoutLoanInput | RepaymentCreateOrConnectWithoutLoanInput[]
+    upsert?: RepaymentUpsertWithWhereUniqueWithoutLoanInput | RepaymentUpsertWithWhereUniqueWithoutLoanInput[]
+    createMany?: RepaymentCreateManyLoanInputEnvelope
+    set?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
+    disconnect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
+    delete?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
+    connect?: RepaymentWhereUniqueInput | RepaymentWhereUniqueInput[]
+    update?: RepaymentUpdateWithWhereUniqueWithoutLoanInput | RepaymentUpdateWithWhereUniqueWithoutLoanInput[]
+    updateMany?: RepaymentUpdateManyWithWhereWithoutLoanInput | RepaymentUpdateManyWithWhereWithoutLoanInput[]
+    deleteMany?: RepaymentScalarWhereInput | RepaymentScalarWhereInput[]
   }
 
   export type VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput = {
@@ -58403,17 +59839,17 @@ export namespace Prisma {
     deleteMany?: InvoicePaymentScalarWhereInput | InvoicePaymentScalarWhereInput[]
   }
 
-  export type LoanApplicationCreateNestedOneWithoutRepaymentsInput = {
-    create?: XOR<LoanApplicationCreateWithoutRepaymentsInput, LoanApplicationUncheckedCreateWithoutRepaymentsInput>
-    connectOrCreate?: LoanApplicationCreateOrConnectWithoutRepaymentsInput
-    connect?: LoanApplicationWhereUniqueInput
-  }
-
   export type RepaymentScheduleCreateNestedManyWithoutRepaymentInput = {
     create?: XOR<RepaymentScheduleCreateWithoutRepaymentInput, RepaymentScheduleUncheckedCreateWithoutRepaymentInput> | RepaymentScheduleCreateWithoutRepaymentInput[] | RepaymentScheduleUncheckedCreateWithoutRepaymentInput[]
     connectOrCreate?: RepaymentScheduleCreateOrConnectWithoutRepaymentInput | RepaymentScheduleCreateOrConnectWithoutRepaymentInput[]
     createMany?: RepaymentScheduleCreateManyRepaymentInputEnvelope
     connect?: RepaymentScheduleWhereUniqueInput | RepaymentScheduleWhereUniqueInput[]
+  }
+
+  export type LoanApplicationCreateNestedOneWithoutRepaymentsInput = {
+    create?: XOR<LoanApplicationCreateWithoutRepaymentsInput, LoanApplicationUncheckedCreateWithoutRepaymentsInput>
+    connectOrCreate?: LoanApplicationCreateOrConnectWithoutRepaymentsInput
+    connect?: LoanApplicationWhereUniqueInput
   }
 
   export type RepaymentScheduleUncheckedCreateNestedManyWithoutRepaymentInput = {
@@ -58425,14 +59861,6 @@ export namespace Prisma {
 
   export type EnumRepaymentCategoryFieldUpdateOperationsInput = {
     set?: $Enums.RepaymentCategory
-  }
-
-  export type LoanApplicationUpdateOneRequiredWithoutRepaymentsNestedInput = {
-    create?: XOR<LoanApplicationCreateWithoutRepaymentsInput, LoanApplicationUncheckedCreateWithoutRepaymentsInput>
-    connectOrCreate?: LoanApplicationCreateOrConnectWithoutRepaymentsInput
-    upsert?: LoanApplicationUpsertWithoutRepaymentsInput
-    connect?: LoanApplicationWhereUniqueInput
-    update?: XOR<XOR<LoanApplicationUpdateToOneWithWhereWithoutRepaymentsInput, LoanApplicationUpdateWithoutRepaymentsInput>, LoanApplicationUncheckedUpdateWithoutRepaymentsInput>
   }
 
   export type RepaymentScheduleUpdateManyWithoutRepaymentNestedInput = {
@@ -58447,6 +59875,14 @@ export namespace Prisma {
     update?: RepaymentScheduleUpdateWithWhereUniqueWithoutRepaymentInput | RepaymentScheduleUpdateWithWhereUniqueWithoutRepaymentInput[]
     updateMany?: RepaymentScheduleUpdateManyWithWhereWithoutRepaymentInput | RepaymentScheduleUpdateManyWithWhereWithoutRepaymentInput[]
     deleteMany?: RepaymentScheduleScalarWhereInput | RepaymentScheduleScalarWhereInput[]
+  }
+
+  export type LoanApplicationUpdateOneRequiredWithoutRepaymentsNestedInput = {
+    create?: XOR<LoanApplicationCreateWithoutRepaymentsInput, LoanApplicationUncheckedCreateWithoutRepaymentsInput>
+    connectOrCreate?: LoanApplicationCreateOrConnectWithoutRepaymentsInput
+    upsert?: LoanApplicationUpsertWithoutRepaymentsInput
+    connect?: LoanApplicationWhereUniqueInput
+    update?: XOR<XOR<LoanApplicationUpdateToOneWithWhereWithoutRepaymentsInput, LoanApplicationUpdateWithoutRepaymentsInput>, LoanApplicationUncheckedUpdateWithoutRepaymentsInput>
   }
 
   export type RepaymentScheduleUncheckedUpdateManyWithoutRepaymentNestedInput = {
@@ -59152,18 +60588,18 @@ export namespace Prisma {
     not?: NestedEnumQualificationTypeNullableFilter<$PrismaModel> | $Enums.QualificationType | null
   }
 
-  export type NestedEnumPaymentFrequencyFilter<$PrismaModel = never> = {
-    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    not?: NestedEnumPaymentFrequencyFilter<$PrismaModel> | $Enums.PaymentFrequency
-  }
-
   export type NestedEnumLoanApplicationStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.LoanApplicationStatus | EnumLoanApplicationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.LoanApplicationStatus[] | ListEnumLoanApplicationStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.LoanApplicationStatus[] | ListEnumLoanApplicationStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumLoanApplicationStatusFilter<$PrismaModel> | $Enums.LoanApplicationStatus
+  }
+
+  export type NestedEnumPaymentFrequencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentFrequencyFilter<$PrismaModel> | $Enums.PaymentFrequency
   }
 
   export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -59192,16 +60628,6 @@ export namespace Prisma {
     _max?: NestedEnumQualificationTypeNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumPaymentFrequencyWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
-    not?: NestedEnumPaymentFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.PaymentFrequency
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
-    _max?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
-  }
-
   export type NestedEnumLoanApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.LoanApplicationStatus | EnumLoanApplicationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.LoanApplicationStatus[] | ListEnumLoanApplicationStatusFieldRefInput<$PrismaModel>
@@ -59210,6 +60636,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLoanApplicationStatusFilter<$PrismaModel>
     _max?: NestedEnumLoanApplicationStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPaymentFrequencyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentFrequency | EnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentFrequency[] | ListEnumPaymentFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.PaymentFrequency
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
+    _max?: NestedEnumPaymentFrequencyFilter<$PrismaModel>
   }
 
   export type NestedEnumQualificationTypeFilter<$PrismaModel = never> = {
@@ -59534,36 +60970,6 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
-  export type SessionCreateWithoutUserInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    expiresAt: Date | string
-    token: string
-    ipAddress?: string | null
-    userAgent?: string | null
-  }
-
-  export type SessionUncheckedCreateWithoutUserInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    expiresAt: Date | string
-    token: string
-    ipAddress?: string | null
-    userAgent?: string | null
-  }
-
-  export type SessionCreateOrConnectWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionCreateManyUserInputEnvelope = {
-    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type AccountCreateWithoutUserInput = {
     id?: string
     refresh_token?: string | null
@@ -59747,7 +61153,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -59757,6 +61162,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -59769,8 +61176,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -59782,7 +61189,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -59793,6 +61199,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -59803,8 +61211,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -59825,7 +61233,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -59835,6 +61242,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -59847,8 +61256,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -59860,7 +61269,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -59871,6 +61279,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -59881,8 +61291,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -59923,34 +61333,34 @@ export namespace Prisma {
     create: XOR<RecoveryAgentCreateWithoutUserInput, RecoveryAgentUncheckedCreateWithoutUserInput>
   }
 
-  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+  export type SessionCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiresAt: Date | string
+    token: string
+    ipAddress?: string | null
+    userAgent?: string | null
+  }
+
+  export type SessionUncheckedCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiresAt: Date | string
+    token: string
+    ipAddress?: string | null
+    userAgent?: string | null
+  }
+
+  export type SessionCreateOrConnectWithoutUserInput = {
     where: SessionWhereUniqueInput
-    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
     create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
   }
 
-  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type SessionUpdateManyWithWhereWithoutUserInput = {
-    where: SessionScalarWhereInput
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type SessionScalarWhereInput = {
-    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    OR?: SessionScalarWhereInput[]
-    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    id?: StringFilter<"Session"> | string
-    userId?: StringFilter<"Session"> | string
-    createdAt?: DateTimeFilter<"Session"> | Date | string
-    updatedAt?: DateTimeFilter<"Session"> | Date | string
-    expiresAt?: DateTimeFilter<"Session"> | Date | string
-    token?: StringFilter<"Session"> | string
-    ipAddress?: StringNullableFilter<"Session"> | string | null
-    userAgent?: StringNullableFilter<"Session"> | string | null
+  export type SessionCreateManyUserInputEnvelope = {
+    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -60156,7 +61566,6 @@ export namespace Prisma {
     approvedAmount?: DecimalNullableFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string | null
     qualificationType?: EnumQualificationTypeNullableFilter<"LoanApplication"> | $Enums.QualificationType | null
     interestRate?: DecimalFilter<"LoanApplication"> | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFilter<"LoanApplication"> | $Enums.PaymentFrequency
     startDate?: DateTimeNullableFilter<"LoanApplication"> | Date | string | null
     repaymentPeriod?: IntFilter<"LoanApplication"> | number
     status?: EnumLoanApplicationStatusFilter<"LoanApplication"> | $Enums.LoanApplicationStatus
@@ -60168,6 +61577,8 @@ export namespace Prisma {
     rejectionReason?: StringNullableFilter<"LoanApplication"> | string | null
     createdAt?: DateTimeFilter<"LoanApplication"> | Date | string
     updatedAt?: DateTimeFilter<"LoanApplication"> | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFilter<"LoanApplication"> | $Enums.PaymentFrequency
+    loanNumber?: IntFilter<"LoanApplication"> | number
   }
 
   export type LoanApplicationUpsertWithWhereUniqueWithoutReviewedByInput = {
@@ -60219,6 +61630,36 @@ export namespace Prisma {
     records?: RecoveryRecordUncheckedUpdateManyWithoutAgentNestedInput
   }
 
+  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutUserInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    id?: StringFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
+    createdAt?: DateTimeFilter<"Session"> | Date | string
+    updatedAt?: DateTimeFilter<"Session"> | Date | string
+    expiresAt?: DateTimeFilter<"Session"> | Date | string
+    token?: StringFilter<"Session"> | string
+    ipAddress?: StringNullableFilter<"Session"> | string | null
+    userAgent?: StringNullableFilter<"Session"> | string | null
+  }
+
   export type BankDetailCreateWithoutClientInput = {
     id?: string
     bankName: string
@@ -60226,9 +61667,9 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
-    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofDocumentUrl?: string | null
   }
 
   export type BankDetailUncheckedCreateWithoutClientInput = {
@@ -60238,9 +61679,9 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
-    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofDocumentUrl?: string | null
   }
 
   export type BankDetailCreateOrConnectWithoutClientInput = {
@@ -60304,13 +61745,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     investor?: InvestorCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClientInput = {
@@ -60324,13 +61765,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     investor?: InvestorUncheckedCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClientInput = {
@@ -60473,7 +61914,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -60483,6 +61923,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -60495,8 +61937,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -60507,7 +61949,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -60519,6 +61960,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -60529,8 +61972,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -60655,9 +62098,9 @@ export namespace Prisma {
     accountName?: StringFilter<"BankDetail"> | string
     accountNumber?: StringFilter<"BankDetail"> | string
     proofDocument?: StringNullableFilter<"BankDetail"> | string | null
-    proofDocumentUrl?: StringNullableFilter<"BankDetail"> | string | null
     createdAt?: DateTimeFilter<"BankDetail"> | Date | string
     updatedAt?: DateTimeFilter<"BankDetail"> | Date | string
+    proofDocumentUrl?: StringNullableFilter<"BankDetail"> | string | null
   }
 
   export type ClientAddressUpsertWithWhereUniqueWithoutClientInput = {
@@ -60717,13 +62160,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     investor?: InvestorUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClientInput = {
@@ -60737,13 +62180,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     investor?: InvestorUncheckedUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DocumentUpsertWithWhereUniqueWithoutClientInput = {
@@ -61623,13 +63066,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     investor?: InvestorCreateNestedOneWithoutUserInput
     reviewedLoans?: LoanApplicationCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutApprovedLoansInput = {
@@ -61643,13 +63086,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     investor?: InvestorUncheckedCreateNestedOneWithoutUserInput
     reviewedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutApprovedLoansInput = {
@@ -61731,13 +63174,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     investor?: InvestorCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationCreateNestedManyWithoutApprovedByInput
     recoveryAgent?: RecoveryAgentCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReviewedLoansInput = {
@@ -61751,13 +63194,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     investor?: InvestorUncheckedCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutApprovedByInput
     recoveryAgent?: RecoveryAgentUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReviewedLoansInput = {
@@ -61910,38 +63353,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type RepaymentCreateWithoutLoanInput = {
-    id?: string
-    amount: Decimal | DecimalJsLike | number | string
-    paymentMethod: $Enums.PaymentMethod
-    paymentDate: Date | string
-    category: $Enums.RepaymentCategory
-    reference?: string | null
-    createdAt?: Date | string
-    scheduleItems?: RepaymentScheduleCreateNestedManyWithoutRepaymentInput
-  }
-
-  export type RepaymentUncheckedCreateWithoutLoanInput = {
-    id?: string
-    amount: Decimal | DecimalJsLike | number | string
-    paymentMethod: $Enums.PaymentMethod
-    paymentDate: Date | string
-    category: $Enums.RepaymentCategory
-    reference?: string | null
-    createdAt?: Date | string
-    scheduleItems?: RepaymentScheduleUncheckedCreateNestedManyWithoutRepaymentInput
-  }
-
-  export type RepaymentCreateOrConnectWithoutLoanInput = {
-    where: RepaymentWhereUniqueInput
-    create: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput>
-  }
-
-  export type RepaymentCreateManyLoanInputEnvelope = {
-    data: RepaymentCreateManyLoanInput | RepaymentCreateManyLoanInput[]
-    skipDuplicates?: boolean
-  }
-
   export type RepaymentScheduleCreateWithoutLoanInput = {
     id?: string
     installmentNumber: number
@@ -61989,6 +63400,38 @@ export namespace Prisma {
 
   export type RepaymentScheduleCreateManyLoanInputEnvelope = {
     data: RepaymentScheduleCreateManyLoanInput | RepaymentScheduleCreateManyLoanInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RepaymentCreateWithoutLoanInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    paymentMethod: $Enums.PaymentMethod
+    paymentDate: Date | string
+    category: $Enums.RepaymentCategory
+    reference?: string | null
+    createdAt?: Date | string
+    scheduleItems?: RepaymentScheduleCreateNestedManyWithoutRepaymentInput
+  }
+
+  export type RepaymentUncheckedCreateWithoutLoanInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    paymentMethod: $Enums.PaymentMethod
+    paymentDate: Date | string
+    category: $Enums.RepaymentCategory
+    reference?: string | null
+    createdAt?: Date | string
+    scheduleItems?: RepaymentScheduleUncheckedCreateNestedManyWithoutRepaymentInput
+  }
+
+  export type RepaymentCreateOrConnectWithoutLoanInput = {
+    where: RepaymentWhereUniqueInput
+    create: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput>
+  }
+
+  export type RepaymentCreateManyLoanInputEnvelope = {
+    data: RepaymentCreateManyLoanInput | RepaymentCreateManyLoanInput[]
     skipDuplicates?: boolean
   }
 
@@ -62140,13 +63583,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     investor?: InvestorUpdateOneWithoutUserNestedInput
     reviewedLoans?: LoanApplicationUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApprovedLoansInput = {
@@ -62160,13 +63603,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     investor?: InvestorUncheckedUpdateOneWithoutUserNestedInput
     reviewedLoans?: LoanApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ClientUpsertWithoutLoanApplicationsInput = {
@@ -62260,13 +63703,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     investor?: InvestorUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUpdateManyWithoutApprovedByNestedInput
     recoveryAgent?: RecoveryAgentUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewedLoansInput = {
@@ -62280,13 +63723,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     investor?: InvestorUncheckedUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
     recoveryAgent?: RecoveryAgentUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LoanDisbursementUpsertWithoutLoanInput = {
@@ -62465,36 +63908,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"RecoveryRecord"> | Date | string
   }
 
-  export type RepaymentUpsertWithWhereUniqueWithoutLoanInput = {
-    where: RepaymentWhereUniqueInput
-    update: XOR<RepaymentUpdateWithoutLoanInput, RepaymentUncheckedUpdateWithoutLoanInput>
-    create: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput>
-  }
-
-  export type RepaymentUpdateWithWhereUniqueWithoutLoanInput = {
-    where: RepaymentWhereUniqueInput
-    data: XOR<RepaymentUpdateWithoutLoanInput, RepaymentUncheckedUpdateWithoutLoanInput>
-  }
-
-  export type RepaymentUpdateManyWithWhereWithoutLoanInput = {
-    where: RepaymentScalarWhereInput
-    data: XOR<RepaymentUpdateManyMutationInput, RepaymentUncheckedUpdateManyWithoutLoanInput>
-  }
-
-  export type RepaymentScalarWhereInput = {
-    AND?: RepaymentScalarWhereInput | RepaymentScalarWhereInput[]
-    OR?: RepaymentScalarWhereInput[]
-    NOT?: RepaymentScalarWhereInput | RepaymentScalarWhereInput[]
-    id?: StringFilter<"Repayment"> | string
-    loanId?: StringFilter<"Repayment"> | string
-    amount?: DecimalFilter<"Repayment"> | Decimal | DecimalJsLike | number | string
-    paymentMethod?: EnumPaymentMethodFilter<"Repayment"> | $Enums.PaymentMethod
-    paymentDate?: DateTimeFilter<"Repayment"> | Date | string
-    category?: EnumRepaymentCategoryFilter<"Repayment"> | $Enums.RepaymentCategory
-    reference?: StringNullableFilter<"Repayment"> | string | null
-    createdAt?: DateTimeFilter<"Repayment"> | Date | string
-  }
-
   export type RepaymentScheduleUpsertWithWhereUniqueWithoutLoanInput = {
     where: RepaymentScheduleWhereUniqueInput
     update: XOR<RepaymentScheduleUpdateWithoutLoanInput, RepaymentScheduleUncheckedUpdateWithoutLoanInput>
@@ -62533,6 +63946,36 @@ export namespace Prisma {
     repaymentId?: StringNullableFilter<"RepaymentSchedule"> | string | null
     createdAt?: DateTimeFilter<"RepaymentSchedule"> | Date | string
     updatedAt?: DateTimeFilter<"RepaymentSchedule"> | Date | string
+  }
+
+  export type RepaymentUpsertWithWhereUniqueWithoutLoanInput = {
+    where: RepaymentWhereUniqueInput
+    update: XOR<RepaymentUpdateWithoutLoanInput, RepaymentUncheckedUpdateWithoutLoanInput>
+    create: XOR<RepaymentCreateWithoutLoanInput, RepaymentUncheckedCreateWithoutLoanInput>
+  }
+
+  export type RepaymentUpdateWithWhereUniqueWithoutLoanInput = {
+    where: RepaymentWhereUniqueInput
+    data: XOR<RepaymentUpdateWithoutLoanInput, RepaymentUncheckedUpdateWithoutLoanInput>
+  }
+
+  export type RepaymentUpdateManyWithWhereWithoutLoanInput = {
+    where: RepaymentScalarWhereInput
+    data: XOR<RepaymentUpdateManyMutationInput, RepaymentUncheckedUpdateManyWithoutLoanInput>
+  }
+
+  export type RepaymentScalarWhereInput = {
+    AND?: RepaymentScalarWhereInput | RepaymentScalarWhereInput[]
+    OR?: RepaymentScalarWhereInput[]
+    NOT?: RepaymentScalarWhereInput | RepaymentScalarWhereInput[]
+    id?: StringFilter<"Repayment"> | string
+    loanId?: StringFilter<"Repayment"> | string
+    amount?: DecimalFilter<"Repayment"> | Decimal | DecimalJsLike | number | string
+    paymentMethod?: EnumPaymentMethodFilter<"Repayment"> | $Enums.PaymentMethod
+    paymentDate?: DateTimeFilter<"Repayment"> | Date | string
+    category?: EnumRepaymentCategoryFilter<"Repayment"> | $Enums.RepaymentCategory
+    reference?: StringNullableFilter<"Repayment"> | string | null
+    createdAt?: DateTimeFilter<"Repayment"> | Date | string
   }
 
   export type VehicleSecurityUpsertWithoutLoanInput = {
@@ -62579,7 +64022,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62589,6 +64031,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -62601,8 +64045,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -62614,7 +64058,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62626,6 +64069,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -62635,8 +64080,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -62663,7 +64108,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62673,6 +64117,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -62685,8 +64130,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -62698,7 +64143,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62710,6 +64154,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -62719,8 +64165,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -62731,7 +64177,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62741,6 +64186,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -62753,8 +64200,8 @@ export namespace Prisma {
     qualification?: LoanQualificationCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -62766,7 +64213,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62778,6 +64224,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -62787,8 +64235,8 @@ export namespace Prisma {
     qualification?: LoanQualificationUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -62815,7 +64263,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62825,6 +64272,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -62837,8 +64285,8 @@ export namespace Prisma {
     qualification?: LoanQualificationUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -62850,7 +64298,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62862,6 +64309,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -62871,8 +64320,8 @@ export namespace Prisma {
     qualification?: LoanQualificationUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -62883,7 +64332,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62893,6 +64341,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -62906,8 +64356,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
   }
 
   export type LoanApplicationUncheckedCreateWithoutVehicleSecurityInput = {
@@ -62918,7 +64368,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -62930,6 +64379,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -62940,8 +64391,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
   }
 
   export type LoanApplicationCreateOrConnectWithoutVehicleSecurityInput = {
@@ -62967,7 +64418,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -62977,6 +64427,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -62990,8 +64441,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
   }
 
   export type LoanApplicationUncheckedUpdateWithoutVehicleSecurityInput = {
@@ -63002,7 +64453,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63014,6 +64464,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -63024,8 +64476,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
   }
 
   export type LoanApplicationCreateWithoutGuarantorsInput = {
@@ -63035,7 +64487,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63045,6 +64496,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
     invoices?: InvoiceCreateNestedManyWithoutLoanInput
@@ -63057,8 +64510,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -63070,7 +64523,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63082,6 +64534,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutLoanInput
@@ -63091,8 +64545,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -63119,7 +64573,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63129,6 +64582,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
     invoices?: InvoiceUpdateManyWithoutLoanNestedInput
@@ -63141,8 +64595,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -63154,7 +64608,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63166,6 +64619,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutLoanNestedInput
@@ -63175,8 +64630,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -63187,7 +64642,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63197,6 +64651,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -63209,8 +64665,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -63222,7 +64678,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63234,6 +64689,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -63243,8 +64700,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -63271,7 +64728,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63281,6 +64737,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -63293,8 +64750,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -63306,7 +64763,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63318,6 +64774,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -63327,8 +64785,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -63339,7 +64797,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63349,6 +64806,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -63361,8 +64820,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -63374,7 +64833,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63386,6 +64844,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -63395,8 +64855,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -63423,7 +64883,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63433,6 +64892,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -63445,8 +64905,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -63458,7 +64918,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63470,6 +64929,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -63479,8 +64940,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -63610,7 +65071,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63620,6 +65080,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -63632,8 +65094,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -63645,7 +65107,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -63657,6 +65118,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -63666,8 +65129,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -63821,7 +65284,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63831,6 +65293,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -63843,8 +65306,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -63856,7 +65319,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -63868,6 +65330,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -63877,8 +65341,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -64306,79 +65770,6 @@ export namespace Prisma {
     referees?: RefereeUncheckedUpdateManyWithoutClientNestedInput
   }
 
-  export type LoanApplicationCreateWithoutRepaymentsInput = {
-    id?: string
-    purpose: string
-    amountRequested: Decimal | DecimalJsLike | number | string
-    approvedAmount?: Decimal | DecimalJsLike | number | string | null
-    qualificationType?: $Enums.QualificationType | null
-    interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
-    startDate?: Date | string | null
-    repaymentPeriod: number
-    status?: $Enums.LoanApplicationStatus
-    appliedAt?: Date | string
-    reviewedAt?: Date | string | null
-    approvedAt?: Date | string | null
-    rejectionReason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    documents?: DocumentCreateNestedManyWithoutLoanInput
-    guarantors?: GuarantorCreateNestedManyWithoutLoanInput
-    investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
-    invoices?: InvoiceCreateNestedManyWithoutLoanInput
-    approvedBy?: UserCreateNestedOneWithoutApprovedLoansInput
-    client: ClientCreateNestedOneWithoutLoanApplicationsInput
-    reviewedBy?: UserCreateNestedOneWithoutReviewedLoansInput
-    disbursement?: LoanDisbursementCreateNestedOneWithoutLoanInput
-    financials?: LoanFinancialCreateNestedOneWithoutLoanInput
-    qualification?: LoanQualificationCreateNestedOneWithoutLoanInput
-    security?: LoanSecurityCreateNestedOneWithoutLoanInput
-    npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
-    recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
-    vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
-  }
-
-  export type LoanApplicationUncheckedCreateWithoutRepaymentsInput = {
-    id?: string
-    clientId: string
-    purpose: string
-    amountRequested: Decimal | DecimalJsLike | number | string
-    approvedAmount?: Decimal | DecimalJsLike | number | string | null
-    qualificationType?: $Enums.QualificationType | null
-    interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
-    startDate?: Date | string | null
-    repaymentPeriod: number
-    status?: $Enums.LoanApplicationStatus
-    appliedAt?: Date | string
-    reviewedAt?: Date | string | null
-    reviewedById?: string | null
-    approvedAt?: Date | string | null
-    approvedById?: string | null
-    rejectionReason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
-    guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
-    investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutLoanInput
-    disbursement?: LoanDisbursementUncheckedCreateNestedOneWithoutLoanInput
-    financials?: LoanFinancialUncheckedCreateNestedOneWithoutLoanInput
-    qualification?: LoanQualificationUncheckedCreateNestedOneWithoutLoanInput
-    security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
-    npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
-    recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
-    vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
-  }
-
-  export type LoanApplicationCreateOrConnectWithoutRepaymentsInput = {
-    where: LoanApplicationWhereUniqueInput
-    create: XOR<LoanApplicationCreateWithoutRepaymentsInput, LoanApplicationUncheckedCreateWithoutRepaymentsInput>
-  }
-
   export type RepaymentScheduleCreateWithoutRepaymentInput = {
     id?: string
     installmentNumber: number
@@ -64429,6 +65820,97 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LoanApplicationCreateWithoutRepaymentsInput = {
+    id?: string
+    purpose: string
+    amountRequested: Decimal | DecimalJsLike | number | string
+    approvedAmount?: Decimal | DecimalJsLike | number | string | null
+    qualificationType?: $Enums.QualificationType | null
+    interestRate?: Decimal | DecimalJsLike | number | string
+    startDate?: Date | string | null
+    repaymentPeriod: number
+    status?: $Enums.LoanApplicationStatus
+    appliedAt?: Date | string
+    reviewedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
+    documents?: DocumentCreateNestedManyWithoutLoanInput
+    guarantors?: GuarantorCreateNestedManyWithoutLoanInput
+    investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
+    invoices?: InvoiceCreateNestedManyWithoutLoanInput
+    approvedBy?: UserCreateNestedOneWithoutApprovedLoansInput
+    client: ClientCreateNestedOneWithoutLoanApplicationsInput
+    reviewedBy?: UserCreateNestedOneWithoutReviewedLoansInput
+    disbursement?: LoanDisbursementCreateNestedOneWithoutLoanInput
+    financials?: LoanFinancialCreateNestedOneWithoutLoanInput
+    qualification?: LoanQualificationCreateNestedOneWithoutLoanInput
+    security?: LoanSecurityCreateNestedOneWithoutLoanInput
+    npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
+    recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
+  }
+
+  export type LoanApplicationUncheckedCreateWithoutRepaymentsInput = {
+    id?: string
+    clientId: string
+    purpose: string
+    amountRequested: Decimal | DecimalJsLike | number | string
+    approvedAmount?: Decimal | DecimalJsLike | number | string | null
+    qualificationType?: $Enums.QualificationType | null
+    interestRate?: Decimal | DecimalJsLike | number | string
+    startDate?: Date | string | null
+    repaymentPeriod: number
+    status?: $Enums.LoanApplicationStatus
+    appliedAt?: Date | string
+    reviewedAt?: Date | string | null
+    reviewedById?: string | null
+    approvedAt?: Date | string | null
+    approvedById?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
+    documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
+    guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
+    investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutLoanInput
+    disbursement?: LoanDisbursementUncheckedCreateNestedOneWithoutLoanInput
+    financials?: LoanFinancialUncheckedCreateNestedOneWithoutLoanInput
+    qualification?: LoanQualificationUncheckedCreateNestedOneWithoutLoanInput
+    security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
+    npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
+    recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
+    repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
+  }
+
+  export type LoanApplicationCreateOrConnectWithoutRepaymentsInput = {
+    where: LoanApplicationWhereUniqueInput
+    create: XOR<LoanApplicationCreateWithoutRepaymentsInput, LoanApplicationUncheckedCreateWithoutRepaymentsInput>
+  }
+
+  export type RepaymentScheduleUpsertWithWhereUniqueWithoutRepaymentInput = {
+    where: RepaymentScheduleWhereUniqueInput
+    update: XOR<RepaymentScheduleUpdateWithoutRepaymentInput, RepaymentScheduleUncheckedUpdateWithoutRepaymentInput>
+    create: XOR<RepaymentScheduleCreateWithoutRepaymentInput, RepaymentScheduleUncheckedCreateWithoutRepaymentInput>
+  }
+
+  export type RepaymentScheduleUpdateWithWhereUniqueWithoutRepaymentInput = {
+    where: RepaymentScheduleWhereUniqueInput
+    data: XOR<RepaymentScheduleUpdateWithoutRepaymentInput, RepaymentScheduleUncheckedUpdateWithoutRepaymentInput>
+  }
+
+  export type RepaymentScheduleUpdateManyWithWhereWithoutRepaymentInput = {
+    where: RepaymentScheduleScalarWhereInput
+    data: XOR<RepaymentScheduleUpdateManyMutationInput, RepaymentScheduleUncheckedUpdateManyWithoutRepaymentInput>
+  }
+
   export type LoanApplicationUpsertWithoutRepaymentsInput = {
     update: XOR<LoanApplicationUpdateWithoutRepaymentsInput, LoanApplicationUncheckedUpdateWithoutRepaymentsInput>
     create: XOR<LoanApplicationCreateWithoutRepaymentsInput, LoanApplicationUncheckedCreateWithoutRepaymentsInput>
@@ -64447,7 +65929,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64457,6 +65938,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -64482,7 +65964,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64494,6 +65975,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -64508,22 +65991,6 @@ export namespace Prisma {
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
-  export type RepaymentScheduleUpsertWithWhereUniqueWithoutRepaymentInput = {
-    where: RepaymentScheduleWhereUniqueInput
-    update: XOR<RepaymentScheduleUpdateWithoutRepaymentInput, RepaymentScheduleUncheckedUpdateWithoutRepaymentInput>
-    create: XOR<RepaymentScheduleCreateWithoutRepaymentInput, RepaymentScheduleUncheckedCreateWithoutRepaymentInput>
-  }
-
-  export type RepaymentScheduleUpdateWithWhereUniqueWithoutRepaymentInput = {
-    where: RepaymentScheduleWhereUniqueInput
-    data: XOR<RepaymentScheduleUpdateWithoutRepaymentInput, RepaymentScheduleUncheckedUpdateWithoutRepaymentInput>
-  }
-
-  export type RepaymentScheduleUpdateManyWithWhereWithoutRepaymentInput = {
-    where: RepaymentScheduleScalarWhereInput
-    data: XOR<RepaymentScheduleUpdateManyMutationInput, RepaymentScheduleUncheckedUpdateManyWithoutRepaymentInput>
-  }
-
   export type LoanApplicationCreateWithoutRepaymentScheduleInput = {
     id?: string
     purpose: string
@@ -64531,7 +65998,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64541,6 +66007,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -64566,7 +66034,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64578,6 +66045,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -64642,7 +66111,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64652,6 +66120,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -64677,7 +66146,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64689,6 +66157,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -64743,7 +66213,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64753,6 +66222,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -64765,8 +66236,8 @@ export namespace Prisma {
     qualification?: LoanQualificationCreateNestedOneWithoutLoanInput
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -64778,7 +66249,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -64790,6 +66260,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -64799,8 +66271,8 @@ export namespace Prisma {
     qualification?: LoanQualificationUncheckedCreateNestedOneWithoutLoanInput
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -64827,7 +66299,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64837,6 +66308,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -64849,8 +66321,8 @@ export namespace Prisma {
     qualification?: LoanQualificationUpdateOneWithoutLoanNestedInput
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -64862,7 +66334,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -64874,6 +66345,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -64883,8 +66356,8 @@ export namespace Prisma {
     qualification?: LoanQualificationUncheckedUpdateOneWithoutLoanNestedInput
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -64899,13 +66372,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     investor?: InvestorCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationCreateNestedManyWithoutReviewedByInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRecoveryAgentInput = {
@@ -64919,13 +66392,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     investor?: InvestorUncheckedCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRecoveryAgentInput = {
@@ -64983,13 +66456,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     investor?: InvestorUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUpdateManyWithoutReviewedByNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRecoveryAgentInput = {
@@ -65003,13 +66476,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     investor?: InvestorUncheckedUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RecoveryRecordUpsertWithWhereUniqueWithoutAgentInput = {
@@ -65062,7 +66535,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -65072,6 +66544,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
@@ -65084,8 +66558,8 @@ export namespace Prisma {
     qualification?: LoanQualificationCreateNestedOneWithoutLoanInput
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -65097,7 +66571,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -65109,6 +66582,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
@@ -65118,8 +66593,8 @@ export namespace Prisma {
     qualification?: LoanQualificationUncheckedCreateNestedOneWithoutLoanInput
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -65179,7 +66654,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65189,6 +66663,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -65201,8 +66676,8 @@ export namespace Prisma {
     qualification?: LoanQualificationUpdateOneWithoutLoanNestedInput
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -65214,7 +66689,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65226,6 +66700,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -65235,8 +66711,8 @@ export namespace Prisma {
     qualification?: LoanQualificationUncheckedUpdateOneWithoutLoanNestedInput
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -65309,13 +66785,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInvestorInput = {
@@ -65329,13 +66805,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInvestorInput = {
@@ -65409,13 +66885,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvestorInput = {
@@ -65429,13 +66905,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type InvestorCreateWithoutAllocationsInput = {
@@ -65474,7 +66950,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -65484,6 +66959,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     invoices?: InvoiceCreateNestedManyWithoutLoanInput
@@ -65496,8 +66973,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -65509,7 +66986,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -65521,6 +66997,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     documents?: DocumentUncheckedCreateNestedManyWithoutLoanInput
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutLoanInput
@@ -65530,8 +67008,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -65593,7 +67071,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65603,6 +67080,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     invoices?: InvoiceUpdateManyWithoutLoanNestedInput
@@ -65615,8 +67093,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -65628,7 +67106,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65640,6 +67117,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutLoanNestedInput
@@ -65649,8 +67128,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -65788,7 +67267,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -65798,6 +67276,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     guarantors?: GuarantorCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationCreateNestedManyWithoutLoanInput
     invoices?: InvoiceCreateNestedManyWithoutLoanInput
@@ -65810,8 +67290,8 @@ export namespace Prisma {
     security?: LoanSecurityCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityCreateNestedOneWithoutLoanInput
   }
 
@@ -65823,7 +67303,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -65835,6 +67314,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
     guarantors?: GuarantorUncheckedCreateNestedManyWithoutLoanInput
     investorAllocations?: InvestorAllocationUncheckedCreateNestedManyWithoutLoanInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutLoanInput
@@ -65844,8 +67325,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedCreateNestedOneWithoutLoanInput
     npl?: NonPerformingLoanUncheckedCreateNestedOneWithoutLoanInput
     recoveryRecords?: RecoveryRecordUncheckedCreateNestedManyWithoutLoanInput
-    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     repaymentSchedule?: RepaymentScheduleUncheckedCreateNestedManyWithoutLoanInput
+    repayments?: RepaymentUncheckedCreateNestedManyWithoutLoanInput
     vehicleSecurity?: VehicleSecurityUncheckedCreateNestedOneWithoutLoanInput
   }
 
@@ -65941,7 +67422,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65951,6 +67431,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
     invoices?: InvoiceUpdateManyWithoutLoanNestedInput
@@ -65963,8 +67444,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -65976,7 +67457,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -65988,6 +67468,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutLoanNestedInput
@@ -65997,8 +67479,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -66013,13 +67495,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     investor?: InvestorCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -66033,13 +67515,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     investor?: InvestorUncheckedCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -66069,13 +67551,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     investor?: InvestorUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -66089,13 +67571,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     investor?: InvestorUncheckedUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -66205,13 +67687,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     client?: ClientCreateNestedOneWithoutUserInput
     investor?: InvestorCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -66225,13 +67707,13 @@ export namespace Prisma {
     image?: string | null
     emailVerified?: boolean | null
     name: string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     client?: ClientUncheckedCreateNestedOneWithoutUserInput
     investor?: InvestorUncheckedCreateNestedOneWithoutUserInput
     approvedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutApprovedByInput
     reviewedLoans?: LoanApplicationUncheckedCreateNestedManyWithoutReviewedByInput
     recoveryAgent?: RecoveryAgentUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -66261,13 +67743,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     client?: ClientUpdateOneWithoutUserNestedInput
     investor?: InvestorUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -66281,23 +67763,13 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     name?: StringFieldUpdateOperationsInput | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     client?: ClientUncheckedUpdateOneWithoutUserNestedInput
     investor?: InvestorUncheckedUpdateOneWithoutUserNestedInput
     approvedLoans?: LoanApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
     reviewedLoans?: LoanApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
     recoveryAgent?: RecoveryAgentUncheckedUpdateOneWithoutUserNestedInput
-  }
-
-  export type SessionCreateManyUserInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    expiresAt: Date | string
-    token: string
-    ipAddress?: string | null
-    userAgent?: string | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -66340,7 +67812,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -66351,6 +67822,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
   }
 
   export type LoanApplicationCreateManyReviewedByInput = {
@@ -66361,7 +67834,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -66372,36 +67844,18 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
   }
 
-  export type SessionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type SessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type SessionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  export type SessionCreateManyUserInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiresAt: Date | string
+    token: string
+    ipAddress?: string | null
+    userAgent?: string | null
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -66507,7 +67961,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66517,6 +67970,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -66529,8 +67983,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -66542,7 +67996,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66553,6 +68006,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -66563,8 +68018,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -66576,7 +68031,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66587,6 +68041,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
   }
 
   export type LoanApplicationUpdateWithoutReviewedByInput = {
@@ -66596,7 +68052,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66606,6 +68061,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -66618,8 +68074,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -66631,7 +68087,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66642,6 +68097,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -66652,8 +68109,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -66665,7 +68122,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -66676,6 +68132,38 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BankDetailCreateManyClientInput = {
@@ -66685,9 +68173,9 @@ export namespace Prisma {
     accountName: string
     accountNumber: string
     proofDocument?: string | null
-    proofDocumentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    proofDocumentUrl?: string | null
   }
 
   export type ClientAddressCreateManyClientInput = {
@@ -66759,7 +68247,6 @@ export namespace Prisma {
     approvedAmount?: Decimal | DecimalJsLike | number | string | null
     qualificationType?: $Enums.QualificationType | null
     interestRate?: Decimal | DecimalJsLike | number | string
-    paymentFrequency?: $Enums.PaymentFrequency
     startDate?: Date | string | null
     repaymentPeriod: number
     status?: $Enums.LoanApplicationStatus
@@ -66771,6 +68258,8 @@ export namespace Prisma {
     rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    paymentFrequency?: $Enums.PaymentFrequency
+    loanNumber?: number
   }
 
   export type RefereeCreateManyClientInput = {
@@ -66811,9 +68300,9 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
-    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BankDetailUncheckedUpdateWithoutClientInput = {
@@ -66823,9 +68312,9 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
-    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BankDetailUncheckedUpdateManyWithoutClientInput = {
@@ -66835,9 +68324,9 @@ export namespace Prisma {
     accountName?: StringFieldUpdateOperationsInput | string
     accountNumber?: StringFieldUpdateOperationsInput | string
     proofDocument?: NullableStringFieldUpdateOperationsInput | string | null
-    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proofDocumentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ClientAddressUpdateWithoutClientInput = {
@@ -67037,7 +68526,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -67047,6 +68535,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     documents?: DocumentUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUpdateManyWithoutLoanNestedInput
@@ -67059,8 +68548,8 @@ export namespace Prisma {
     security?: LoanSecurityUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUpdateOneWithoutLoanNestedInput
   }
 
@@ -67071,7 +68560,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -67083,6 +68571,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
     documents?: DocumentUncheckedUpdateManyWithoutLoanNestedInput
     guarantors?: GuarantorUncheckedUpdateManyWithoutLoanNestedInput
     investorAllocations?: InvestorAllocationUncheckedUpdateManyWithoutLoanNestedInput
@@ -67093,8 +68583,8 @@ export namespace Prisma {
     security?: LoanSecurityUncheckedUpdateOneWithoutLoanNestedInput
     npl?: NonPerformingLoanUncheckedUpdateOneWithoutLoanNestedInput
     recoveryRecords?: RecoveryRecordUncheckedUpdateManyWithoutLoanNestedInput
-    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     repaymentSchedule?: RepaymentScheduleUncheckedUpdateManyWithoutLoanNestedInput
+    repayments?: RepaymentUncheckedUpdateManyWithoutLoanNestedInput
     vehicleSecurity?: VehicleSecurityUncheckedUpdateOneWithoutLoanNestedInput
   }
 
@@ -67105,7 +68595,6 @@ export namespace Prisma {
     approvedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     qualificationType?: NullableEnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType | null
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     repaymentPeriod?: IntFieldUpdateOperationsInput | number
     status?: EnumLoanApplicationStatusFieldUpdateOperationsInput | $Enums.LoanApplicationStatus
@@ -67117,6 +68606,8 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentFrequency?: EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
+    loanNumber?: IntFieldUpdateOperationsInput | number
   }
 
   export type RefereeUpdateWithoutClientInput = {
@@ -67273,16 +68764,6 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type RepaymentCreateManyLoanInput = {
-    id?: string
-    amount: Decimal | DecimalJsLike | number | string
-    paymentMethod: $Enums.PaymentMethod
-    paymentDate: Date | string
-    category: $Enums.RepaymentCategory
-    reference?: string | null
-    createdAt?: Date | string
-  }
-
   export type RepaymentScheduleCreateManyLoanInput = {
     id?: string
     installmentNumber: number
@@ -67301,6 +68782,16 @@ export namespace Prisma {
     repaymentId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type RepaymentCreateManyLoanInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    paymentMethod: $Enums.PaymentMethod
+    paymentDate: Date | string
+    category: $Enums.RepaymentCategory
+    reference?: string | null
+    createdAt?: Date | string
   }
 
   export type DocumentUpdateWithoutLoanInput = {
@@ -67484,38 +68975,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type RepaymentUpdateWithoutLoanInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    scheduleItems?: RepaymentScheduleUpdateManyWithoutRepaymentNestedInput
-  }
-
-  export type RepaymentUncheckedUpdateWithoutLoanInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    scheduleItems?: RepaymentScheduleUncheckedUpdateManyWithoutRepaymentNestedInput
-  }
-
-  export type RepaymentUncheckedUpdateManyWithoutLoanInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type RepaymentScheduleUpdateWithoutLoanInput = {
     id?: StringFieldUpdateOperationsInput | string
     installmentNumber?: IntFieldUpdateOperationsInput | number
@@ -67574,6 +69033,38 @@ export namespace Prisma {
     repaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RepaymentUpdateWithoutLoanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleItems?: RepaymentScheduleUpdateManyWithoutRepaymentNestedInput
+  }
+
+  export type RepaymentUncheckedUpdateWithoutLoanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleItems?: RepaymentScheduleUncheckedUpdateManyWithoutRepaymentNestedInput
+  }
+
+  export type RepaymentUncheckedUpdateManyWithoutLoanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: EnumRepaymentCategoryFieldUpdateOperationsInput | $Enums.RepaymentCategory
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InvoiceItemCreateManyInvoiceInput = {

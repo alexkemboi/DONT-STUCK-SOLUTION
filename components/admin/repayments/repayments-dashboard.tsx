@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { DataTable } from "@/components/admin/shared/data-table";
-import { Badge } from "@/components/ui/badge";
+import { DataTable } from "@/components/admin/shared/updated-data-table";
+import { createRepaymentsColumns } from "@/components/admin/repayments/repayments-columns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,21 +22,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Loader2,
-  Plus,
-  Calendar,
-  AlertCircle,
-  MoreVertical,
-  Pencil,
-} from "lucide-react";
+import { Combobox, type ComboboxOption } from "@/components/ui/combobox";
+import { Loader2, Plus, Calendar, AlertCircle } from "lucide-react";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import {
   recordRepaymentAction,
@@ -45,12 +33,6 @@ import {
 } from "@/app/actions/repayment";
 import { getNextInstallmentAction, type SerializedSchedule } from "@/app/actions/schedule";
 import type { PaymentMethod, RepaymentCategory } from "@/lib/generated/prisma";
-
-const methodColors: Record<string, string> = {
-  Cash: "bg-green-100 text-green-800",
-  Bank: "bg-blue-100 text-blue-800",
-  Mpesa: "bg-emerald-100 text-emerald-800",
-};
 
 const formatCurrency = (amount: number) =>
   new Intl.NumberFormat("en-KE", {
@@ -85,7 +67,6 @@ export function RepaymentsDashboard({
   loans,
 }: RepaymentsDashboardProps) {
   const router = useRouter();
-  const [search, setSearch] = useState("");
   const [methodFilter, setMethodFilter] = useState("all");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -123,15 +104,13 @@ export function RepaymentsDashboard({
     }
   };
 
-  const filteredRepayments = repayments.filter((r) => {
-    const matchesSearch =
-      r.clientName.toLowerCase().includes(search.toLowerCase()) ||
-      r.loanPurpose.toLowerCase().includes(search.toLowerCase()) ||
-      (r.reference || "").toLowerCase().includes(search.toLowerCase());
-    const matchesMethod =
-      methodFilter === "all" || r.paymentMethod === methodFilter;
-    return matchesSearch && matchesMethod;
-  });
+  const filteredRepayments = useMemo(
+    () =>
+      methodFilter === "all"
+        ? repayments
+        : repayments.filter((r) => r.paymentMethod === methodFilter),
+    [repayments, methodFilter]
+  );
 
   const resetForm = () => {
     setFormLoanId("");
@@ -224,102 +203,20 @@ toast.success(
     setSubmitting(false);
   };
 
-  const columns = [
-    {
-      key: "clientName",
-      header: "Client",
-      render: (r: SerializedRepayment) => (
-        <div>
-          <p className="font-medium text-slate-900">{r.clientName}</p>
-          <p className="text-xs text-slate-500">{r.loanPurpose}</p>
-        </div>
-      ),
-    },
-    {
-      key: "amount",
-      header: "Amount",
-      render: (r: SerializedRepayment) => (
-        <span className="font-medium text-slate-900">
-          {formatCurrency(r.amount)}
-        </span>
-      ),
-      className: "text-right",
-    },
-    {
-      key: "paymentMethod",
-      header: "Method",
-      render: (r: SerializedRepayment) => (
-        <Badge className={methodColors[r.paymentMethod] || "bg-gray-100 text-gray-800"}>
-          {r.paymentMethod}
-        </Badge>
-      ),
-    },
-    {
-      key: "category",
-      header: "Category",
-      render: (r: SerializedRepayment) => (
-        <span className="text-sm text-slate-600">{r.category}</span>
-      ),
-    },
-    {
-      key: "paymentDate",
-      header: "Date",
-      render: (r: SerializedRepayment) => (
-        <span className="text-sm text-slate-500">
-          {formatDate(r.paymentDate)}
-        </span>
-      ),
-    },
-    {
-      key: "reference",
-      header: "Reference",
-      render: (r: SerializedRepayment) => (
-        <span className="text-sm text-slate-500 font-mono">
-          {r.reference || "—"}
-        </span>
-      ),
-    },
-    {
-  key: "actions",
-  header: "Actions",
-  render: (r: SerializedRepayment) => (
-    <div className="flex items-center justify-between gap-2">
-
-      {/* <span className="text-sm text-slate-500 font-mono">
-        {r.reference || "—"}
-      </span> */}
-
-      <DropdownMenu>
-
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-          >
-            <MoreVertical className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-
-        <DropdownMenuContent align="end">
-
-          <DropdownMenuItem
-            onClick={() => handleEditRepayment(r)}
-          >
-            <Pencil className="mr-2 h-4 w-4" />
-            Edit Repayment
-          </DropdownMenuItem>
-
-        </DropdownMenuContent>
-
-      </DropdownMenu>
-
-    </div>
-  ),
-},
-  ];
+  const columns = useMemo(
+    () => createRepaymentsColumns({ onEdit: handleEditRepayment }),
+    []
+  );
 
   const selectedLoan = loans.find((l) => l.id === formLoanId);
+
+  const loanOptions: ComboboxOption[] = loans.map((loan) => ({
+    value: loan.id,
+    label: `${loan.clientName} — ${loan.purpose} (${formatCurrency(
+      loan.approvedAmount || loan.amountRequested
+    )})`,
+    keywords: loan.clientName,
+  }));
 
   return (
     <>
@@ -327,18 +224,25 @@ toast.success(
         data={filteredRepayments}
         columns={columns}
         searchPlaceholder="Search by client, purpose, or reference..."
-        searchValue={search}
-        onSearchChange={setSearch}
-        filterOptions={[
-          { label: "All Methods", value: "all" },
-          { label: "Cash", value: "Cash" },
-          { label: "Bank", value: "Bank" },
-          { label: "M-Pesa", value: "Mpesa" },
-        ]}
-        filterValue={methodFilter}
-        onFilterChange={setMethodFilter}
-        onAddClick={() => setDialogOpen(true)}
-        addButtonLabel="Record Payment"
+        toolbar={
+          <>
+            <Select value={methodFilter} onValueChange={setMethodFilter}>
+              <SelectTrigger className="w-full sm:w-40">
+                <SelectValue placeholder="Filter method" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Methods</SelectItem>
+                <SelectItem value="Cash">Cash</SelectItem>
+                <SelectItem value="Bank">Bank</SelectItem>
+                <SelectItem value="Mpesa">M-Pesa</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button size="sm" onClick={() => setDialogOpen(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              Record Payment
+            </Button>
+          </>
+        }
       />
 
       {/* Record Payment Dialog */}
@@ -361,19 +265,14 @@ toast.success(
             {/* Loan Selection */}
             <div className="space-y-2">
               <Label>Loan *</Label>
-              <Select value={formLoanId} onValueChange={handleLoanSelect}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a loan" />
-                </SelectTrigger>
-                <SelectContent>
-                  {loans.map((loan) => (
-                    <SelectItem key={loan.id} value={loan.id}>
-                      {loan.clientName} — {loan.purpose} (
-                      {formatCurrency(loan.approvedAmount || loan.amountRequested)})
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Combobox
+                options={loanOptions}
+                value={formLoanId}
+                onValueChange={handleLoanSelect}
+                placeholder="Select a loan"
+                searchPlaceholder="Search by client or purpose..."
+                emptyText="No matching loans."
+              />
               {selectedLoan && (
                 <p className="text-xs text-slate-500">
                   Loan amount: {formatCurrency(selectedLoan.approvedAmount || selectedLoan.amountRequested)}

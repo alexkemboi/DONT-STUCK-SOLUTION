@@ -10,7 +10,7 @@ import {
     type RowSelectionState,
     type SortingState,
 } from "@tanstack/react-table"
-import { Search } from "lucide-react"
+import { Search, SearchX, X } from "lucide-react"
 
 import {
     Table,
@@ -21,6 +21,15 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import {
+    Empty,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+    EmptyDescription,
+} from "@/components/ui/empty"
+import { cn } from "@/lib/utils"
 
 import { features, type DataTableFeatures } from "./data-table-features"
 import { DataTablePagination } from "./pagination"
@@ -82,22 +91,41 @@ export function DataTable<TData extends RowData>({
         },
     })
 
+    const rowCount = table.getFilteredRowModel().rows.length
+
     return (
         <div className="w-full space-y-4">
             {(enableSearch || toolbar) && (
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     {enableSearch && (
-                        <div className="relative w-full sm:max-w-xs">
-                            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                            <Input
-                                type="search"
-                                placeholder={searchPlaceholder}
-                                value={globalFilter ?? ""}
-                                onChange={(event) =>
-                                    setGlobalFilter(event.target.value)
-                                }
-                                className="pl-9"
-                            />
+                        <div className="flex items-center gap-2">
+                            <div className="relative w-full sm:w-72">
+                                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                <Input
+                                    type="search"
+                                    placeholder={searchPlaceholder}
+                                    value={globalFilter ?? ""}
+                                    onChange={(event) =>
+                                        setGlobalFilter(event.target.value)
+                                    }
+                                    className="pl-9 pr-8"
+                                />
+                                {globalFilter ? (
+                                    <button
+                                        type="button"
+                                        onClick={() => setGlobalFilter("")}
+                                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                                    >
+                                        <X className="h-3.5 w-3.5" />
+                                        <span className="sr-only">Clear search</span>
+                                    </button>
+                                ) : null}
+                            </div>
+                            {globalFilter ? (
+                                <span className="hidden whitespace-nowrap text-sm text-slate-500 sm:inline">
+                                    {rowCount} result{rowCount === 1 ? "" : "s"}
+                                </span>
+                            ) : null}
                         </div>
                     )}
                     {toolbar && (
@@ -108,16 +136,19 @@ export function DataTable<TData extends RowData>({
                 </div>
             )}
 
-            <div className="w-full overflow-x-auto rounded-md border">
+            <div className="w-full overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
+                            <TableRow
+                                key={headerGroup.id}
+                                className="bg-slate-50 hover:bg-slate-50"
+                            >
                                 {headerGroup.headers.map((header) => {
                                     return (
                                         <TableHead
                                             key={header.id}
-                                            className="whitespace-nowrap"
+                                            className="h-11 whitespace-nowrap text-xs font-semibold tracking-wide text-slate-500 uppercase"
                                         >
                                             {header.isPlaceholder ? null : (
                                                 <table.FlexRender
@@ -136,15 +167,16 @@ export function DataTable<TData extends RowData>({
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className={
-                                        onRowClick ? "cursor-pointer" : ""
-                                    }
+                                    className={cn(
+                                        "border-slate-100 hover:bg-slate-50",
+                                        onRowClick && "cursor-pointer"
+                                    )}
                                     onClick={() => onRowClick?.(row.original)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className="whitespace-nowrap"
+                                            className="whitespace-nowrap py-2.5 text-slate-700"
                                         >
                                             <table.FlexRender cell={cell} />
                                         </TableCell>
@@ -152,12 +184,30 @@ export function DataTable<TData extends RowData>({
                                 </TableRow>
                             ))
                         ) : (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
-                                    No results.
+                            <TableRow className="hover:bg-transparent">
+                                <TableCell colSpan={columns.length} className="p-0">
+                                    <Empty className="border-none py-10">
+                                        <EmptyHeader>
+                                            <EmptyMedia variant="icon">
+                                                <SearchX />
+                                            </EmptyMedia>
+                                            <EmptyTitle>No results</EmptyTitle>
+                                            <EmptyDescription>
+                                                {globalFilter
+                                                    ? `Nothing matches "${globalFilter}". Try a different search.`
+                                                    : "There's nothing to show here yet."}
+                                            </EmptyDescription>
+                                        </EmptyHeader>
+                                        {globalFilter ? (
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => setGlobalFilter("")}
+                                            >
+                                                Clear search
+                                            </Button>
+                                        ) : null}
+                                    </Empty>
                                 </TableCell>
                             </TableRow>
                         )}

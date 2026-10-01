@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { DataTable } from "@/components/admin/shared/data-table";
-import { Badge } from "@/components/ui/badge";
+import { DataTable } from "@/components/admin/shared/updated-data-table";
+import { createDocumentsColumns } from "@/components/admin/documents/documents-columns";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -19,43 +20,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  ExternalLink,
-  MoreHorizontal,
-  Trash2,
-  Loader2,
-  Eye,
-} from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import {
   deleteDocumentAction,
   type SerializedDocument,
 } from "@/app/actions/document";
-
-const typeColors: Record<string, string> = {
-  ID: "bg-blue-100 text-blue-800",
-  Payslip: "bg-green-100 text-green-800",
-  Statement: "bg-purple-100 text-purple-800",
-  PassportPhoto: "bg-amber-100 text-amber-800",
-  AppointmentLetter: "bg-indigo-100 text-indigo-800",
-  BankStatement: "bg-teal-100 text-teal-800",
-  KRACertificate: "bg-orange-100 text-orange-800",
-  Other: "bg-gray-100 text-gray-800",
-};
-
-const formatDate = (dateString: string) =>
-  new Date(dateString).toLocaleDateString("en-KE", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-
-const formatFileSize = (bytes: number | null) => {
-  if (!bytes) return "—";
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-};
 
 interface DocumentsManagerProps {
   documents: SerializedDocument[];
@@ -63,7 +33,6 @@ interface DocumentsManagerProps {
 
 export function DocumentsManager({ documents }: DocumentsManagerProps) {
   const router = useRouter();
-  const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [loading, setLoading] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -71,15 +40,13 @@ export function DocumentsManager({ documents }: DocumentsManagerProps) {
     null
   );
 
-  const filteredDocs = documents.filter((doc) => {
-    const matchesSearch =
-      doc.fileName.toLowerCase().includes(search.toLowerCase()) ||
-      (doc.clientName || "").toLowerCase().includes(search.toLowerCase()) ||
-      doc.documentType.toLowerCase().includes(search.toLowerCase());
-    const matchesType =
-      typeFilter === "all" || doc.documentType === typeFilter;
-    return matchesSearch && matchesType;
-  });
+  const filteredDocs = useMemo(
+    () =>
+      typeFilter === "all"
+        ? documents
+        : documents.filter((doc) => doc.documentType === typeFilter),
+    [documents, typeFilter]
+  );
 
   const handleDelete = async () => {
     if (!deletingDoc) return;
@@ -98,104 +65,18 @@ export function DocumentsManager({ documents }: DocumentsManagerProps) {
     setDeletingDoc(null);
   };
 
-  const columns = [
-    {
-      key: "fileName",
-      header: "File Name",
-      render: (doc: SerializedDocument) => (
-        <div>
-          <p className="font-medium text-slate-900 truncate max-w-[200px]">
-            {doc.fileName}
-          </p>
-          <p className="text-xs text-slate-500">
-            {formatFileSize(doc.fileSize)}
-            {doc.mimeType && ` • ${doc.mimeType.split("/")[1]?.toUpperCase()}`}
-          </p>
-        </div>
-      ),
-    },
-    {
-      key: "documentType",
-      header: "Type",
-      render: (doc: SerializedDocument) => (
-        <Badge
-          className={
-            typeColors[doc.documentType] || "bg-gray-100 text-gray-800"
-          }
-        >
-          {doc.documentType}
-        </Badge>
-      ),
-    },
-    {
-      key: "clientName",
-      header: "Client",
-      render: (doc: SerializedDocument) => (
-        <span className="text-sm text-slate-600">
-          {doc.clientName || "—"}
-        </span>
-      ),
-    },
-    {
-      key: "loanPurpose",
-      header: "Loan",
-      render: (doc: SerializedDocument) => (
-        <span className="text-sm text-slate-600">
-          {doc.loanPurpose || "—"}
-        </span>
-      ),
-    },
-    {
-      key: "uploadedAt",
-      header: "Uploaded",
-      render: (doc: SerializedDocument) => (
-        <span className="text-sm text-slate-500">
-          {formatDate(doc.uploadedAt)}
-        </span>
-      ),
-    },
-    {
-      key: "actions",
-      header: "",
-      render: (doc: SerializedDocument) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              disabled={loading === doc.id}
-            >
-              {loading === doc.id ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <MoreHorizontal className="h-4 w-4" />
-              )}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => window.open(doc.filePath, "_blank")}
-            >
-              <ExternalLink className="mr-2 h-4 w-4" />
-              View File
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setDeletingDoc(doc);
-                setDeleteDialogOpen(true);
-              }}
-              className="text-red-600"
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
-      className: "w-12",
-    },
-  ];
+  const columns = useMemo(
+    () =>
+      createDocumentsColumns({
+        loadingId: loading,
+        onView: (doc) => window.open(doc.filePath, "_blank"),
+        onDelete: (doc) => {
+          setDeletingDoc(doc);
+          setDeleteDialogOpen(true);
+        },
+      }),
+    [loading]
+  );
 
   // Get unique document types for filter
   const uniqueTypes = Array.from(
@@ -208,14 +89,21 @@ export function DocumentsManager({ documents }: DocumentsManagerProps) {
         data={filteredDocs}
         columns={columns}
         searchPlaceholder="Search by file name, client, or type..."
-        searchValue={search}
-        onSearchChange={setSearch}
-        filterOptions={[
-          { label: "All Types", value: "all" },
-          ...uniqueTypes.map((t) => ({ label: t, value: t })),
-        ]}
-        filterValue={typeFilter}
-        onFilterChange={setTypeFilter}
+        toolbar={
+          <Select value={typeFilter} onValueChange={setTypeFilter}>
+            <SelectTrigger className="w-full sm:w-44">
+              <SelectValue placeholder="Filter type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Types</SelectItem>
+              {uniqueTypes.map((t) => (
+                <SelectItem key={t} value={t}>
+                  {t}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        }
       />
 
       {/* Delete confirmation */}

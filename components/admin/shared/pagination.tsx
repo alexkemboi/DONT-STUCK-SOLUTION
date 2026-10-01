@@ -24,15 +24,24 @@ interface DataTablePaginationProps<TData extends RowData> {
 export function DataTablePagination<TData extends RowData>({
     table,
 }: DataTablePaginationProps<TData>) {
+    const totalRows = table.getFilteredRowModel().rows.length
+    const selectedRows = table.getFilteredSelectedRowModel().rows.length
+    const { pageIndex, pageSize } = table.state.pagination
+    const rangeStart = totalRows === 0 ? 0 : pageIndex * pageSize + 1
+    const rangeEnd = Math.min(totalRows, (pageIndex + 1) * pageSize)
+
     return (
-        <div className="flex items-center justify-between px-2">
-            <div className="flex-1 text-sm text-muted-foreground">
-                {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                {table.getFilteredRowModel().rows.length} row(s) selected.
+        <div className="flex flex-col gap-3 px-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="text-sm text-muted-foreground">
+                {selectedRows > 0
+                    ? `${selectedRows} of ${totalRows} row(s) selected`
+                    : totalRows === 0
+                      ? "No rows"
+                      : `Showing ${rangeStart}–${rangeEnd} of ${totalRows}`}
             </div>
-            <div className="flex items-center space-x-6 lg:space-x-8">
+            <div className="flex items-center justify-between gap-4 sm:justify-end sm:space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2">
-                    <p className="text-sm font-medium">Rows per page</p>
+                    <p className="hidden text-sm font-medium sm:block">Rows per page</p>
                     <Select
                         value={`${table.state.pagination.pageSize}`}
                         onValueChange={(value) => {

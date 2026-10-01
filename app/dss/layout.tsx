@@ -23,11 +23,15 @@ export default async function AdminLayout({
 
   return (
     <StoreProvider>
-      <div className="min-h-screen bg-slate-50">
-        <AdminSidebar user={user} />
-        <div className="lg:pl-72">
-          <AdminHeader user={user} notifications={notifications} />
-          <main className="py-6 px-4 sm:px-6 lg:px-8">{children}</main>
+      <div className="min-h-screen bg-slate-50 print:bg-white">
+        <div className="print:hidden">
+          <AdminSidebar user={user} />
+        </div>
+        <div className="lg:pl-72 print:pl-0">
+          <div className="print:hidden">
+            <AdminHeader user={user} notifications={notifications} />
+          </div>
+          <main className="py-6 px-4 sm:px-6 lg:px-8 print:p-0">{children}</main>
         </div>
         <Toaster position="top-right" richColors closeButton />
       </div>
