@@ -7,5 +7,5 @@ export const authClient = createAuthClient({
     plugins: [customSessionClient<typeof auth>()],
     /** The base URL of the server (optional if you're using the same domain) */
      baseURL: "https://dss.ikonexsystems.com"
-    //  baseURL: "http://localhost:4567"
+    //  baseURL: "http://localhost:3000"
 })

@@ -79,7 +79,6 @@ export default function AccountsPage() {
 
         setFormattedAccounts(accounts);
       } catch (err) {
-        console.error(err);
       } finally {
         setLoading(false);
       }

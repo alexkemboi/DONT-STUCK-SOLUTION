@@ -13,7 +13,6 @@ export default async function page() {
 
 
 
-  // console.log("session", session)
 
   
 

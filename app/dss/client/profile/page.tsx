@@ -12,11 +12,6 @@ const page = async() => {
         getRefereesAction(),
     ])
 
-    // console.log({bankDetails});
-    // console.log({referees});
-    // console.log({employment});
-    // console.log(addresses.data);
-    console.log({client});
 
    return (
       <main className="min-h-screen bg-background">

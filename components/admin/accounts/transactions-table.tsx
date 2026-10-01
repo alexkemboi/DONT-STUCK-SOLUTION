@@ -113,7 +113,6 @@ export default function TransactionsPage() {
         const data = await res.json();    
         setAccounts(data);
       } catch (err) {
-        console.error(err);
       } finally {
         setLoadingAccounts(false);
       }
@@ -218,7 +217,6 @@ if (!res.ok) {
         description: "",
       });
     } catch (err) {
-      console.error("Error saving transaction:", err);
     }
   };
 const transactionTypes = ["Disbursement", "Repayment", "Provision", "Penalty", "Expense", "Recovery", "Invest"] as const;

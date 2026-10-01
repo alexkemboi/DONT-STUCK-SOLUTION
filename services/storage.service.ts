@@ -87,7 +87,6 @@ export async function uploadFile(
         },
         (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
             if (error) {
-            console.error("Cloudinary upload error:", error);
             resolve({
                 success: false,
                 error: error.message || "Upload failed",
@@ -142,7 +141,6 @@ export async function deleteFile(publicId: string): Promise<{ success: boolean; 
     return new Promise((resolve) => {
         cloudinary.uploader.destroy(publicId, (error, result) => {
         if (error) {
-            console.error("Cloudinary delete error:", error);
             resolve({
             success: false,
             error: error.message || "Delete failed",

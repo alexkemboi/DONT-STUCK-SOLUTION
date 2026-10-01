@@ -412,7 +412,6 @@ export async function disburseLoanAction(loanId: string) {
       // Generate repayment schedule when loan is disbursed
       const scheduleResult = await generateRepaymentSchedule(loanId);
       if (!scheduleResult.success) {
-        console.error("Failed to generate repayment schedule:", scheduleResult.error);
       }
 
       

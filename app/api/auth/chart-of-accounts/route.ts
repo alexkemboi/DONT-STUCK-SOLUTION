@@ -20,7 +20,6 @@ const formattedAccounts = accounts.map(acc => ({
 
 return NextResponse.json(formattedAccounts);
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: "Failed to fetch accounts" }, { status: 500 });
   }
 }
@@ -50,7 +49,6 @@ return NextResponse.json({
   created_at: account.createdAt,
 });
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: "Failed to create account" }, { status: 500 });
   }
 }

@@ -22,7 +22,6 @@ export const auth = betterAuth({
                     email:user.email
                 }
             })
-            console.log(userfromdb)
             if(userfromdb){
                 await sendResetPasswordEmail({
                     userEmail: user.email,

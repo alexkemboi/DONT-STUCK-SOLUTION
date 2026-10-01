@@ -255,7 +255,6 @@ export async function updateRepaymentAction({
 
   } catch (error) {
 
-    console.error(error);
 
     return {
       success: false,

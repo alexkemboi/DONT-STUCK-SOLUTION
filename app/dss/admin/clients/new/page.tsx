@@ -132,7 +132,6 @@ export default function NewClientPage() {
     });
 
 
-    console.log(result, "res")
 
     if (!result.success) {
       toast.error(result.error || "Failed to create client");

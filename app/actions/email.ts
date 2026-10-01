@@ -25,15 +25,13 @@ export async function sendResetPasswordEmail({
 
   try {
     await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
+      from: "Dont Stuck Solutions <dss@ikonexsystems.com>",
       to: userEmail,
       subject: "Reset your password",
       react: ResetPasswordEmail({ userName, resetLink }),
     });
     return { success: true };
   } catch (error:any) {
-    console.log(error?.message)
-    console.error("Error sending reset password email:", error);
     return { success: false, error: (error as Error).message };
   }
 }

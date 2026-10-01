@@ -20,7 +20,6 @@ import { formatCurrency } from "@/lib/utils";
 export default async function DashboardPage() {
   const result = await getAdminDashboardData();
 
-  console.log(result, "resul. ")
   const stats = result.data;
 
   if (!stats) {

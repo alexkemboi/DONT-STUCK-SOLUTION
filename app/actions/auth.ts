@@ -122,7 +122,6 @@ export async function loginAction(data:LoginInfo){
             },
         });
 
-        console.log("login user", user);
 
         return {
             user: user.user,
@@ -133,7 +132,6 @@ export async function loginAction(data:LoginInfo){
        
     } catch (error) {
         if (error instanceof APIError) {
-            console.log(error.message, error.status)
             // throw new Error("Invalid credentials");
             return {
                 error: "Invalid credentials",

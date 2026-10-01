@@ -49,7 +49,6 @@ return NextResponse.json({
 
   } catch (error) {
 
-    console.error(error);
 
     return NextResponse.json(
       {
@@ -106,7 +105,6 @@ export async function PUT(
 
   } catch (error) {
 
-    console.error(error);
 
     return NextResponse.json(
       {
@@ -165,7 +163,6 @@ export async function DELETE(
 
   } catch (error) {
 
-    console.error(error);
 
     return NextResponse.json(
       {

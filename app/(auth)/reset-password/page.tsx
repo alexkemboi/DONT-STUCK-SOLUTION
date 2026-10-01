@@ -11,7 +11,6 @@ export default async function ResetPasswordPage({ // Added async
   const token = resolvedSearchParams.token as string;
 
 
-  console.log("Reset password token:", token); // Debugging log to check the token value
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

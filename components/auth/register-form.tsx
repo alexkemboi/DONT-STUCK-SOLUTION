@@ -66,7 +66,6 @@ export function RegisterForm() {
 
     })
 
-    console.log("signup response", user);
 
     if(user.status === 201 && user.user){
         dispatch(

@@ -13,7 +13,6 @@ export async function GET() {
 
     return NextResponse.json(transactions);
   } catch (error) {
-    console.error(error);
 
     return NextResponse.json(
       { error: "Failed to fetch transactions" },
@@ -26,7 +25,6 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    console.log("BODY:", body);
 
     const transaction = await prisma.transaction.create({
       data: {
@@ -54,7 +52,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(transaction, { status: 201 });
   } catch (error) {
-    console.error("POST ERROR:", error);
 
     return NextResponse.json(
       {

@@ -125,7 +125,6 @@ function FormField({
 
 export function SettingsForms({ settings }: SettingsFormsProps) {
   const handleSubmit = (values: Record<string, unknown>, formName: string) => {
-    console.log(`${formName} values:`, values);
     toast.success(`${formName} settings saved!`, {
       description: "Changes have been applied successfully.",
     });

@@ -213,7 +213,6 @@ export async function submitLoanApplication(data: OnboardingFormData) {
       applicationId: loanApplication.id,
     };
   } catch (error) {
-    console.error("Error submitting loan application:", error);
     return {
       success: false,
       message: "Failed to submit your application. Please try again.",
@@ -282,7 +281,6 @@ export async function getLoanApplication(applicationId: string) {
       repayments: application.repaymentSchedule,
     };
   } catch (error) {
-    console.error("Error fetching loan application:", error);
     return null;
   }
 }
@@ -323,7 +321,6 @@ export async function getAllLoanApplications(status?: string) {
       monthlyIncome: app.client?.employmentDetails[0]?.netSalary, // Assuming one employment detail
     }));
   } catch (error) {
-    console.error("Error fetching loan applications:", error);
     return [];
   }
 }
@@ -387,7 +384,6 @@ export async function updateLoanStatus(
       // Generate repayment schedule
       const scheduleResult = await generateRepaymentSchedule(applicationId);
       if (!scheduleResult.success) {
-        console.error("Failed to generate repayment schedule:", scheduleResult.error);
         // Optionally revert loan status or log a critical error
         return { success: false, message: "Failed to generate repayment schedule" };
       }
@@ -395,7 +391,6 @@ export async function updateLoanStatus(
 
     return { success: true };
   } catch (error) {
-    console.error("Error updating loan status:", error);
     return { success: false, message: "Failed to update status" };
   }
 }
@@ -450,7 +445,6 @@ export async function getDashboardStats() {
       overduePayments: overduePayments,
     };
   } catch (error) {
-    console.error("Error fetching dashboard stats:", error);
     return {
       totalApplications: 0,
       pendingReview: 0,

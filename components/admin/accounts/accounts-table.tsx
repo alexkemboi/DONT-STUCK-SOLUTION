@@ -60,7 +60,6 @@ const fetchAccounts = async () => {
 
   } catch (error) {
 
-    console.error(error);
 
     toast.error("Failed to load accounts");
 
@@ -126,7 +125,6 @@ const handleView = async (account: Account) => {
 
     setOpenViewModal(true);
   } catch (error) {
-    console.error(error);
 
     toast.error("Failed to load account details");
   } finally {
@@ -250,7 +248,6 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   } catch (error: any) {
 
-    console.error(error);
 
     toast.error(error.message || "Operation failed");
 

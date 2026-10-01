@@ -88,7 +88,6 @@ export function ProfileClient({
     }
 
     const getInitials = () => {
-        console.log(clientSource, "cs")
         if (!clientSource) return 'U'
         return `${clientSource.surname?.charAt(0) || ''}${clientSource.otherNames?.charAt(0) || ''}`.toUpperCase() || 'U'
     }

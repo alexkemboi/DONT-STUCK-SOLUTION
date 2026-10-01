@@ -81,7 +81,6 @@ export function LoginForm() {
         description: "Welcome back to your dashboard!",
       });
 
-      console.log(loggeduser, "user")
 
       
       if (loggeduser.user) {

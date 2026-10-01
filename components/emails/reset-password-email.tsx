@@ -5,94 +5,226 @@ interface ResetPasswordEmailProps {
   resetLink: string;
 }
 
+const colors = {
+  brand: '#0f172a',
+  accent: '#2563eb',
+  accentDark: '#1d4ed8',
+  text: '#334155',
+  muted: '#94a3b8',
+  border: '#e2e8f0',
+  bg: '#f1f5f9',
+  card: '#ffffff',
+};
+
 export function ResetPasswordEmail({ userName, resetLink }: ResetPasswordEmailProps) {
   return (
     <html lang="en">
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light" />
         <title>Reset Your Password</title>
-        <style>
-          {`
-            body {
-              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-              background-color: #f4f4f4;
-              margin: 0;
-              padding: 0;
-              -webkit-font-smoothing: antialiased;
-              -moz-osx-font-smoothing: grayscale;
-            }
-            .container {
-              max-width: 600px;
-              margin: 20px auto;
-              background-color: #ffffff;
-              padding: 30px;
-              border-radius: 8px;
-              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            .header {
-              text-align: center;
-              padding-bottom: 20px;
-              border-bottom: 1px solid #eeeeee;
-            }
-            .header h1 {
-              color: #333333;
-              font-size: 24px;
-              margin: 0;
-            }
-            .content {
-              padding: 20px 0;
-              line-height: 1.6;
-              color: #555555;
-            }
-            .content p {
-              margin-bottom: 15px;
-            }
-            .button-container {
-              text-align: center;
-              margin-top: 20px;
-            }
-            .button {
-              display: inline-block;
-              padding: 12px 24px;
-              background-color: #007bff;
-              color: #ffffff;
-              text-decoration: none;
-              border-radius: 5px;
-              font-size: 16px;
-              font-weight: bold;
-            }
-            .footer {
-              text-align: center;
-              padding-top: 20px;
-              border-top: 1px solid #eeeeee;
-              margin-top: 30px;
-              font-size: 12px;
-              color: #aaaaaa;
-            }
-          `}
-        </style>
       </head>
-      <body>
-        <div className="container">
-          <div className="header">
-            <h1>Dont Stuck Solutions</h1>
-          </div>
-          <div className="content">
-            <p>Hello {userName},</p>
-            <p>You have requested to reset your password for your Dont Stuck Solutions account.</p>
-            <p>Please click the button below to reset your password:</p>
-            <div className="button-container">
-              <a href={resetLink} className="button">Reset Password</a>
-            </div>
-            <p>If you did not request a password reset, please ignore this email. This link is valid for a limited time.</p>
-            <p>Thank you,</p>
-            <p>The Dont Stuck Solutions Team</p>
-          </div>
-          <div className="footer">
-            <p>&copy; {new Date().getFullYear()} Dont Stuck Solutions. All rights reserved.</p>
-          </div>
-        </div>
+      <body
+        style={{
+          margin: 0,
+          padding: 0,
+          backgroundColor: colors.bg,
+          fontFamily:
+            '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+        }}
+      >
+        <table
+          role="presentation"
+          width="100%"
+          cellPadding={0}
+          cellSpacing={0}
+          style={{ backgroundColor: colors.bg, padding: '40px 16px' }}
+        >
+          <tbody>
+            <tr>
+              <td align="center">
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellPadding={0}
+                  cellSpacing={0}
+                  style={{
+                    maxWidth: 560,
+                    width: '100%',
+                    backgroundColor: colors.card,
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    boxShadow: '0 1px 3px rgba(15, 23, 42, 0.08)',
+                  }}
+                >
+                  <tbody>
+                    {/* Header */}
+                    <tr>
+                      <td
+                        style={{
+                          backgroundColor: colors.brand,
+                          padding: '28px 40px',
+                          textAlign: 'center',
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: '#ffffff',
+                            fontSize: 18,
+                            fontWeight: 700,
+                            letterSpacing: 0.3,
+                          }}
+                        >
+                          Dont Stuck Solutions
+                        </span>
+                      </td>
+                    </tr>
+
+                    {/* Content */}
+                    <tr>
+                      <td style={{ padding: '40px 40px 24px' }}>
+                        <h1
+                          style={{
+                            margin: '0 0 16px',
+                            fontSize: 22,
+                            fontWeight: 700,
+                            color: colors.brand,
+                          }}
+                        >
+                          Reset your password
+                        </h1>
+                        <p
+                          style={{
+                            margin: '0 0 16px',
+                            fontSize: 15,
+                            lineHeight: '24px',
+                            color: colors.text,
+                          }}
+                        >
+                          Hi {userName},
+                        </p>
+                        <p
+                          style={{
+                            margin: '0 0 24px',
+                            fontSize: 15,
+                            lineHeight: '24px',
+                            color: colors.text,
+                          }}
+                        >
+                          We received a request to reset the password for your Dont Stuck
+                          Solutions account. Click the button below to choose a new password.
+                        </p>
+
+                        <table role="presentation" cellPadding={0} cellSpacing={0}>
+                          <tbody>
+                            <tr>
+                              <td
+                                style={{
+                                  borderRadius: 8,
+                                  backgroundColor: colors.accent,
+                                }}
+                              >
+                                <a
+                                  href={resetLink}
+                                  style={{
+                                    display: 'inline-block',
+                                    padding: '14px 28px',
+                                    fontSize: 15,
+                                    fontWeight: 600,
+                                    color: '#ffffff',
+                                    textDecoration: 'none',
+                                    borderRadius: 8,
+                                  }}
+                                >
+                                  Reset Password
+                                </a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <p
+                          style={{
+                            margin: '28px 0 0',
+                            fontSize: 13,
+                            lineHeight: '20px',
+                            color: colors.muted,
+                          }}
+                        >
+                          This link will expire in 1 hour. If the button above doesn&apos;t
+                          work, copy and paste this URL into your browser:
+                        </p>
+                        <p
+                          style={{
+                            margin: '8px 0 0',
+                            fontSize: 13,
+                            lineHeight: '20px',
+                            wordBreak: 'break-all',
+                          }}
+                        >
+                          <a href={resetLink} style={{ color: colors.accentDark }}>
+                            {resetLink}
+                          </a>
+                        </p>
+                      </td>
+                    </tr>
+
+                    {/* Security notice */}
+                    <tr>
+                      <td style={{ padding: '0 40px 32px' }}>
+                        <table
+                          role="presentation"
+                          width="100%"
+                          cellPadding={0}
+                          cellSpacing={0}
+                          style={{
+                            backgroundColor: colors.bg,
+                            borderRadius: 8,
+                          }}
+                        >
+                          <tbody>
+                            <tr>
+                              <td style={{ padding: '16px 20px' }}>
+                                <p
+                                  style={{
+                                    margin: 0,
+                                    fontSize: 13,
+                                    lineHeight: '20px',
+                                    color: colors.text,
+                                  }}
+                                >
+                                  Didn&apos;t request this? You can safely ignore this email
+                                  &mdash; your password will remain unchanged.
+                                </p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+
+                    {/* Footer */}
+                    <tr>
+                      <td
+                        style={{
+                          padding: '24px 40px',
+                          borderTop: `1px solid ${colors.border}`,
+                          textAlign: 'center',
+                        }}
+                      >
+                        <p style={{ margin: 0, fontSize: 12, color: colors.muted }}>
+                          &copy; {new Date().getFullYear()} Dont Stuck Solutions. All rights
+                          reserved.
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </body>
     </html>
   );

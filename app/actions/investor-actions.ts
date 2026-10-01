@@ -35,7 +35,6 @@ export async function getInvestorStats(investorId: string) {
       portfolioValue: totalInvested + totalReturns,
     };
   } catch (error) {
-    console.error("Error fetching investor stats:", error);
     return {
       totalInvested: 0,
       totalReturns: 0,
@@ -86,7 +85,6 @@ export async function getInvestorAllocations(investorId: string): Promise<Alloca
       borrowerName: alloc.borrower_name,
     })) as Allocation[];
   } catch (error) {
-    console.error("Error fetching allocations:", error);
     return [];
   }
 }
@@ -136,7 +134,6 @@ export async function getAvailableLoansForInvestment(): Promise<AvailableLoan[]>
       alreadyFunded: Number(loan.already_funded),
     })) as AvailableLoan[];
   } catch (error) {
-    console.error("Error fetching available loans:", error);
     return [];
   }
 }
@@ -205,7 +202,6 @@ export async function investInLoan(
       message: `Successfully invested ${amount.toLocaleString()} in this loan.`,
     };
   } catch (error) {
-    console.error("Error investing in loan:", error);
     return { success: false, message: "Failed to process investment" };
   }
 }
