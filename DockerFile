@@ -3,15 +3,46 @@ FROM node:20-alpine
 # Set working directory
 WORKDIR /app
 
+# Build-time arguments (can be overridden via docker-compose or --build-arg)
+ARG DATABASE_URL=production
+ARG CLOUDINARY_CLOUD_NAME
+ARG CLOUDINARY_API_KEY
+ARG CLOUDINARY_API_SECRET
+ARG BETTER_AUTH_SECRET
+ARG BETTER_AUTH_URL
+ARG RESEND_API_KEY
+ARG GOOGLE_EMAIL
+ARG GOOGLE_APP_PASSWORD
+ARG NEXT_PUBLIC_APP_URL
+
+# Set environment variables for the container
+ENV DATABASE_URL=${DATABASE_URL}
+ENV CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+ENV CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+ENV CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+ENV BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+ENV BETTER_AUTH_URL=${BETTER_AUTH_URL}
+ENV RESEND_API_KEY=${RESEND_API_KEY}
+ENV GOOGLE_EMAIL=${GOOGLE_EMAIL}
+ENV GOOGLE_APP_PASSWORD=${GOOGLE_APP_PASSWORD}
+ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+
+RUN npm install -g pnpm@10.14.0
+
 # Install dependencies
 COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+
+# Copy Prisma schema before install because postinstall runs prisma generate
+COPY prisma ./prisma
+
+
+RUN pnpm install --frozen-lockfile
 
 # Copy source code (including prisma schema)
 COPY . .
 
-# Generate Prisma client
-RUN npx prisma generate
+# Generate Prisma client explicitly
+RUN pnpm exec prisma generate --schema ./prisma/schema.prisma
 
 # Build the app
 RUN pnpm run build

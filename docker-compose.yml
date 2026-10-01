@@ -3,6 +3,17 @@ services:
     build:
       context: .
       dockerfile: DockerFile
+      args:
+        BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+        DATABASE_URL: ${DATABASE_URL}
+        CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+        CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+        CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+        BETTER_AUTH_URL: ${BETTER_AUTH_URL}
+        RESEND_API_KEY: ${RESEND_API_KEY}
+        GOOGLE_EMAIL: ${GOOGLE_EMAIL}
+        GOOGLE_APP_PASSWORD: ${GOOGLE_APP_PASSWORD}
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}=value
     env_file:
       - .env
     ports:

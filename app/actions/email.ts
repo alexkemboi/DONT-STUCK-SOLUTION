@@ -9,13 +9,18 @@ interface SendResetPasswordEmailProps {
   resetLink: string;
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
-
 export async function sendResetPasswordEmail({
   userEmail,
   userName,
   resetLink,
 }: SendResetPasswordEmailProps) {
+
+  const apikey = process.env.RESEND_API_KEY;
+  if(!apikey){
+    throw new Error("Resend API key is not defined in environment variables.");
+  }
+
+  const resend = new Resend(apikey);
 
 
   try {
