@@ -51,5 +51,4 @@ RUN pnpm run build
 EXPOSE 4567
 
 # Start the app
-CMD ["pnpm", "run", "start", "--", "-p", "4567"]
-
+CMD ["pnpm", "run", "start"]
